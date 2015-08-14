@@ -1,10 +1,10 @@
 function SinglePendulum()
 {
 	this.m0 = 8;
-	this.m1 = 8;
-	this.L = 60;
+	this.m1 = 6;
+	this.L = 80;
 	this.g = 9.81;
-	this.theta = 0.001;
+	this.theta = 0.01;
 	this.dtheta = 0;
 	this.x = 0;
 	this.dx = 0;

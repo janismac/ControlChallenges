@@ -1,21 +1,33 @@
-var stage = new PIXI.Stage(0x66FF99);
-var renderer = new PIXI.CanvasRenderer(800, 600);
-document.body.appendChild(renderer.view);
-requestAnimFrame( animate );
 
-var graphics = new PIXI.Graphics();
-stage.addChild(graphics);
+var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+var canvas = document.getElementById('cas');
+var context = canvas.getContext('2d');
+canvas.width = 600;
+canvas.height = 400;
+context.translate(canvas.width/2,canvas.height/2);
+context.scale(1,-1);
 
-var pend = new SinglePendulum();
+var pendulum = new SinglePendulum();
+
+var i = 0;
+animate();
 
 function animate() {
-	requestAnimFrame( animate );
 
-	pend.simulate(0.1);	
-	graphics.clear();
-	graphics.lineStyle (4,0xFF0000) ;
-	graphics.moveTo(50+pend.x,50);
-	graphics.lineTo(50+pend.x+pend.L*Math.sin(pend.theta),50-pend.L*Math.cos(pend.theta));
+	pendulum.simulate(0.1);	
 	
-	renderer.render(stage);
+	// clear all
+	context.save();
+	context.setTransform(1,0,0,1,0,0);
+	context.clearRect(0,0,canvas.width,canvas.height);
+	context.restore();
+	
+	// draw pendulumulum
+	context.beginPath();
+	context.moveTo(pendulum.x,0);
+	context.lineTo(pendulum.x+pendulum.L*Math.sin(pendulum.theta),pendulum.L*Math.cos(pendulum.theta));
+	context.stroke();
+	context.closePath();
+	
+	requestAnimationFrame(animate);
 }
