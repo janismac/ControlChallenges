@@ -6,26 +6,16 @@ requestAnimFrame( animate );
 var graphics = new PIXI.Graphics();
 stage.addChild(graphics);
 
-var state = [10, 10];
-
-f = function(t,x) {
-  return [x[1], -x[0]];
-}
-
-
+var pend = new SinglePendulum();
 
 function animate() {
 	requestAnimFrame( animate );
 
-
-	var dt = 0.2;	
-	var sol = numeric.dopri(0,dt,state,f,1e-4);
-	state = sol.at(dt);
-	
+	pend.simulate(0.1);	
 	graphics.clear();
 	graphics.lineStyle (4,0xFF0000) ;
-	graphics.moveTo(state[0],0);
-	graphics.lineTo(state[0]+50, 100);
+	graphics.moveTo(50+pend.x,50);
+	graphics.lineTo(50+pend.x+pend.L*Math.sin(pend.theta),50-pend.L*Math.cos(pend.theta));
 	
 	renderer.render(stage);
 }
