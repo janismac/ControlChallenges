@@ -2,10 +2,17 @@
 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 var canvas = document.getElementById('cas');
 var context = canvas.getContext('2d');
-canvas.width = 600;
-canvas.height = 400;
-context.translate(canvas.width/2,canvas.height/2);
-context.scale(1,-1);
+
+function resizeCanvas() {
+	canvas.width = $('#cas').width();
+	canvas.height = $('#cas').height();
+	context.setTransform(1,0,0,1,0,0);
+	context.translate(canvas.width/2,canvas.height/2);
+	context.scale(1,-1);
+}
+
+$( window ).resize(resizeCanvas);
+resizeCanvas();
 
 var pendulum = new SinglePendulum();
 

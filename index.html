@@ -3,15 +3,45 @@
 	<head>
 		<meta charset="utf-8">
 		<title></title>
-		<!--<link rel="stylesheet" href="css/normalize.min.css">-->
-		<!--<link rel="stylesheet" href="css/main.css">-->
+		
+		<link rel="stylesheet" href="css/codemirror.css">
+		<script src="js/codemirror/codemirror.js"></script><style type="text/css"></style>
+		<script src="js/codemirror/xml.js"></script>
+		<script src="js/codemirror/javascript.js"></script>
+		<script src="js/codemirror/css.js"></script>
+		<script src="js/codemirror/matchbrackets.js"></script>
+		
+		<link rel="stylesheet" href="css/normalize.min.css">
+		<link rel="stylesheet" href="css/main.css">
 	</head>
 	<body>
 		<!--[if lt IE 8]>
 			<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 		<![endif]-->
 		
-		<canvas id="cas" style="border:1px solid black;"></canvas>
+		<div id="left-coln">
+			<div id="info">
+				Hello World!
+			</div>
+			<div id="editor">
+				<form style="position: relative; margin-top: .5em;"><textarea id="demotext" style="display: none;">
+				var editor = CodeMirror.fromTextArea(myTextarea, {
+				lineNumbers: true,asd
+				});</textarea>
+				</form>
+				<script>
+				var editor = CodeMirror.fromTextArea(document.getElementById("demotext"), {
+				lineNumbers: true,
+				mode: "javascript",
+				matchBrackets: true
+				});
+				</script>
+			</div>
+		</div>
+		
+		<div id="right-coln">
+			<canvas id="cas"></canvas>
+		</div>
 		
 		<script src="js/plugins.js"></script>
 		<script src="js/jquery-1.11.2.js"></script>
