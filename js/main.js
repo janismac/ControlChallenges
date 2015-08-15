@@ -1,7 +1,8 @@
-
+var editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), { lineNumbers: true, mode: "javascript", matchBrackets: true, lineWrapping:true });
 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 var canvas = document.getElementById('cas');
 var context = canvas.getContext('2d');
+var pendulum = new SinglePendulum();
 
 function resizeCanvas() {
 	canvas.width = $('#cas').width();
@@ -10,20 +11,31 @@ function resizeCanvas() {
 	context.translate(canvas.width/2,canvas.height/2);
 	context.scale(150,-150);
 }
-
 $( window ).resize(resizeCanvas);
-resizeCanvas();
 
-var pendulum = new SinglePendulum();
+function loadCodeAndReset()
+{
+	$('#userscript').remove();
+	var e = $('<script id="userscript">'+editor.getValue() +'</script>');	
+	$('body').append(e);
+	pendulum = new SinglePendulum();
+	T_start = new Date().getTime();
+}
 
-var i = 0;
-animate();
-
-
-var func = eval('[' + editor.getValue() + ']')[0];
-//alert(func(6));
+function drawLine(ctx,x1,y1,x2,y2,width)
+{
+	ctx.beginPath();
+	ctx.moveTo(x1,y1);
+	ctx.lineTo(x2,y2);
+	ctx.lineWidth = width;
+	ctx.stroke();
+}
 
 var T = new Date().getTime();
+var T_start = new Date().getTime();
+resizeCanvas();
+loadCodeAndReset();
+animate();
 function animate() {
 
 
@@ -32,15 +44,10 @@ function animate() {
 	
 	pendulum.F = 0;
 	try {
-		var controlFunction = eval('[' + editor.getValue() + ']')[0];	
-		pendulum.F = controlFunction(pendulum);
-		if(!isNaN(dt))
-			pendulum.simulate(Math.min(0.2,dt));
+		pendulum.F = controlFunction((T-T_start)/1000.0,pendulum);
+		if(!isNaN(dt)) pendulum.simulate(Math.min(0.2,dt));
 	}
 	catch(e){}
-	
-	
-	
 	
 	// clear all
 	context.save();
@@ -49,12 +56,7 @@ function animate() {
 	context.restore();
 	
 	// draw pendulum
-	context.beginPath();
-	context.moveTo(pendulum.x,0);
-	context.lineTo(pendulum.x+pendulum.L*Math.sin(pendulum.theta),pendulum.L*Math.cos(pendulum.theta));
-	context.lineWidth = pendulum.L/20.0;
-	context.stroke();
-	context.closePath();
+	pendulum.draw(context);
 	
 	requestAnimationFrame(animate);
 }

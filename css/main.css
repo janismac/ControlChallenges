@@ -56,24 +56,25 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
-
+/*
 canvas,#left-coln,#right-coln,#info,#editor{ border:1px solid black;
   padding:1px;
   margin:1px;
-}
+}*/
 
-#left-coln { position:absolute; height:96%; width:46%; left: 2%; top:2%;}
-#right-coln  { position:absolute; height:96%; width:46%; left:52%; top:2%;}
+#left-coln { position:absolute;  width:48%; left: 1%; height:96%; top:2%;}
+#right-coln  { position:absolute;  width:48%; left:51%; height:96%; top:2%;}
+
 
 
 canvas{width:99%;height:99%;}
-
-.CodeMirror { height: auto; border: 1px solid #ddd; }
-/*.CodeMirror-scroll { max-height: 200px; }*/
+body{background-color:#eef;}
+.CodeMirror { border: 1px solid #ddd; }
 .CodeMirror pre { padding-left: 7px; line-height: 1.25; }
 
 
 
+#editor, #editor .CodeMirror-scroll, #editor .CodeMirror, #editor form { height: 100%; }
 
 
 

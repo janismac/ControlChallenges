@@ -2,16 +2,17 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title></title>
+		<title></title>	
 		
-		<link rel="stylesheet" href="css/codemirror.css">
 		<script src="js/codemirror/codemirror.js"></script><style type="text/css"></style>
 		<script src="js/codemirror/xml.js"></script>
 		<script src="js/codemirror/javascript.js"></script>
 		<script src="js/codemirror/css.js"></script>
-		<script src="js/codemirror/matchbrackets.js"></script>
+		<script src="js/codemirror/matchbrackets.js"></script>		
 		
+		<link rel="stylesheet" href="css/codemirror.css">
 		<link rel="stylesheet" href="css/normalize.min.css">
+		<link rel="stylesheet" href="css/bootstrap.css">
 		<link rel="stylesheet" href="css/main.css">
 	</head>
 	<body>
@@ -20,26 +21,21 @@
 		<![endif]-->
 		
 		<div id="left-coln">
-			<div id="info">
-				Hello World!
-			</div>
 			<div id="editor">
-				<form style="position: relative; margin-top: .5em;">
-<textarea id="demotext" style="display: none;">
-function(pendulum){return 300*Math.sin(pendulum.theta);}
+				<form style="position: relative;">
+<textarea id="CodeMirrorEditor" style="display: none;">
+function controlFunction(T,pendulum)
+{
+  //return 300*Math.sin(pendulum.theta)+100*pendulum.dtheta+10*pendulum.dx+5*pendulum.x;
+  return 10*Math.sin(3*T);
+}
 </textarea>
 				</form>
-				<script>
-				var editor = CodeMirror.fromTextArea(document.getElementById("demotext"), {
-				lineNumbers: true,
-				mode: "javascript",
-				matchBrackets: true
-				});
-				</script>
 			</div>
 		</div>
 		
-		<div id="right-coln">
+		<div id="right-coln">			
+			<button type="button" class="btn btn-primary" onclick="loadCodeAndReset();">Restart</button>
 			<canvas id="cas"></canvas>
 		</div>
 		
@@ -49,5 +45,6 @@ function(pendulum){return 300*Math.sin(pendulum.theta);}
 				
 		<script src="js/singlePendulum.js"></script>
 		<script src="js/main.js"></script>
+		<script id="userscript"></script>
 	</body>
 </html>

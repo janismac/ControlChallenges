@@ -37,3 +37,47 @@ SinglePendulum.ode = function (_this, x)
 	var ddx = numeric.solve(M,b)
 	return [x[1],ddx[0],x[3],ddx[1]];
 }
+
+
+SinglePendulum.prototype.draw = function (ctx)
+{
+	var cartWidth = 0.4*this.L;
+	var cartHeight = 0.7*cartWidth;
+	
+	
+	var tipX = this.x+this.L*Math.sin(this.theta);
+	var tipY = this.L*Math.cos(this.theta)+cartHeight;
+	
+	
+	
+	// ground
+	ctx.strokeStyle="#333366";
+	drawLine(ctx,-100,-.025,100,-.025,0.05);
+	
+	// cart
+	ctx.fillStyle="#4444FF";
+	ctx.fillRect(this.x-cartWidth/2,0,cartWidth,cartHeight);
+		
+	// shaft
+	ctx.strokeStyle="#AAAAFF";
+    ctx.lineCap = 'round';
+	drawLine(ctx,this.x,cartHeight,tipX,tipY,this.L/20.0);
+		
+	// tip-mass
+	ctx.beginPath();
+	ctx.arc(tipX, tipY, this.L/7, 0, 2 * Math.PI, false);
+	ctx.fillStyle = '#4444FF';
+	ctx.fill();
+	
+	// force arrow
+	var forceArrow = {x1:this.x,y1:0.5*cartHeight,x2:this.x+0.1*this.F,y2:0.5*cartHeight};
+	ctx.strokeStyle="#FF0000";
+    ctx.lineCap = 'round';	
+	drawLine(ctx,forceArrow.x1,forceArrow.y1,forceArrow.x2,forceArrow.y2,this.L/40.0);
+	drawLine(ctx,forceArrow.x2,forceArrow.y2,forceArrow.x2-Math.sign(this.F)*0.1,forceArrow.y2+0.05,this.L/40.0);
+	drawLine(ctx,forceArrow.x2,forceArrow.y2,forceArrow.x2-Math.sign(this.F)*0.1,forceArrow.y2-0.05,this.L/40.0);
+	
+	
+}
+
+
