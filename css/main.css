@@ -64,24 +64,15 @@ canvas,#left-coln,#right-coln,#info,#editor{ border:1px solid black;
 
 #left-coln { position:absolute;  width:48%; left: 1%; height:96%; top:2%;}
 #right-coln  { position:absolute;  width:48%; left:51%; height:96%; top:2%;}
-
-
+#buttons {position:absolute; width:100%;}
+#variableInfo{margin-top:1em;}
 
 canvas{width:99%;height:99%;}
 body{background-color:#eef;}
 .CodeMirror { border: 1px solid #ddd; }
 .CodeMirror pre { padding-left: 7px; line-height: 1.25; }
 
-
-
 #editor, #editor .CodeMirror-scroll, #editor .CodeMirror, #editor form { height: 100%; }
-
-
-
-
-
-
-
 
 
 /* ==========================================================================

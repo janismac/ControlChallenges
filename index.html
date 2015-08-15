@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title></title>	
+		<title>Level 1, Control Challenges</title>	
 		
 		<script src="js/codemirror/codemirror.js"></script><style type="text/css"></style>
 		<script src="js/codemirror/xml.js"></script>
@@ -24,18 +24,21 @@
 			<div id="editor">
 				<form style="position: relative;">
 <textarea id="CodeMirrorEditor" style="display: none;">
-function controlFunction(T,pendulum)
+function controlFunction(pendulum)
 {
-  //return 300*Math.sin(pendulum.theta)+100*pendulum.dtheta+10*pendulum.dx+5*pendulum.x;
-  return 10*Math.sin(3*T);
+  return 10*Math.sin(8*pendulum.T);
 }
 </textarea>
 				</form>
 			</div>
 		</div>
 		
-		<div id="right-coln">			
-			<button type="button" class="btn btn-primary" onclick="loadCodeAndReset();">Restart</button>
+		<div id="right-coln">
+			<div id="buttons">
+				<button type="button" class="btn btn-primary" onclick="toggleVariableInfo();"><span class="glyphicon glyphicon-info-sign"> </span>&nbsp;&nbsp;<span id="toggleVariableLabel">Hide Variables</span></button>
+				<button type="button" class="btn btn-primary" onclick="loadCodeAndReset();"><span class="glyphicon glyphicon-repeat"> </span>&nbsp;&nbsp;Restart</button>
+				<pre id="variableInfo"></pre>
+			</div>
 			<canvas id="cas"></canvas>
 		</div>
 		

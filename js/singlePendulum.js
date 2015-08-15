@@ -9,6 +9,7 @@ function SinglePendulum()
 	this.x = 0;
 	this.dx = 0;
 	this.F = 0;
+	this.T = 0;
 }
 
 SinglePendulum.prototype.simulate = function (dt)
@@ -20,6 +21,7 @@ SinglePendulum.prototype.simulate = function (dt)
 	this.dx = soln[1];
 	this.theta = soln[2];
 	this.dtheta = soln[3];
+	this.T+=dt;
 }
 
 SinglePendulum.ode = function (_this, x)
@@ -44,11 +46,8 @@ SinglePendulum.prototype.draw = function (ctx)
 	var cartWidth = 0.4*this.L;
 	var cartHeight = 0.7*cartWidth;
 	
-	
 	var tipX = this.x+this.L*Math.sin(this.theta);
 	var tipY = this.L*Math.cos(this.theta)+cartHeight;
-	
-	
 	
 	// ground
 	ctx.strokeStyle="#333366";
@@ -76,8 +75,14 @@ SinglePendulum.prototype.draw = function (ctx)
 	drawLine(ctx,forceArrow.x1,forceArrow.y1,forceArrow.x2,forceArrow.y2,this.L/40.0);
 	drawLine(ctx,forceArrow.x2,forceArrow.y2,forceArrow.x2-Math.sign(this.F)*0.1,forceArrow.y2+0.05,this.L/40.0);
 	drawLine(ctx,forceArrow.x2,forceArrow.y2,forceArrow.x2-Math.sign(this.F)*0.1,forceArrow.y2-0.05,this.L/40.0);
-	
-	
 }
 
 
+SinglePendulum.prototype.infoText = function ()
+{
+	return "pendulum.x = " + round(this.x,2)
+		+ "\npendulum.dx = " + round(this.dx,2)
+		+ "\npendulum.theta = " + round(this.theta,2)
+		+ "\npendulum.dtheta = " + round(this.dtheta,2)
+		+ "\npendulum.T = " + round(this.T,2);	
+}

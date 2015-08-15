@@ -31,6 +31,18 @@ function drawLine(ctx,x1,y1,x2,y2,width)
 	ctx.stroke();
 }
 
+function round(x,d)
+{
+	var shift = Math.pow(10, d);
+	return Math.round(x*shift)/shift;
+}
+
+function toggleVariableInfo()
+{
+	$('#variableInfo').toggle();
+	$('#toggleVariableLabel').text( ($('#variableInfo').css('display')=='none')?'Show Variables':'Hide Variables' );
+}
+
 var T = new Date().getTime();
 var T_start = new Date().getTime();
 resizeCanvas();
@@ -44,7 +56,7 @@ function animate() {
 	
 	pendulum.F = 0;
 	try {
-		pendulum.F = controlFunction((T-T_start)/1000.0,pendulum);
+		pendulum.F = controlFunction(pendulum);
 		if(!isNaN(dt)) pendulum.simulate(Math.min(0.2,dt));
 	}
 	catch(e){}
@@ -57,6 +69,9 @@ function animate() {
 	
 	// draw pendulum
 	pendulum.draw(context);
+	
+	// variableInfo
+	$('#variableInfo').text(pendulum.infoText());
 	
 	requestAnimationFrame(animate);
 }
