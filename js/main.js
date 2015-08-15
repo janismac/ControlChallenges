@@ -2,7 +2,8 @@ var editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor")
 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 var canvas = document.getElementById('cas');
 var context = canvas.getContext('2d');
-var level = new Levels.StabilizeSinglePendulum();
+//var level = new Levels.StabilizeSinglePendulum();
+var level = new Levels.RocketLandingNormal();
 var runSimulation = false;
 $(document).ready(function(){$('[data-toggle="tooltip"]').tooltip();});
 $('#toggleVariableInfoButtonShow').hide();
@@ -33,6 +34,7 @@ function loadLevelToDOM(level)
 {
 	$('#levelDescription').text(level.description);
 	$('#levelTitle').text(level.title);
+	document.title = level.title +': Control Challenges';
 	editor.setValue(level.boilerPlateCode);
 }
 
@@ -82,6 +84,7 @@ var T = new Date().getTime();
 resizeCanvas();
 loadLevelToDOM(level);
 loadCodeAndReset();
+pauseSimulation();
 animate();
 
 function animate() {
@@ -98,9 +101,6 @@ function animate() {
 		}
 	}
 	
-	// clear canvas
-	context.setTransform(1,0,0,1,0,0);
-	context.clearRect(0,0,canvas.width,canvas.height);
 	
 	// draw model
 	level.model.draw(context);
