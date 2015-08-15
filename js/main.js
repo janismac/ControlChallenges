@@ -3,6 +3,7 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
 var canvas = document.getElementById('cas');
 var context = canvas.getContext('2d');
 var pendulum = new SinglePendulum();
+var runSimulation = false;
 
 function resizeCanvas() {
 	canvas.width = $('#cas').width();
@@ -20,6 +21,17 @@ function loadCodeAndReset()
 	$('body').append(e);
 	pendulum = new SinglePendulum();
 	T_start = new Date().getTime();
+}
+function updatePlayPauseButtons()
+{
+	if(runSimulation)
+	{
+		$('#pauseButton').show();
+		$('#playButton').hide();		
+	} else {
+		$('#pauseButton').hide();
+		$('#playButton').show();		
+	}	
 }
 
 function drawLine(ctx,x1,y1,x2,y2,width)
@@ -45,6 +57,7 @@ function toggleVariableInfo()
 
 var T = new Date().getTime();
 var T_start = new Date().getTime();
+updatePlayPauseButtons();
 resizeCanvas();
 loadCodeAndReset();
 animate();
@@ -54,12 +67,15 @@ function animate() {
 	var dt = (new Date().getTime()-T)/1000.0;
 	T = new Date().getTime();
 	
-	pendulum.F = 0;
-	try {
-		pendulum.F = controlFunction(pendulum);
-		if(!isNaN(dt)) pendulum.simulate(Math.min(0.2,dt));
+	if(runSimulation)
+	{
+		pendulum.F = 0;
+		try {
+			pendulum.F = controlFunction(pendulum);
+			if(!isNaN(dt)) pendulum.simulate(Math.min(0.2,dt));
+		}
+		catch(e){}
 	}
-	catch(e){}
 	
 	// clear all
 	context.save();

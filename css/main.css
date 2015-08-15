@@ -73,6 +73,19 @@ body{background-color:#eef;}
 .CodeMirror pre { padding-left: 7px; line-height: 1.25; }
 
 #editor, #editor .CodeMirror-scroll, #editor .CodeMirror, #editor form { height: 100%; }
+.popup{
+	position:absolute; 
+	/*border: 2px solid #ddd; */
+	left:20%; width:60%; top:20%; height:60%;
+	background-color:#ddd;
+	padding:5em;
+	border-radius:2em;
+}
+
+.popup * { margin-bottom:.5em;}
+.popup h1{text-align: center;font-size:4em;}
+.popup button{text-align: center;margin:auto;display:block;}
+.popup p{font-size:1.4em;}
 
 
 /* ==========================================================================

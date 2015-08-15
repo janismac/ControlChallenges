@@ -80,9 +80,9 @@ SinglePendulum.prototype.draw = function (ctx)
 
 SinglePendulum.prototype.infoText = function ()
 {
-	return "pendulum.x = " + round(this.x,2)
-		+ "\npendulum.dx = " + round(this.dx,2)
-		+ "\npendulum.theta = " + round(this.theta,2)
-		+ "\npendulum.dtheta = " + round(this.dtheta,2)
-		+ "\npendulum.T = " + round(this.T,2);	
+	return  "/* Horizontal position       */ pendulum.x      = " + round(this.x,2)
+		+ "\n/* Horizontal velocity       */ pendulum.dx     = " + round(this.dx,2)
+		+ "\n/* Angle from vertical (rad) */ pendulum.theta  = " + round(this.theta,2)
+		+ "\n/* Angular velocity (rad/s)  */ pendulum.dtheta = " + round(this.dtheta,2)
+		+ "\n/* Simulation time (s)       */ pendulum.T      = " + round(this.T,2);	
 }

@@ -36,10 +36,18 @@ function controlFunction(pendulum)
 		<div id="right-coln">
 			<div id="buttons">
 				<button type="button" class="btn btn-primary" onclick="toggleVariableInfo();"><span class="glyphicon glyphicon-info-sign"> </span>&nbsp;&nbsp;<span id="toggleVariableLabel">Hide Variables</span></button>
-				<button type="button" class="btn btn-primary" onclick="loadCodeAndReset();"><span class="glyphicon glyphicon-repeat"> </span>&nbsp;&nbsp;Restart</button>
+				<button type="button" class="btn btn-primary" onclick="loadCodeAndReset();"><span class="glyphicon glyphicon-repeat"> </span>&nbsp;&nbsp;Restart with code changes</button>
+				<button id="pauseButton" type="button" class="btn btn-primary" onclick="runSimulation=!runSimulation;updatePlayPauseButtons();"><span class="glyphicon glyphicon-pause"> </span>&nbsp;&nbsp;Pause</button>
+				<button id="playButton" type="button" class="btn btn-primary" onclick="runSimulation=!runSimulation;updatePlayPauseButtons();"><span class="glyphicon glyphicon-play"> </span>&nbsp;&nbsp;Play</button>
 				<pre id="variableInfo"></pre>
 			</div>
 			<canvas id="cas"></canvas>
+		</div>
+		
+		<div id="levelStartPopup" class="popup">
+			<h1>Level 1</h1>
+			<p>Stabilize the pendulum so that it stays vertical. Calculate the horizontal force on the cart necessary to achieve this. </p>
+			<button type="button" class="btn btn-primary" onclick="$('#levelStartPopup').hide();runSimulation=true;updatePlayPauseButtons();"><span class="glyphicon glyphicon-play"> </span>&nbsp;&nbsp;<span id="toggleVariableLabel">Start</span></button>
 		</div>
 		
 		<script src="js/plugins.js"></script>
