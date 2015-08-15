@@ -1,4 +1,6 @@
-function SinglePendulum()
+if (typeof Models == 'undefined') Models = {};
+
+Models.SinglePendulum = function()
 {
 	this.m0 = 10;
 	this.m1 = .5;
@@ -12,11 +14,11 @@ function SinglePendulum()
 	this.T = 0;
 }
 
-SinglePendulum.prototype.simulate = function (dt)
+Models.SinglePendulum.prototype.simulate = function (dt)
 {
 	var state = [this.x, this.dx, this.theta, this.dtheta];
 	var _this = this;
-	var soln = numeric.dopri(0,dt,state,function(t,x){ return SinglePendulum.ode(_this,x); },1e-4).at(dt);
+	var soln = numeric.dopri(0,dt,state,function(t,x){ return Models.SinglePendulum.ode(_this,x); },1e-4).at(dt);
 	this.x = soln[0];
 	this.dx = soln[1];
 	this.theta = soln[2];
@@ -24,7 +26,7 @@ SinglePendulum.prototype.simulate = function (dt)
 	this.T+=dt;
 }
 
-SinglePendulum.ode = function (_this, x)
+Models.SinglePendulum.ode = function (_this, x)
 {
 	var s = Math.sin(x[2]);
 	var c = Math.cos(x[2]);
@@ -41,8 +43,12 @@ SinglePendulum.ode = function (_this, x)
 }
 
 
-SinglePendulum.prototype.draw = function (ctx)
+Models.SinglePendulum.prototype.draw = function (ctx)
 {
+	ctx.setTransform(1,0,0,1,0,0);
+	ctx.translate(canvas.width/2,canvas.height/2);
+	ctx.scale(150,-150);
+	
 	var cartWidth = 0.4*this.L;
 	var cartHeight = 0.7*cartWidth;
 	
@@ -77,8 +83,9 @@ SinglePendulum.prototype.draw = function (ctx)
 	drawLine(ctx,forceArrow.x2,forceArrow.y2,forceArrow.x2-Math.sign(this.F)*0.1,forceArrow.y2-0.05,this.L/40.0);
 }
 
+Models.SinglePendulum.prototype.setInput = function(f){this.F = f;}
 
-SinglePendulum.prototype.infoText = function ()
+Models.SinglePendulum.prototype.infoText = function ()
 {
 	return  "/* Horizontal position       */ pendulum.x      = " + round(this.x,2)
 		+ "\n/* Horizontal velocity       */ pendulum.dx     = " + round(this.dx,2)

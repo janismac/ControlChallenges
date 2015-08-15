@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Level 1, Control Challenges</title>	
+		<title>Level 1: Control Challenges</title>	
 		
 		<script src="js/codemirror/codemirror.js"></script><style type="text/css"></style>
 		<script src="js/codemirror/xml.js"></script>
@@ -23,12 +23,7 @@
 		<div id="left-coln">
 			<div id="editor">
 				<form style="position: relative;">
-<textarea id="CodeMirrorEditor" style="display: none;">
-function controlFunction(pendulum)
-{
-  return 10*Math.sin(8*pendulum.T);
-}
-</textarea>
+					<textarea id="CodeMirrorEditor" style="display: none;">/* your code here */</textarea>
 				</form>
 			</div>
 		</div>
@@ -37,24 +32,27 @@ function controlFunction(pendulum)
 			<div id="buttons">
 				<button type="button" class="btn btn-primary" onclick="toggleVariableInfo();"><span class="glyphicon glyphicon-info-sign"> </span>&nbsp;&nbsp;<span id="toggleVariableLabel">Hide Variables</span></button>
 				<button type="button" class="btn btn-primary" onclick="loadCodeAndReset();"><span class="glyphicon glyphicon-repeat"> </span>&nbsp;&nbsp;Restart with code changes</button>
-				<button id="pauseButton" type="button" class="btn btn-primary" onclick="runSimulation=!runSimulation;updatePlayPauseButtons();"><span class="glyphicon glyphicon-pause"> </span>&nbsp;&nbsp;Pause</button>
-				<button id="playButton" type="button" class="btn btn-primary" onclick="runSimulation=!runSimulation;updatePlayPauseButtons();"><span class="glyphicon glyphicon-play"> </span>&nbsp;&nbsp;Play</button>
+				<button id="pauseButton" type="button" class="btn btn-primary" onclick="pauseSimulation();"><span class="glyphicon glyphicon-pause"> </span>&nbsp;&nbsp;Pause</button>
+				<button id="playButton" type="button" class="btn btn-primary" onclick="playSimulation();"><span class="glyphicon glyphicon-play"> </span>&nbsp;&nbsp;Play</button>
+				<button id="playButton" type="button" class="btn btn-primary" onclick="showSampleSolution();"><span class="glyphicon glyphicon-question-sign"> </span>&nbsp;&nbsp;Show sample solution</button>
 				<pre id="variableInfo"></pre>
 			</div>
 			<canvas id="cas"></canvas>
 		</div>
 		
 		<div id="levelStartPopup" class="popup">
-			<h1>Level 1</h1>
-			<p>Stabilize the pendulum so that it stays vertical. Calculate the horizontal force on the cart necessary to achieve this. </p>
-			<button type="button" class="btn btn-primary" onclick="$('#levelStartPopup').hide();runSimulation=true;updatePlayPauseButtons();"><span class="glyphicon glyphicon-play"> </span>&nbsp;&nbsp;<span id="toggleVariableLabel">Start</span></button>
+			<h1 id="levelTitle">[Title]</h1>
+			<p id="levelDescription">[Description]</p>
+			<p>Warning: Your code does not get saved. Copy it somewhere so save it.</p>
+			<button type="button" class="btn btn-primary" onclick="$('#levelStartPopup').hide();playSimulation();"><span class="glyphicon glyphicon-play"> </span>&nbsp;&nbsp;<span id="toggleVariableLabel">Start</span></button>
 		</div>
 		
 		<script src="js/plugins.js"></script>
 		<script src="js/jquery-1.11.2.js"></script>
 		<script src="js/numeric-1.2.6.js"></script>
 				
-		<script src="js/singlePendulum.js"></script>
+		<script src="js/models/SinglePendulum.js"></script>
+		<script src="js/levels/StabilizeSinglePendulum.js"></script>
 		<script src="js/main.js"></script>
 		<script id="userscript"></script>
 	</body>
