@@ -4,6 +4,8 @@ var canvas = document.getElementById('cas');
 var context = canvas.getContext('2d');
 var level = new Levels.StabilizeSinglePendulum();
 var runSimulation = false;
+$(document).ready(function(){$('[data-toggle="tooltip"]').tooltip();});
+$('#toggleVariableInfoButtonShow').hide();
 
 function resizeCanvas() {
 	canvas.width = $('#cas').width();
@@ -13,10 +15,17 @@ $( window ).resize(resizeCanvas);
 
 function loadCodeAndReset()
 {
-	$('#userscript').remove();
-	var e = $('<script id="userscript">'+editor.getValue() +'</script>');	
-	$('body').append(e);
 	level.resetModel();
+	$('#userscript').remove();
+	try {
+		var e = $('<script id="userscript">'+editor.getValue() +'</script>');	
+		$('body').append(e);
+		level.model.setControlFunction(controlFunction)
+	}
+	catch(e){
+		pauseSimulation();
+		alert(e);
+	}
 	playSimulation();
 }
 
@@ -65,7 +74,8 @@ function round(x,d)
 function toggleVariableInfo()
 {
 	$('#variableInfo').toggle();
-	$('#toggleVariableLabel').text( ($('#variableInfo').css('display')=='none')?'Show Variables':'Hide Variables' );
+	$('#toggleVariableInfoButtonShow').toggle();
+	$('#toggleVariableInfoButtonHide').toggle();
 }
 
 var T = new Date().getTime();
@@ -81,11 +91,11 @@ function animate() {
 	
 	if(runSimulation)
 	{
-		try {
-			level.model.setInput(controlFunction(level.model));
-			if(!isNaN(dt)) level.model.simulate(Math.min(0.2,dt));
+		try { if(!isNaN(dt)) level.model.simulate(Math.min(0.2,dt)); }
+		catch(e){
+			pauseSimulation();
+			alert(e);
 		}
-		catch(e){}
 	}
 	
 	// clear canvas

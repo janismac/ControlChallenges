@@ -12,10 +12,18 @@ Models.SinglePendulum = function()
 	this.dx = 0;
 	this.F = 0;
 	this.T = 0;
+	this.controlFunction = function(){return 0;}
+}
+
+
+Models.SinglePendulum.prototype.setControlFunction = function (f)
+{
+	this.controlFunction = f;
 }
 
 Models.SinglePendulum.prototype.simulate = function (dt)
 {
+	this.F = this.controlFunction(this);
 	var state = [this.x, this.dx, this.theta, this.dtheta];
 	var _this = this;
 	var soln = numeric.dopri(0,dt,state,function(t,x){ return Models.SinglePendulum.ode(_this,x); },1e-4).at(dt);
@@ -47,7 +55,8 @@ Models.SinglePendulum.prototype.draw = function (ctx)
 {
 	ctx.setTransform(1,0,0,1,0,0);
 	ctx.translate(canvas.width/2,canvas.height/2);
-	ctx.scale(150,-150);
+	ctx.scale(canvas.width/8.0,-canvas.width/8.0);
+	ctx.translate(0,-this.L);
 	
 	var cartWidth = 0.4*this.L;
 	var cartHeight = 0.7*cartWidth;

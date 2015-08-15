@@ -4,11 +4,7 @@
 		<meta charset="utf-8">
 		<title>Level 1: Control Challenges</title>	
 		
-		<script src="js/codemirror/codemirror.js"></script><style type="text/css"></style>
-		<script src="js/codemirror/xml.js"></script>
-		<script src="js/codemirror/javascript.js"></script>
-		<script src="js/codemirror/css.js"></script>
-		<script src="js/codemirror/matchbrackets.js"></script>		
+	
 		
 		<link rel="stylesheet" href="css/codemirror.css">
 		<link rel="stylesheet" href="css/normalize.min.css">
@@ -19,7 +15,6 @@
 		<!--[if lt IE 8]>
 			<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 		<![endif]-->
-		
 		<div id="left-coln">
 			<div id="editor">
 				<form style="position: relative;">
@@ -30,11 +25,12 @@
 		
 		<div id="right-coln">
 			<div id="buttons">
-				<button type="button" class="btn btn-primary" onclick="toggleVariableInfo();"><span class="glyphicon glyphicon-info-sign"> </span>&nbsp;&nbsp;<span id="toggleVariableLabel">Hide Variables</span></button>
-				<button type="button" class="btn btn-primary" onclick="loadCodeAndReset();"><span class="glyphicon glyphicon-repeat"> </span>&nbsp;&nbsp;Restart with code changes</button>
-				<button id="pauseButton" type="button" class="btn btn-primary" onclick="pauseSimulation();"><span class="glyphicon glyphicon-pause"> </span>&nbsp;&nbsp;Pause</button>
-				<button id="playButton" type="button" class="btn btn-primary" onclick="playSimulation();"><span class="glyphicon glyphicon-play"> </span>&nbsp;&nbsp;Play</button>
-				<button id="playButton" type="button" class="btn btn-primary" onclick="showSampleSolution();"><span class="glyphicon glyphicon-question-sign"> </span>&nbsp;&nbsp;Show sample solution</button>
+				<button id="toggleVariableInfoButtonShow" type="button" class="btn btn-primary" onclick="toggleVariableInfo();" data-toggle="tooltip" data-placement="bottom" title="Show Variables"><span class="glyphicon glyphicon-info-sign"> </span></button>
+				<button id="toggleVariableInfoButtonHide" type="button" class="btn btn-primary" onclick="toggleVariableInfo();" data-toggle="tooltip" data-placement="bottom" title="Hide Variables"><span class="glyphicon glyphicon-info-sign"> </span></button>
+				<button type="button" class="btn btn-primary" onclick="loadCodeAndReset();" data-toggle="tooltip" data-placement="bottom" title="Restart with code changes"><span class="glyphicon glyphicon-repeat"> </span></button>
+				<button id="pauseButton" type="button" class="btn btn-primary" onclick="pauseSimulation();" data-toggle="tooltip" data-placement="bottom" title="Pause"><span class="glyphicon glyphicon-pause"> </span></button>
+				<button id="playButton" type="button" class="btn btn-primary" onclick="playSimulation();" data-toggle="tooltip" data-placement="bottom" title="Play"><span class="glyphicon glyphicon-play"> </span></button>
+				<button id="playButton" type="button" class="btn btn-primary" onclick="showSampleSolution();" data-toggle="tooltip" data-placement="bottom" title="Show sample solution"><span class="glyphicon glyphicon-question-sign"> </span></button>
 				<pre id="variableInfo"></pre>
 			</div>
 			<canvas id="cas"></canvas>
@@ -50,7 +46,11 @@
 		<script src="js/plugins.js"></script>
 		<script src="js/jquery-1.11.2.js"></script>
 		<script src="js/numeric-1.2.6.js"></script>
-				
+		<script src="js/codemirror/codemirror.js"></script>
+		<script src="js/codemirror/javascript.js"></script>
+		<script src="js/codemirror/matchbrackets.js"></script>		
+		<script src="js/bootstrap.js"></script>	
+		
 		<script src="js/models/SinglePendulum.js"></script>
 		<script src="js/levels/StabilizeSinglePendulum.js"></script>
 		<script src="js/main.js"></script>

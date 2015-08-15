@@ -27,4 +27,5 @@ Levels.StabilizeSinglePendulum.prototype.resetModel = function()
 	this.model.dx = 0;
 	this.model.F = 0;
 	this.model.T = 0;
+	this.model.controlFunction = function(){return 0;}
 }
