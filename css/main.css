@@ -81,6 +81,7 @@ body{background-color:#eef;}
 	background-color:#ddd;
 	padding:5em;
 	border-radius:2em;
+	z-index: 9000;
 }
 
 .popup * { margin-bottom:.5em;}

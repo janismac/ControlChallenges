@@ -41,6 +41,18 @@ Models.RocketLanding.prototype.detectCollision = function ()
 	return false;
 }
 
+
+Models.RocketLanding.prototype.landed = function ()
+{
+	return this.detectCollision()
+		&& Math.abs(this.x) < 30
+		&& Math.abs(this.dx) < 2
+		&& Math.abs(this.dy) < 2
+		&& Math.abs(this.dtheta) < 0.01 
+		&& Math.abs(Math.sin(this.theta)) < 0.08
+		&& Math.cos(this.theta) > 0;
+}
+
 Models.RocketLanding.prototype.simulate = function (dt)
 {
 	if(!this.crashed)
@@ -139,8 +151,12 @@ Models.RocketLanding.prototype.draw = function (ctx)
 	
 	ctx.strokeStyle="#000055";
 	drawLine(ctx,-10000,-1,10000,-1,2);
+	for(var x = -30; x <= 30; x+=5)
+	{
+		drawLine(ctx,x,-1,x,-5,1);
+	}
 	
-	if(this.crashed)
+	if(this.crashed && !this.landed())
 	{
 		ctx.save();
 		ctx.scale(1,-1);

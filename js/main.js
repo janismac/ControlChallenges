@@ -130,7 +130,7 @@ $(document).ready(function(){$('[data-toggle="tooltip"]').tooltip();});
 $('#toggleVariableInfoButtonShow').hide();
 var editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), {lineNumbers: true, mode: "javascript", matchBrackets: true, lineWrapping:true});
 editor.on("change", function () {localStorage.setItem(levels[level_idx].name+"Code", editor.getValue());});
-shortcut.add("Alt+Enter",function() {loadCodeAndReset();},{'type':'keydown','propagate':true,'target':document});
+shortcut.add("Alt+Enter",function() {loadCodeAndReset();playSimulation();},{'type':'keydown','propagate':true,'target':document});
 $( window ).resize(resizeCanvas);
 $('#buttons').cleanWhitespace();
 $('.popup').cleanWhitespace();
