@@ -2,10 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>[Title]</title>	
-		
-	
-		
+		<title>[Title]</title>
 		<link rel="stylesheet" href="css/codemirror.css">
 		<link rel="stylesheet" href="css/normalize.min.css">
 		<link rel="stylesheet" href="css/bootstrap.css">
@@ -27,7 +24,7 @@
 			<div id="buttons">
 				<button id="toggleVariableInfoButtonShow" type="button" class="btn btn-primary" onclick="toggleVariableInfo();" data-toggle="tooltip" data-placement="bottom" title="Show Variables"><span class="glyphicon glyphicon-info-sign"> </span></button>
 				<button id="toggleVariableInfoButtonHide" type="button" class="btn btn-primary" onclick="toggleVariableInfo();" data-toggle="tooltip" data-placement="bottom" title="Hide Variables"><span class="glyphicon glyphicon-info-sign"> </span></button>
-				<button type="button" class="btn btn-primary" onclick="loadCodeAndReset();" data-toggle="tooltip" data-placement="bottom" title="Restart with code changes"><span class="glyphicon glyphicon-repeat"> </span></button>
+				<button type="button" class="btn btn-primary" onclick="loadCodeAndReset();" data-toggle="tooltip" data-placement="bottom" title="Restart with code changes [Alt+Enter]"><span class="glyphicon glyphicon-repeat"> </span></button>
 				<button id="pauseButton" type="button" class="btn btn-primary" onclick="pauseSimulation();" data-toggle="tooltip" data-placement="bottom" title="Pause"><span class="glyphicon glyphicon-pause"> </span></button>
 				<button id="playButton" type="button" class="btn btn-primary" onclick="playSimulation();" data-toggle="tooltip" data-placement="bottom" title="Play"><span class="glyphicon glyphicon-play"> </span></button>
 				<button id="playButton" type="button" class="btn btn-primary" onclick="showSampleSolution();" data-toggle="tooltip" data-placement="bottom" title="Show sample solution"><span class="glyphicon glyphicon-question-sign"> </span></button>
@@ -48,8 +45,9 @@
 		<script src="js/numeric-1.2.6.js"></script>
 		<script src="js/codemirror/codemirror.js"></script>
 		<script src="js/codemirror/javascript.js"></script>
-		<script src="js/codemirror/matchbrackets.js"></script>		
+		<script src="js/codemirror/matchbrackets.js"></script>
 		<script src="js/bootstrap.js"></script>	
+		<script src="js/shortcut.js"></script>	
 		
 		<script src="js/models/RocketLanding.js"></script>
 		<script src="js/models/SinglePendulum.js"></script>

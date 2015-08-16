@@ -24,6 +24,23 @@ Models.RocketLanding.prototype.setControlFunction = function (f)
 	this.controlFunction = f;
 }
 
+
+Models.RocketLanding.prototype.detectCollision = function ()
+{
+	var L = this.L;
+	var W = this.W;
+	var s = Math.sin(this.theta);
+	var c = Math.cos(this.theta);
+	// points relative to the rockets CG that form a convex hull.
+	var outerPoints = [{x:0,y:L/2},{x:1.8*W,y:-L/2-W},{x:-1.8*W,y:-L/2-W}];
+	for (var i = 0; i < outerPoints.length; i++)
+	{
+		var p = outerPoints[i];
+		if(p.x*s+p.y*c+this.y < 0) return true;
+	}
+	return false;
+}
+
 Models.RocketLanding.prototype.simulate = function (dt)
 {
 	if(!this.crashed)
@@ -41,8 +58,9 @@ Models.RocketLanding.prototype.simulate = function (dt)
 		this.theta = soln[4];
 		this.dtheta = soln[5];
 		this.T+=dt; // count time
-		if(this.y-this.L/2<0) this.crashed = true;
+		if(this.detectCollision()) this.crashed = true;
 	}
+	
 }
 
 Models.RocketLanding.ode = function (_this, x)
@@ -85,12 +103,12 @@ Models.RocketLanding.prototype.draw = function (ctx)
 	ctx.strokeStyle="#FF0000";
 	ctx.beginPath();
 	ctx.moveTo(W/4,-L/2);
-	ctx.lineTo(-2*W*this.throttle*Math.sin(this.gimbalAngle),-L/2-2*W*this.throttle*Math.cos(this.gimbalAngle));
+	ctx.lineTo(-3*W*this.throttle*Math.sin(2*this.gimbalAngle),-L/2-3*W*this.throttle*Math.cos(2*this.gimbalAngle));
 	ctx.lineTo(-W/4,-L/2);
 	ctx.stroke();
 	
 	// hull
-	ctx.strokeStyle="#000000";
+	ctx.strokeStyle="#4444FF";
 	ctx.beginPath();
 	ctx.moveTo(0,L/2);
 	ctx.lineTo(-W/2,L/2-W);

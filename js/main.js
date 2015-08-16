@@ -1,4 +1,13 @@
-var editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), { lineNumbers: true, mode: "javascript", matchBrackets: true, lineWrapping:true });
+var editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), 
+{
+	lineNumbers: true, 
+	mode: "javascript", 
+	matchBrackets: true, 
+	lineWrapping:true ,
+	//extraKeys: {"Alt-Enter": function(cm) {loadCodeAndReset();}}	
+});
+shortcut.add("Alt+Enter",function(cm) {loadCodeAndReset();},{'type':'keydown','propagate':true,'target':document});
+
 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 var canvas = document.getElementById('cas');
 var context = canvas.getContext('2d');
