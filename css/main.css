@@ -64,8 +64,7 @@ canvas,#left-coln,#right-coln,#info,#editor{ border:1px solid black;
 
 #left-coln { position:absolute;  width:48%; left: 1%; height:96%; top:2%;}
 #right-coln  { position:absolute;  width:48%; left:51%; height:96%; top:2%;}
-#buttons {position:absolute; width:100%;font-size:0px;}
-#button > * {font-size:1em;}
+#buttons {position:absolute; width:100%;}
 #variableInfo{margin-top:1em;}
 #buttons button {margin-right:4px;}
 

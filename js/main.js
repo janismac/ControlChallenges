@@ -1,27 +1,14 @@
-var editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), 
-{
-	lineNumbers: true, 
-	mode: "javascript", 
-	matchBrackets: true, 
-	lineWrapping:true ,
-	//extraKeys: {"Alt-Enter": function(cm) {loadCodeAndReset();}}	
-});
-shortcut.add("Alt+Enter",function(cm) {loadCodeAndReset();},{'type':'keydown','propagate':true,'target':document});
-
-var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-var canvas = document.getElementById('cas');
-var context = canvas.getContext('2d');
-//var level = new Levels.StabilizeSinglePendulum();
-var level = new Levels.RocketLandingNormal();
-var runSimulation = false;
-$(document).ready(function(){$('[data-toggle="tooltip"]').tooltip();});
-$('#toggleVariableInfoButtonShow').hide();
+jQuery.fn.cleanWhitespace = function() {
+    textNodes = this.contents().filter(
+        function() { return (this.nodeType == 3 && !/\S/.test(this.nodeValue)); })
+        .remove();
+    return this;
+}
 
 function resizeCanvas() {
 	canvas.width = $('#cas').width();
 	canvas.height = $('#cas').height();
 }
-$( window ).resize(resizeCanvas);
 
 function loadCodeAndReset()
 {
@@ -44,7 +31,11 @@ function loadLevelToDOM(level)
 	$('#levelDescription').text(level.description);
 	$('#levelTitle').text(level.title);
 	document.title = level.title +': Control Challenges';
-	editor.setValue(level.boilerPlateCode);
+	var savedCode = localStorage.getItem(level.name+"Code");
+	if(typeof savedCode == 'string' && savedCode.length > 10)
+		editor.setValue(savedCode);
+	else 
+		editor.setValue(level.boilerPlateCode);
 }
 
 function showSampleSolution()
@@ -89,13 +80,6 @@ function toggleVariableInfo()
 	$('#toggleVariableInfoButtonHide').toggle();
 }
 
-var T = new Date().getTime();
-resizeCanvas();
-loadLevelToDOM(level);
-loadCodeAndReset();
-pauseSimulation();
-animate();
-
 function animate() {
 	
 	var dt = (new Date().getTime()-T)/1000.0;
@@ -110,11 +94,49 @@ function animate() {
 		}
 	}
 	
-	
-	// draw model
 	level.model.draw(context);
 	
 	$('#variableInfo').text(level.model.infoText());
 	
 	requestAnimationFrame(animate);
 }
+
+
+
+function hideAllPopups()
+{
+	$('#levelCompletePopup').hide();
+	$('#levelStartPopup').hide();
+	$('#levelMenuPopup').hide();
+}
+
+function showPopup(p)
+{
+	hideAllPopups();
+	$(p).show();
+	pauseSimulation();
+}
+
+
+
+
+var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+var canvas = document.getElementById('cas');
+var context = canvas.getContext('2d');
+var level = new Levels.StabilizeSinglePendulum();
+//var level = new Levels.RocketLandingNormal();
+var runSimulation = false;
+$(document).ready(function(){$('[data-toggle="tooltip"]').tooltip();});
+$('#toggleVariableInfoButtonShow').hide();
+var editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), {lineNumbers: true, mode: "javascript", matchBrackets: true, lineWrapping:true});
+editor.on("change", function () {localStorage.setItem(level.name+"Code", editor.getValue());});
+shortcut.add("Alt+Enter",function() {loadCodeAndReset();},{'type':'keydown','propagate':true,'target':document});
+$( window ).resize(resizeCanvas);
+$('#buttons').cleanWhitespace();
+showPopup('#levelStartPopup');
+var T = new Date().getTime();
+resizeCanvas();
+loadLevelToDOM(level);
+loadCodeAndReset();
+pauseSimulation();
+animate();

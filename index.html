@@ -28,6 +28,7 @@
 				<button id="pauseButton" type="button" class="btn btn-primary" onclick="pauseSimulation();" data-toggle="tooltip" data-placement="bottom" title="Pause"><span class="glyphicon glyphicon-pause"> </span></button>
 				<button id="playButton" type="button" class="btn btn-primary" onclick="playSimulation();" data-toggle="tooltip" data-placement="bottom" title="Play"><span class="glyphicon glyphicon-play"> </span></button>
 				<button id="playButton" type="button" class="btn btn-primary" onclick="showSampleSolution();" data-toggle="tooltip" data-placement="bottom" title="Show sample solution"><span class="glyphicon glyphicon-question-sign"> </span></button>
+				<button type="button" class="btn btn-primary" onclick="showPopup('#levelMenuPopup');" data-toggle="tooltip" data-placement="bottom" title="Show level menu"><span class="glyphicon glyphicon-th"> </span></button>
 				<pre id="variableInfo"></pre>
 			</div>
 			<canvas id="cas"></canvas>
@@ -36,8 +37,18 @@
 		<div id="levelStartPopup" class="popup">
 			<h1 id="levelTitle">[Title]</h1>
 			<p id="levelDescription">[Description]</p>
-			<p>Warning: Your code does not get saved. Copy it somewhere so save it.</p>
+			<p>Note: Your code for each level is saved in your browser.</p>
 			<button type="button" class="btn btn-primary" onclick="$('#levelStartPopup').hide();playSimulation();"><span class="glyphicon glyphicon-play"> </span>&nbsp;&nbsp;<span id="toggleVariableLabel">Start</span></button>
+		</div>
+		
+		<div id="levelCompletePopup" class="popup">
+			<h1>Level Complete!</h1>
+			<button type="button" class="btn btn-primary" onclick="">asd</button>
+		</div>
+		
+		<div id="levelMenuPopup" class="popup">
+			<h1>Select a level</h1>
+			<button type="button" class="btn btn-primary" onclick="">asd</button>
 		</div>
 		
 		<script src="js/plugins.js"></script>
