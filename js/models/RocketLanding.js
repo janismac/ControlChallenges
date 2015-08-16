@@ -135,6 +135,9 @@ Models.RocketLanding.prototype.draw = function (ctx)
 	ctx.restore();
 	// end draw rocket
 	
+	// ground
+	
+	ctx.strokeStyle="#000055";
 	drawLine(ctx,-10000,-1,10000,-1,2);
 	
 	if(this.crashed)

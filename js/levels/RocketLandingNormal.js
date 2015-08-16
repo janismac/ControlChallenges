@@ -3,7 +3,7 @@ if (typeof Levels == 'undefined') Levels = {};
 Levels.RocketLandingNormal = function()
 {
 	this.name = "RocketLandingNormal";
-	this.title = "Level 3";
+	this.title = "Rocket Landing";
 	this.sampleSolution = "";
 	this.boilerPlateCode = "function controlFunction(rocket)\n{\n  return {\n    throttle:0.5*(100-rocket.y-rocket.dy),\n    gimbalAngle:rocket.theta+rocket.dtheta+0.01*rocket.dx\n  };\n}";
 	this.description = "Land the rocket in the landing zone. The center of the landing zone has the coordinates (x,y)==(0,0). Steer the rocket by calculating the engine thrust (range 0 to 1) and engine steering angle (range -0.2 to 0.2 radians). The rocket has a thrust to weight ratio of 2. A throttle value of 0.5 can make it hover.";
@@ -13,7 +13,9 @@ Levels.RocketLandingNormal = function()
 }
 
 
-Levels.RocketLandingNormal.prototype.isSolved = function(){return false;}
+Levels.RocketLandingNormal.prototype.levelComplete = function(){return false;}
+
+Levels.RocketLandingNormal.prototype.getSimulationTime = function()	{return this.model.T;}
 
 Levels.RocketLandingNormal.prototype.resetModel = function()
 {

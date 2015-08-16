@@ -66,7 +66,7 @@ canvas,#left-coln,#right-coln,#info,#editor{ border:1px solid black;
 #right-coln  { position:absolute;  width:48%; left:51%; height:96%; top:2%;}
 #buttons {position:absolute; width:100%;}
 #variableInfo{margin-top:1em;}
-#buttons button {margin-right:4px;}
+button.btn {margin-right:4px;}
 
 canvas{width:99%;height:99%;}
 body{background-color:#eef;}
@@ -85,7 +85,8 @@ body{background-color:#eef;}
 
 .popup * { margin-bottom:.5em;}
 .popup h1{text-align: center;font-size:4em;}
-.popup button{text-align: center;margin:auto;display:block;}
+.popup button{text-align: center;}
+.popup .centered {text-align: center;margin:auto;}
 .popup p{font-size:1.4em;}
 
 

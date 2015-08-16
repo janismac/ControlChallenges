@@ -3,7 +3,7 @@ if (typeof Levels == 'undefined') Levels = {};
 Levels.StabilizeSinglePendulum = function()
 {
 	this.name = "StabilizeSinglePendulum";
-	this.title = "Level 1";
+	this.title = "Inverted Pendulum";
 	this.sampleSolution = "function controlFunction(pendulum)\n{\n  return 1000*Math.sin(pendulum.theta)+500*pendulum.dtheta+100*pendulum.x+160*pendulum.dx;\n}";
 	this.boilerPlateCode = "function controlFunction(pendulum)\n{\n  return 10*Math.sin(8*pendulum.T);\n}";
 	this.description = "Stabilize the pendulum so that it stays upright. Calculate the horizontal force on the cart necessary to achieve this.";
@@ -13,7 +13,16 @@ Levels.StabilizeSinglePendulum = function()
 }
 
 
-Levels.StabilizeSinglePendulum.prototype.isSolved = function(){return false;}
+Levels.StabilizeSinglePendulum.prototype.levelComplete = function()
+{
+	return Math.abs(this.model.x) < 0.01 
+	&& Math.abs(this.model.dx) < 0.01 
+	&& Math.abs(this.model.dtheta) < 0.01 
+	&& Math.abs(Math.sin(this.model.theta)) < 0.001
+	&& Math.cos(this.model.theta) > 0.999;
+}
+
+Levels.StabilizeSinglePendulum.prototype.getSimulationTime = function()	{return this.model.T;}
 
 Levels.StabilizeSinglePendulum.prototype.resetModel = function()
 {

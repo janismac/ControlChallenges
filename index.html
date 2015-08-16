@@ -38,17 +38,24 @@
 			<h1 id="levelTitle">[Title]</h1>
 			<p id="levelDescription">[Description]</p>
 			<p>Note: Your code for each level is saved in your browser.</p>
-			<button type="button" class="btn btn-primary" onclick="$('#levelStartPopup').hide();playSimulation();"><span class="glyphicon glyphicon-play"> </span>&nbsp;&nbsp;<span id="toggleVariableLabel">Start</span></button>
+			
+			<div class="centered">
+				<button type="button" class="btn btn-primary" onclick="$('.popup').hide();playSimulation();"><span class="glyphicon glyphicon-play"> </span>&nbsp;&nbsp;Start</button>
+				<button type="button" class="btn btn-primary" onclick="showPopup('#levelMenuPopup');"><span class="glyphicon glyphicon-th"> </span>&nbsp;&nbsp;Level menu</button>
+			</div>
 		</div>
 		
 		<div id="levelCompletePopup" class="popup">
 			<h1>Level Complete!</h1>
-			<button type="button" class="btn btn-primary" onclick="">asd</button>
+			<p>You solved the level in <span id="levelSolvedTime"></span> seconds.</p>
+			<div class="centered">
+				<button type="button" class="btn btn-primary" onclick="showPopup('#levelMenuPopup');"><span class="glyphicon glyphicon-th"> </span>&nbsp;&nbsp;Level menu</button>
+			</div>
 		</div>
 		
 		<div id="levelMenuPopup" class="popup">
 			<h1>Select a level</h1>
-			<button type="button" class="btn btn-primary" onclick="">asd</button>
+			<div id="levelList" class="centered"></div>
 		</div>
 		
 		<script src="js/plugins.js"></script>
