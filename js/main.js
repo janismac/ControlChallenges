@@ -12,36 +12,42 @@ function resizeCanvas() {
 
 function loadCodeAndReset()
 {
-	level.resetModel();
+	levels[level_idx].resetModel();
 	$('#userscript').remove();
 	try {
 		var e = $('<script id="userscript">'+editor.getValue() +'</script>');	
 		$('body').append(e);
-		level.model.setControlFunction(controlFunction)
+		levels[level_idx].model.setControlFunction(controlFunction)
 	}
 	catch(e){
 		pauseSimulation();
 		alert(e);
 	}
-	playSimulation();
 }
 
-function loadLevelToDOM(level)
+
+function loadLevel(i)
 {
-	$('#levelDescription').text(level.description);
-	$('#levelTitle').text(level.title);
-	document.title = level.title +': Control Challenges';
-	var savedCode = localStorage.getItem(level.name+"Code");
-	if(typeof savedCode == 'string' && savedCode.length > 10)
-		editor.setValue(savedCode);
-	else 
-		editor.setValue(level.boilerPlateCode);
+	if(0 <= i && i < levels.length)
+	{
+		level_idx = i;
+		$('#levelDescription').text(levels[level_idx].description);
+		$('#levelTitle').text(levels[level_idx].title);
+		document.title = levels[level_idx].title +': Control Challenges';
+		var savedCode = localStorage.getItem(levels[level_idx].name+"Code");
+		if(typeof savedCode == 'string' && savedCode.length > 10)
+			editor.setValue(savedCode);
+		else 
+			editor.setValue(levels[level_idx].boilerPlateCode);
+		loadCodeAndReset();
+		showPopup('#levelStartPopup');
+	}
 }
 
 function showSampleSolution()
 {
 	var lines = editor.getValue().split(/\r?\n/);
-	editor.setValue(level.sampleSolution + "\n\n//"+lines.join("\n//")+"\n");
+	editor.setValue(levels[level_idx].sampleSolution + "\n\n//"+lines.join("\n//")+"\n");
 	loadCodeAndReset();
 }
 
@@ -87,56 +93,55 @@ function animate() {
 	
 	if(runSimulation)
 	{
-		try { if(!isNaN(dt)) level.model.simulate(Math.min(0.2,dt)); }
+		try { if(!isNaN(dt)) levels[level_idx].model.simulate(Math.min(0.2,dt)); }
 		catch(e){
 			pauseSimulation();
 			alert(e);
 		}
+		
+		if(levels[level_idx].levelComplete()) 
+		{
+			$('#levelSolvedTime').text(round(levels[level_idx].getSimulationTime(),2));
+			showPopup('#levelCompletePopup');
+		}
 	}
 	
-	level.model.draw(context);
+	levels[level_idx].model.draw(context);
 	
-	$('#variableInfo').text(level.model.infoText());
+	$('#variableInfo').text(levels[level_idx].model.infoText());	
 	
 	requestAnimationFrame(animate);
 }
 
-
-
-function hideAllPopups()
-{
-	$('#levelCompletePopup').hide();
-	$('#levelStartPopup').hide();
-	$('#levelMenuPopup').hide();
-}
-
 function showPopup(p)
 {
-	hideAllPopups();
+	$('.popup').hide();
 	$(p).show();
 	pauseSimulation();
 }
 
-
-
-
 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 var canvas = document.getElementById('cas');
 var context = canvas.getContext('2d');
-var level = new Levels.StabilizeSinglePendulum();
-//var level = new Levels.RocketLandingNormal();
+var levels = [new Levels.StabilizeSinglePendulum(),new Levels.RocketLandingNormal()];
+var level_idx = 0;
 var runSimulation = false;
 $(document).ready(function(){$('[data-toggle="tooltip"]').tooltip();});
 $('#toggleVariableInfoButtonShow').hide();
 var editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), {lineNumbers: true, mode: "javascript", matchBrackets: true, lineWrapping:true});
-editor.on("change", function () {localStorage.setItem(level.name+"Code", editor.getValue());});
+editor.on("change", function () {localStorage.setItem(levels[level_idx].name+"Code", editor.getValue());});
 shortcut.add("Alt+Enter",function() {loadCodeAndReset();},{'type':'keydown','propagate':true,'target':document});
 $( window ).resize(resizeCanvas);
 $('#buttons').cleanWhitespace();
-showPopup('#levelStartPopup');
-var T = new Date().getTime();
+$('.popup').cleanWhitespace();
+for(var i=0; i<levels.length;++i)
+{
+	var e = $('<button type="button" class="btn btn-primary" onclick="loadLevel('+i+');">'+levels[i].title+'</button>');	
+	$('#levelList').append(e);
+}
 resizeCanvas();
-loadLevelToDOM(level);
+loadLevel(0);
 loadCodeAndReset();
 pauseSimulation();
+var T = new Date().getTime();
 animate();
