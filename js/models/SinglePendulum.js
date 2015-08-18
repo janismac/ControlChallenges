@@ -1,31 +1,42 @@
 if (typeof Models == 'undefined') Models = {};
 
-Models.SinglePendulum = function()
+Models.SinglePendulum = function(params)
 {
-	this.m0 = 10;
-	this.m1 = .5;
-	this.L = 1;
-	this.g = 9.81;
-	this.theta = 0.2;
-	this.dtheta = 0;
-	this.x = 0;
-	this.dx = 0;
-	this.F = 0;
-	this.T = 0;
-	this.controlFunction = function(){return 0;}
+	var nVars = Object.keys(this.vars).length;
+	for(var i = 0; i < nVars; i++)
+	{
+		var key = Object.keys(this.vars)[i];
+		this[key] = (typeof params[key] == 'undefined')?this.vars[key]:params[key];
+	}
 }
+
+Models.SinglePendulum.prototype.vars = 
+{
+	m0: 10,
+	m1: .5,
+	L: 1,
+	g: 9.81,
+	theta: 0.2,
+	dtheta: 0,
+	x: 0,
+	dx: 0,
+	F: 0,
+	T: 0
+};
 
 Models.SinglePendulum.prototype.simulate = function (dt, controlFunc)
 {
-	this.F = controlFunc(this);
+	var copy = new Models.SinglePendulum(this);
 	var state = [this.x, this.dx, this.theta, this.dtheta];
-	var _this = this;
-	var soln = numeric.dopri(0,dt,state,function(t,x){ return Models.SinglePendulum.ode(_this,x); },1e-4).at(dt);
-	this.x = soln[0];
-	this.dx = soln[1];
-	this.theta = soln[2];
-	this.dtheta = soln[3];
-	this.T+=dt;
+	copy.F = controlFunc(new Models.SinglePendulum(this));
+	var soln = numeric.dopri(0,dt,state,function(t,x){ return Models.SinglePendulum.ode(copy,x); },1e-4).at(dt);	
+	
+	copy.x = soln[0];
+	copy.dx = soln[1];
+	copy.theta = soln[2];
+	copy.dtheta = soln[3];
+	copy.T = this.T + dt;
+	return copy;
 }
 
 Models.SinglePendulum.ode = function (_this, x)

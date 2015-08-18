@@ -12,7 +12,7 @@ function resizeCanvas() {
 
 function loadCodeAndReset()
 {
-	levels[level_idx].resetModel();
+	activeLevel = new level_constructors[level_idx]();
 	$('#userscript').remove();
 	try {
 		var e = $('<script id="userscript">'+editor.getValue() +'</script>');	
@@ -27,17 +27,18 @@ function loadCodeAndReset()
 
 function loadLevel(i)
 {
-	if(0 <= i && i < levels.length)
+	if(0 <= i && i < level_constructors.length)
 	{
 		level_idx = i;
-		$('#levelDescription').text(levels[level_idx].description);
-		$('#levelTitle').text(levels[level_idx].title);
-		document.title = levels[level_idx].title +': Control Challenges';
-		var savedCode = localStorage.getItem(levels[level_idx].name+"Code");
+		activeLevel = new level_constructors[i]();
+		$('#levelDescription').text(activeLevel.description);
+		$('#levelTitle').text(activeLevel.title);
+		document.title = activeLevel.title +': Control Challenges';
+		var savedCode = localStorage.getItem(activeLevel.name+"Code");
 		if(typeof savedCode == 'string' && savedCode.length > 10)
 			editor.setValue(savedCode);
 		else 
-			editor.setValue(levels[level_idx].boilerPlateCode);
+			editor.setValue(activeLevel.boilerPlateCode);
 		loadCodeAndReset();
 		showPopup('#levelStartPopup');
 	}
@@ -46,7 +47,7 @@ function loadLevel(i)
 function showSampleSolution()
 {
 	var lines = editor.getValue().split(/\r?\n/);
-	editor.setValue(levels[level_idx].sampleSolution + "\n\n//"+lines.join("\n//")+"\n");
+	editor.setValue(activeLevel.sampleSolution + "\n\n//"+lines.join("\n//")+"\n");
 	loadCodeAndReset();
 }
 
@@ -92,22 +93,22 @@ function animate() {
 	
 	if(runSimulation)
 	{
-		try { if(!isNaN(dt)) levels[level_idx].model.simulate(Math.min(0.2,dt),controlFunction); }
+		try { if(!isNaN(dt)) activeLevel.simulate(Math.min(0.2,dt),controlFunction); }
 		catch(e){
 			pauseSimulation();
 			alert(e);
 		}
 		
-		if(levels[level_idx].levelComplete()) 
+		if(activeLevel.levelComplete()) 
 		{
-			$('#levelSolvedTime').text(round(levels[level_idx].getSimulationTime(),2));
+			$('#levelSolvedTime').text(round(activeLevel.getSimulationTime(),2));
 			showPopup('#levelCompletePopup');
 		}
 	}
 	
-	levels[level_idx].model.draw(context);
+	activeLevel.model.draw(context);
 	
-	$('#variableInfo').text(levels[level_idx].model.infoText());	
+	$('#variableInfo').text(activeLevel.model.infoText());	
 	
 	requestAnimationFrame(animate);
 }
@@ -122,20 +123,23 @@ function showPopup(p)
 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 var canvas = document.getElementById('cas');
 var context = canvas.getContext('2d');
-var levels = [new Levels.StabilizeSinglePendulum(),new Levels.RocketLandingNormal()];
+var level_constructors = [Levels.StabilizeSinglePendulum,Levels.RocketLandingNormal];
 var level_idx = 0;
 var runSimulation = false;
 $(document).ready(function(){$('[data-toggle="tooltip"]').tooltip();});
 $('#toggleVariableInfoButtonShow').hide();
 var editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), {lineNumbers: true, mode: "javascript", matchBrackets: true, lineWrapping:true});
-editor.on("change", function () {localStorage.setItem(levels[level_idx].name+"Code", editor.getValue());});
+editor.on("change", function () {localStorage.setItem(activeLevel.name+"Code", editor.getValue());});
 shortcut.add("Alt+Enter",function() {loadCodeAndReset();playSimulation();},{'type':'keydown','propagate':true,'target':document});
 $( window ).resize(resizeCanvas);
 $('#buttons').cleanWhitespace();
 $('.popup').cleanWhitespace();
-for(var i=0; i<levels.length;++i)
+
+// load level name into level menu.
+for(var i=0; i<level_constructors.length;++i)
 {
-	var e = $('<button type="button" class="btn btn-primary" onclick="loadLevel('+i+');">'+levels[i].title+'</button>');	
+	var level = new level_constructors[i]();
+	var e = $('<button type="button" class="btn btn-primary" onclick="loadLevel('+i+');">'+level.title+'</button>');	
 	$('#levelList').append(e);
 }
 resizeCanvas();

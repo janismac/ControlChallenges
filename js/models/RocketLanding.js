@@ -1,26 +1,36 @@
 if (typeof Models == 'undefined') Models = {};
 
-Models.RocketLanding = function()
+Models.RocketLanding = function(params)
 {
-	this.TWR = 2;
-	this.throttle = 1;
-	this.g = 9.81;
-	this.theta = 0;
-	this.dtheta = 0;
-	this.gimbalAngle = -0.1;
-	this.L = 40;
-	this.W = 2;
-	this.x = 0;
-	this.dx = 0;
-	this.y = 0;
-	this.dy = 0;
-	this.T = 0;
+	var nVars = Object.keys(this.vars).length;
+	for(var i = 0; i < nVars; i++)
+	{
+		var key = Object.keys(this.vars)[i];
+		this[key] = (typeof params[key] == 'undefined')?this.vars[key]:params[key];
+	}
 }
+
+Models.RocketLanding.prototype.vars = 
+{
+	TWR: 2,
+	throttle: 1,
+	g: 9.81,
+	theta: 0,
+	dtheta: 0,
+	gimbalAngle: -0.1,
+	Length: 40,
+	Width: 2,
+	x: 0,
+	dx: 0,
+	y: 0,
+	dy: 0,
+	T: 0,
+};
 
 Models.RocketLanding.prototype.detectCollision = function ()
 {
-	var L = this.L;
-	var W = this.W;
+	var L = this.Length;
+	var W = this.Width;
 	var s = Math.sin(this.theta);
 	var c = Math.cos(this.theta);
 	// points relative to the rockets CG that form a convex hull.
@@ -47,23 +57,26 @@ Models.RocketLanding.prototype.landed = function ()
 
 Models.RocketLanding.prototype.simulate = function (dt, controlFunc)
 {
+	var copy = new Models.RocketLanding(this);
+	
 	if(!this.detectCollision())
 	{
-		var input = controlFunc(this); // call user controller
+		var input = controlFunc(new Models.RocketLanding(this)); // call user controller
 		this.throttle = Math.max(0,Math.min(1,input.throttle)); // input limits
 		this.gimbalAngle = Math.max(-.2,Math.min(.2,input.gimbalAngle));
 		var state = [this.x, this.dx, this.y, this.dy, this.theta, this.dtheta]; // state vector
 		var _this = this; // closure
 		var soln = numeric.dopri(0,dt,state,function(t,x){ return Models.RocketLanding.ode(_this,x); },1e-4).at(dt); // numerical integration
-		this.x = soln[0]; // extract new state
-		this.dx = soln[1];
-		this.y = soln[2];
-		this.dy = soln[3];
-		this.theta = soln[4];
-		this.dtheta = soln[5];
-		this.T+=dt; // count time
+		
+		copy.x = soln[0]; // extract new state
+		copy.dx = soln[1];
+		copy.y = soln[2];
+		copy.dy = soln[3];
+		copy.theta = soln[4];
+		copy.dtheta = soln[5];
+		copy.T = this.T + dt; // count time
 	}
-	
+	return copy;	
 }
 
 Models.RocketLanding.ode = function (_this, x)
@@ -75,7 +88,7 @@ Models.RocketLanding.ode = function (_this, x)
 		x[3],
 		_this.g * (currentTWR * Math.cos(x[4]+_this.gimbalAngle)-1),
 		x[5],
-		-_this.g * currentTWR * 6 / _this.L * Math.sin(_this.gimbalAngle) 
+		-_this.g * currentTWR * 6 / _this.Length * Math.sin(_this.gimbalAngle) 
 	];
 }
 
@@ -89,8 +102,8 @@ Models.RocketLanding.prototype.draw = function (ctx)
 	ctx.translate(canvas.width/2,0.8*canvas.height);
 	ctx.scale(2,-2);
 	
-	var L = this.L;
-	var W = this.W;
+	var L = this.Length;
+	var W = this.Width;
 	
 
 	// draw rocket
