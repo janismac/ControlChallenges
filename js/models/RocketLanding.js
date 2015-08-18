@@ -65,8 +65,7 @@ Models.RocketLanding.prototype.simulate = function (dt, controlFunc)
 		this.throttle = Math.max(0,Math.min(1,input.throttle)); // input limits
 		this.gimbalAngle = Math.max(-.2,Math.min(.2,input.gimbalAngle));
 		var state = [this.x, this.dx, this.y, this.dy, this.theta, this.dtheta]; // state vector
-		var _this = this; // closure
-		var soln = numeric.dopri(0,dt,state,function(t,x){ return Models.RocketLanding.ode(_this,x); },1e-4).at(dt); // numerical integration
+		var soln = numeric.dopri(0,dt,state,function(t,x){ return Models.RocketLanding.ode(copy,x); },1e-4).at(dt); // numerical integration
 		
 		copy.x = soln[0]; // extract new state
 		copy.dx = soln[1];
