@@ -17,7 +17,6 @@ function loadCodeAndReset()
 	try {
 		var e = $('<script id="userscript">'+editor.getValue() +'</script>');	
 		$('body').append(e);
-		levels[level_idx].model.setControlFunction(controlFunction)
 	}
 	catch(e){
 		pauseSimulation();
@@ -93,7 +92,7 @@ function animate() {
 	
 	if(runSimulation)
 	{
-		try { if(!isNaN(dt)) levels[level_idx].model.simulate(Math.min(0.2,dt)); }
+		try { if(!isNaN(dt)) levels[level_idx].model.simulate(Math.min(0.2,dt),controlFunction); }
 		catch(e){
 			pauseSimulation();
 			alert(e);

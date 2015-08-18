@@ -14,16 +14,8 @@ Models.RocketLanding = function()
 	this.dx = 0;
 	this.y = 0;
 	this.dy = 0;
-	this.crashed = false;
 	this.T = 0;
-	this.controlFunction = function(){return {throttle:0,gimbalAngle:0};}
 }
-
-Models.RocketLanding.prototype.setControlFunction = function (f)
-{
-	this.controlFunction = f;
-}
-
 
 Models.RocketLanding.prototype.detectCollision = function ()
 {
@@ -53,11 +45,11 @@ Models.RocketLanding.prototype.landed = function ()
 		&& Math.cos(this.theta) > 0;
 }
 
-Models.RocketLanding.prototype.simulate = function (dt)
+Models.RocketLanding.prototype.simulate = function (dt, controlFunc)
 {
-	if(!this.crashed)
+	if(!this.detectCollision())
 	{
-		var input = this.controlFunction(this); // call user controller
+		var input = controlFunc(this); // call user controller
 		this.throttle = Math.max(0,Math.min(1,input.throttle)); // input limits
 		this.gimbalAngle = Math.max(-.2,Math.min(.2,input.gimbalAngle));
 		var state = [this.x, this.dx, this.y, this.dy, this.theta, this.dtheta]; // state vector
@@ -70,7 +62,6 @@ Models.RocketLanding.prototype.simulate = function (dt)
 		this.theta = soln[4];
 		this.dtheta = soln[5];
 		this.T+=dt; // count time
-		if(this.detectCollision()) this.crashed = true;
 	}
 	
 }
@@ -156,7 +147,7 @@ Models.RocketLanding.prototype.draw = function (ctx)
 		drawLine(ctx,x,-1,x,-5,1);
 	}
 	
-	if(this.crashed && !this.landed())
+	if(this.detectCollision() && !this.landed())
 	{
 		ctx.save();
 		ctx.scale(1,-1);
@@ -167,8 +158,6 @@ Models.RocketLanding.prototype.draw = function (ctx)
 		ctx.restore();
 	}
 }
-
-Models.RocketLanding.prototype.setInput = function(f){this.F = f;}
 
 Models.RocketLanding.prototype.infoText = function ()
 {

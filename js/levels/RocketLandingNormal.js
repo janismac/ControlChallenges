@@ -28,6 +28,5 @@ Levels.RocketLandingNormal.prototype.resetModel = function()
 	this.model.dx = 0;
 	this.model.y = 200;
 	this.model.dy = 0;
-	this.model.crashed = false;
 	this.model.T = 0;
 }

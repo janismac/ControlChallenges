@@ -15,15 +15,9 @@ Models.SinglePendulum = function()
 	this.controlFunction = function(){return 0;}
 }
 
-
-Models.SinglePendulum.prototype.setControlFunction = function (f)
+Models.SinglePendulum.prototype.simulate = function (dt, controlFunc)
 {
-	this.controlFunction = f;
-}
-
-Models.SinglePendulum.prototype.simulate = function (dt)
-{
-	this.F = this.controlFunction(this);
+	this.F = controlFunc(this);
 	var state = [this.x, this.dx, this.theta, this.dtheta];
 	var _this = this;
 	var soln = numeric.dopri(0,dt,state,function(t,x){ return Models.SinglePendulum.ode(_this,x); },1e-4).at(dt);
@@ -95,8 +89,6 @@ Models.SinglePendulum.prototype.draw = function (ctx)
 	drawLine(ctx,forceArrow.x2,forceArrow.y2,forceArrow.x2-Math.sign(this.F)*0.1,forceArrow.y2+0.05,this.L/40.0);
 	drawLine(ctx,forceArrow.x2,forceArrow.y2,forceArrow.x2-Math.sign(this.F)*0.1,forceArrow.y2-0.05,this.L/40.0);
 }
-
-Models.SinglePendulum.prototype.setInput = function(f){this.F = f;}
 
 Models.SinglePendulum.prototype.infoText = function ()
 {
