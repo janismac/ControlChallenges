@@ -34,6 +34,7 @@ function loadLevel(i)
 		activeLevel = new activeLevelConstructor();
 		$('#levelDescription').text(activeLevel.description);
 		$('#levelTitle').text(activeLevel.title);
+		$('#tipsText').text(activeLevel.tips);
 		document.title = activeLevel.title +': Control Challenges';
 		var savedCode = localStorage.getItem(activeLevel.name+"Code");
 		if(typeof savedCode == 'string' && savedCode.length > 10)
@@ -94,7 +95,7 @@ function animate() {
 	
 	if(runSimulation)
 	{
-		try { if(!isNaN(dt)) activeLevel.simulate(Math.min(0.2,dt),controlFunction); }
+		try { if(!isNaN(dt)) activeLevel.simulate(Math.min(0.04,dt),controlFunction); }
 		catch(e){
 			pauseSimulation();
 			alert(e);
@@ -134,6 +135,7 @@ $('#toggleVariableInfoButtonShow').hide();
 var editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), {lineNumbers: true, mode: "javascript", matchBrackets: true, lineWrapping:true});
 editor.on("change", function () {localStorage.setItem(activeLevel.name+"Code", editor.getValue());});
 shortcut.add("Alt+Enter",function() {loadCodeAndReset();playSimulation();},{'type':'keydown','propagate':true,'target':document});
+shortcut.add("Alt+P",function() {if(runSimulation)pauseSimulation();else playSimulation();},{'type':'keydown','propagate':true,'target':document});
 $( window ).resize(resizeCanvas);
 $('#buttons').cleanWhitespace();
 $('.popup').cleanWhitespace();

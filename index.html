@@ -25,10 +25,11 @@
 				<button id="toggleVariableInfoButtonShow" type="button" class="btn btn-primary" onclick="toggleVariableInfo();" data-toggle="tooltip" data-placement="bottom" title="Show Variables"><span class="glyphicon glyphicon-info-sign"> </span></button>
 				<button id="toggleVariableInfoButtonHide" type="button" class="btn btn-primary" onclick="toggleVariableInfo();" data-toggle="tooltip" data-placement="bottom" title="Hide Variables"><span class="glyphicon glyphicon-info-sign"> </span></button>
 				<button type="button" class="btn btn-primary" onclick="loadCodeAndReset();playSimulation();" data-toggle="tooltip" data-placement="bottom" title="Restart with code changes [Alt+Enter]"><span class="glyphicon glyphicon-repeat"> </span></button>
-				<button id="pauseButton" type="button" class="btn btn-primary" onclick="pauseSimulation();" data-toggle="tooltip" data-placement="bottom" title="Pause"><span class="glyphicon glyphicon-pause"> </span></button>
-				<button id="playButton" type="button" class="btn btn-primary" onclick="playSimulation();" data-toggle="tooltip" data-placement="bottom" title="Play"><span class="glyphicon glyphicon-play"> </span></button>
-				<button id="playButton" type="button" class="btn btn-primary" onclick="showSampleSolution();" data-toggle="tooltip" data-placement="bottom" title="Show sample solution"><span class="glyphicon glyphicon-question-sign"> </span></button>
-				<button type="button" class="btn btn-primary" onclick="showPopup('#levelMenuPopup');" data-toggle="tooltip" data-placement="bottom" title="Show level menu"><span class="glyphicon glyphicon-th"> </span></button>
+				<button id="pauseButton" type="button" class="btn btn-primary" onclick="pauseSimulation();" data-toggle="tooltip" data-placement="bottom" title="Pause [Alt+P]"><span class="glyphicon glyphicon-pause"> </span></button>
+				<button id="playButton" type="button" class="btn btn-primary" onclick="playSimulation();" data-toggle="tooltip" data-placement="bottom" title="Play [Alt+P]"><span class="glyphicon glyphicon-play"> </span></button>
+				<button type="button" class="btn btn-primary" onclick="showPopup('#tipsPopup');" data-toggle="tooltip" data-placement="bottom" title="Tips"><span class="glyphicon glyphicon-question-sign"> </span></button>
+				<button type="button" class="btn btn-primary" onclick="showSampleSolution();" data-toggle="tooltip" data-placement="bottom" title="Sample solution"><span class="glyphicon glyphicon-book"> </span></button>
+				<button type="button" class="btn btn-primary" onclick="showPopup('#levelMenuPopup');" data-toggle="tooltip" data-placement="bottom" title="Level menu"><span class="glyphicon glyphicon-th"> </span></button>
 				<pre id="variableInfo"></pre>
 			</div>
 			<canvas id="cas"></canvas>
@@ -56,6 +57,13 @@
 		<div id="levelMenuPopup" class="popup">
 			<h1>Select a level</h1>
 			<div id="levelList" class="centered"></div>
+		</div>
+
+		<div id="tipsPopup" class="popup">
+			<pre id="tipsText"></pre>
+			<div class="centered">
+				<button type="button" class="btn btn-primary" onclick="showPopup(null);">Close</button>
+			</div>
 		</div>
 		
 		<script src="js/plugins.js"></script>
