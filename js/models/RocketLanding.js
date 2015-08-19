@@ -48,10 +48,10 @@ Models.RocketLanding.prototype.landed = function ()
 {
 	return this.detectCollision()
 		&& Math.abs(this.x) < 30
-		&& Math.abs(this.dx) < 2
-		&& Math.abs(this.dy) < 2
-		&& Math.abs(this.dtheta) < 0.01 
-		&& Math.abs(Math.sin(this.theta)) < 0.08
+		&& Math.abs(this.dx) < 5
+		&& Math.abs(this.dy) < 5
+		&& Math.abs(this.dtheta) < 0.1
+		&& Math.abs(Math.sin(this.theta)) < 0.05
 		&& Math.cos(this.theta) > 0;
 }
 

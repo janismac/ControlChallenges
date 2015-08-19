@@ -50,6 +50,7 @@
 			<h1>Level Complete!</h1>
 			<p>You solved the level in <span id="levelSolvedTime"></span> seconds.</p>
 			<div class="centered">
+				<button type="button" class="btn btn-primary" onclick="showPopup(null);">OK</button>
 				<button type="button" class="btn btn-primary" onclick="showPopup('#levelMenuPopup');"><span class="glyphicon glyphicon-th"> </span>&nbsp;&nbsp;Level menu</button>
 			</div>
 		</div>
@@ -60,7 +61,18 @@
 		</div>
 
 		<div id="tipsPopup" class="popup">
-			<pre id="tipsText"></pre>
+			<pre id="tipsText">
+You can predict the future of the system by calling simulate(dt, controlFunc) on the model state. Example:
+
+    // Simulates for 0.5 seconds. The input for the model is set to be the negative of its `x`.
+    newState = state.simulate(0.5, function(p){ return -p.x ;})
+
+simulate() returns a modified copy of the model state. The control function will be evaluated only once at the start of a simulate() call and held constant during the simulation, so choose a small dt.
+
+You can inspect variables by calling `console.log(myvar);` and viewing the result in your browsers console.
+
+If you need to, you can use global variables. Be careful not to create a name collision. Use a prefix, e.g. `cc_`.
+			</pre>
 			<div class="centered">
 				<button type="button" class="btn btn-primary" onclick="showPopup(null);">Close</button>
 			</div>
@@ -79,6 +91,7 @@
 		<script src="js/models/SinglePendulum.js"></script>
 		<script src="js/levels/RocketLandingNormal.js"></script>
 		<script src="js/levels/StabilizeSinglePendulum.js"></script>
+		<script src="js/levels/SwingUpSinglePendulum.js"></script>
 		<script src="js/main.js"></script>
 		<script id="userscript"></script>
 	</body>

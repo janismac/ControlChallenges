@@ -34,7 +34,7 @@ function loadLevel(i)
 		activeLevel = new activeLevelConstructor();
 		$('#levelDescription').text(activeLevel.description);
 		$('#levelTitle').text(activeLevel.title);
-		$('#tipsText').text(activeLevel.tips);
+		//$('#tipsText').text(activeLevel.tips);
 		document.title = activeLevel.title +': Control Challenges';
 		var savedCode = localStorage.getItem(activeLevel.name+"Code");
 		if(typeof savedCode == 'string' && savedCode.length > 10)
@@ -128,7 +128,7 @@ function showPopup(p)
 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 var canvas = document.getElementById('cas');
 var context = canvas.getContext('2d');
-var level_constructors = [Levels.StabilizeSinglePendulum,Levels.RocketLandingNormal];
+var level_constructors = [Levels.StabilizeSinglePendulum,Levels.SwingUpSinglePendulum,Levels.RocketLandingNormal];
 var runSimulation = false;
 $(document).ready(function(){$('[data-toggle="tooltip"]').tooltip();});
 $('#toggleVariableInfoButtonShow').hide();
