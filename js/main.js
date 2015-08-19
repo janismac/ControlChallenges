@@ -111,7 +111,10 @@ function animate() {
 	
 	$('#variableInfo').text(activeLevel.model.infoText());	
 	
-	requestAnimationFrame(animate);
+	if(runSimulation)
+		requestAnimationFrame(animate);
+	else
+		setTimeout( function(){requestAnimationFrame(animate);}, 200);
 }
 
 function showPopup(p)
@@ -135,7 +138,7 @@ $( window ).resize(resizeCanvas);
 $('#buttons').cleanWhitespace();
 $('.popup').cleanWhitespace();
 
-// load level name into level menu.
+// load level names into level menu.
 for(var i=0; i<level_constructors.length;++i)
 {
 	var level = new level_constructors[i]();
@@ -143,7 +146,8 @@ for(var i=0; i<level_constructors.length;++i)
 	$('#levelList').append(e);
 }
 resizeCanvas();
-loadLevel(localStorage.getItem("lastLevel")||0);
+try{ loadLevel(localStorage.getItem("lastLevel")||0); } 
+catch (e){ alert(e); }
 loadCodeAndReset();
 pauseSimulation();
 var T = new Date().getTime();
