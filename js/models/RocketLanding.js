@@ -1,4 +1,5 @@
-if (typeof Models == 'undefined') Models = {};
+'use strict';
+if (typeof Models == 'undefined') var Models = {};
 
 Models.RocketLanding = function(params)
 {

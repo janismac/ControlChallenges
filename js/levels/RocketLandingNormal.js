@@ -1,4 +1,5 @@
-if (typeof Levels == 'undefined') Levels = {};
+'use strict';
+if (typeof Levels == 'undefined') var Levels = {};
 
 Levels.RocketLandingNormal = function()
 {

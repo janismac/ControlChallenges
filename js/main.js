@@ -1,5 +1,7 @@
+'use strict';
+
 jQuery.fn.cleanWhitespace = function() {
-    textNodes = this.contents().filter(
+    var textNodes = this.contents().filter(
         function() { return (this.nodeType == 3 && !/\S/.test(this.nodeValue)); })
         .remove();
     return this;
@@ -129,6 +131,8 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
 var canvas = document.getElementById('cas');
 var context = canvas.getContext('2d');
 var level_constructors = [Levels.StabilizeSinglePendulum,Levels.SwingUpSinglePendulum,Levels.RocketLandingNormal];
+var activeLevel = null;
+var activeLevelConstructor = null;
 var runSimulation = false;
 $(document).ready(function(){$('[data-toggle="tooltip"]').tooltip();});
 $('#toggleVariableInfoButtonShow').hide();
