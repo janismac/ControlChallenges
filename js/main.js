@@ -142,7 +142,7 @@ function showPopup(p)
 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 var canvas = document.getElementById('cas');
 var context = canvas.getContext('2d');
-var level_constructors = [Levels.StabilizeSinglePendulum,Levels.SwingUpSinglePendulum,Levels.RocketLandingNormal];
+var level_constructors = [Levels.StabilizeSinglePendulum,Levels.SwingUpSinglePendulum,Levels.RocketLandingNormal,Levels.StabilizeDoublePendulum];
 var activeLevel = null;
 var activeLevelConstructor = null;
 var runSimulation = false;
