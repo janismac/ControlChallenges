@@ -99,7 +99,7 @@ Models.RocketLanding.prototype.draw = function (ctx)
 	ctx.setTransform(1,0,0,1,0,0);
 	ctx.clearRect(0,0,canvas.width,canvas.height);
 	
-	ctx.translate(canvas.width/2,0.8*canvas.height);
+	ctx.translate(canvas.width/2,0.95*canvas.height);
 	ctx.scale(2,-2);
 	
 	var L = this.Length;

@@ -86,12 +86,13 @@ function round(x,d)
 function toggleVariableInfo()
 {
 	$('#variableInfo').toggle();
-	$('#toggleVariableInfoButtonShow').toggle();
-	$('#toggleVariableInfoButtonHide').toggle();
+	$('#toggleVariableInfoShowButton').toggle();
+	$('#toggleVariableInfoHideButton').toggle();
 }
 
 function animate() {
 	
+
 	var dt = (new Date().getTime()-T)/1000.0;
 	T = new Date().getTime();
 	
@@ -120,6 +121,17 @@ function animate() {
 		setTimeout( function(){requestAnimationFrame(animate);}, 200);
 }
 
+function clearMonitor()
+{
+	$('#userMonitor').text('');
+}
+
+function monitor(name,val)
+{
+	if(typeof val == 'number') val = ""+round(val,4);4
+	$('#userMonitor').text($('#userMonitor').text()+name+" = "+val+"\n");
+}
+
 function showPopup(p)
 {
 	$('.popup').hide();
@@ -135,7 +147,7 @@ var activeLevel = null;
 var activeLevelConstructor = null;
 var runSimulation = false;
 $(document).ready(function(){$('[data-toggle="tooltip"]').tooltip();});
-$('#toggleVariableInfoButtonShow').hide();
+$('#toggleVariableInfoShowButton').hide();
 var editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), {lineNumbers: true, mode: "javascript", matchBrackets: true, lineWrapping:true});
 editor.on("change", function () {localStorage.setItem(activeLevel.name+"Code", editor.getValue());});
 shortcut.add("Alt+Enter",function() {loadCodeAndReset();playSimulation();},{'type':'keydown','propagate':true,'target':document});

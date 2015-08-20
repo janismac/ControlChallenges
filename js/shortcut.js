@@ -1,11 +1,10 @@
-'use strict';
 /**
  * http://www.openjs.com/scripts/events/keyboard_shortcuts/
  * Version : 2.01.B
  * By Binny V A
  * License : BSD
  */
-var shortcut = {
+shortcut = {
 	'all_shortcuts':{},//All the shortcuts are stored in this array
 	'add': function(shortcut_combination,callback,opt) {
 		//Provide a set of default options

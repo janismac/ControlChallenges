@@ -22,8 +22,8 @@
 		
 		<div id="right-coln">
 			<div id="buttons">
-				<button id="toggleVariableInfoButtonShow" type="button" class="btn btn-primary" onclick="toggleVariableInfo();" data-toggle="tooltip" data-placement="bottom" title="Show Variables"><span class="glyphicon glyphicon-info-sign"> </span></button>
-				<button id="toggleVariableInfoButtonHide" type="button" class="btn btn-primary" onclick="toggleVariableInfo();" data-toggle="tooltip" data-placement="bottom" title="Hide Variables"><span class="glyphicon glyphicon-info-sign"> </span></button>
+				<button id="toggleVariableInfoShowButton" type="button" class="btn btn-primary" onclick="toggleVariableInfo();" data-toggle="tooltip" data-placement="bottom" title="Show Variables"><span class="glyphicon glyphicon-info-sign"> </span></button>
+				<button id="toggleVariableInfoHideButton" type="button" class="btn btn-primary" onclick="toggleVariableInfo();" data-toggle="tooltip" data-placement="bottom" title="Hide Variables"><span class="glyphicon glyphicon-info-sign"> </span></button>
 				<button type="button" class="btn btn-primary" onclick="loadCodeAndReset();playSimulation();" data-toggle="tooltip" data-placement="bottom" title="Restart with code changes [Alt+Enter]"><span class="glyphicon glyphicon-repeat"> </span></button>
 				<button id="pauseButton" type="button" class="btn btn-primary" onclick="pauseSimulation();" data-toggle="tooltip" data-placement="bottom" title="Pause [Alt+P]"><span class="glyphicon glyphicon-pause"> </span></button>
 				<button id="playButton" type="button" class="btn btn-primary" onclick="playSimulation();" data-toggle="tooltip" data-placement="bottom" title="Play [Alt+P]"><span class="glyphicon glyphicon-play"> </span></button>
@@ -31,6 +31,7 @@
 				<button type="button" class="btn btn-primary" onclick="showSampleSolution();" data-toggle="tooltip" data-placement="bottom" title="Sample solution"><span class="glyphicon glyphicon-book"> </span></button>
 				<button type="button" class="btn btn-primary" onclick="showPopup('#levelMenuPopup');" data-toggle="tooltip" data-placement="bottom" title="Level menu"><span class="glyphicon glyphicon-th"> </span></button>
 				<pre id="variableInfo"></pre>
+				<pre id="userMonitor"></pre>
 			</div>
 			<canvas id="cas"></canvas>
 		</div>
@@ -64,30 +65,31 @@
 			<pre id="tipsText">
 You can predict the future of the system by calling simulate(dt, controlFunc) on the model state. Example:
 
+    // Example:
     // Simulates for 0.5 seconds. The input for the model is set to be the negative of its `x`.
-    newState = state.simulate(0.5, function(p){ return -p.x ;})
+    newState = state.simulate(0.5, function(s){ return -s.x ;})
 
-simulate() returns a modified copy of the model state. The control function will be evaluated only once at the start of a simulate() call and held constant during the simulation, so choose a small dt.
+simulate() returns a modified copy of the model state. 
+The control function will be evaluated only once at the start of a simulate() call 
+and held constant during the simulation, so choose a small dt.
 
-You can inspect variables by calling `console.log(myvar);` and viewing the result in your browsers console.
+You can view your own variables by calling `monitor(name,value)`. 
+Call `clearMonitor()` at the beginning of your controlFunction!
 
-If you need to, you can use global variables. Be careful not to create a name collision. Use a prefix, e.g. `cc_`.
-			</pre>
+If you need to, you can use global variables. 
+Be careful not to create a name collision. Use a prefix, e.g. `cc_`.</pre>
 			<div class="centered">
 				<button type="button" class="btn btn-primary" onclick="showPopup(null);">Close</button>
 			</div>
 		</div>
 		
-		<script src="js/plugins.js"></script>
 		<script src="js/jquery-1.11.2.js"></script>
 		<script src="js/numeric-1.2.6.js"></script>
 		<script src="js/codemirror/codemirror.js"></script>
 		<script src="js/codemirror/javascript.js"></script>
 		<script src="js/codemirror/matchbrackets.js"></script>
 		<script src="js/bootstrap.js"></script>	
-		<script src="js/shortcut.js"></script>	
-		<script src="js/keyCodes.js"></script>
-		<script src="js/keyboardTacking.js"></script>
+		<script src="js/shortcut.js"></script>
 		
 		<script src="js/models/RocketLanding.js"></script>
 		<script src="js/models/SinglePendulum.js"></script>
