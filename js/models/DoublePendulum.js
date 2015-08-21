@@ -13,17 +13,17 @@ Models.DoublePendulum = function(params)
 
 Models.DoublePendulum.prototype.vars = 
 {
-	m0: 6,
+	m0: 10,
 	m1: 2,
 	m2: 2,
-	L1: 1,
+	L1: 0.618,
 	L2: 1,
-	g: 9.81,
-	theta1: 0.2,
-	dtheta1: 0,
-	theta2: 5.2,
-	dtheta2: 0,
-	x: 0,
+	g: 5,
+	theta1: 0.001,
+	dtheta1: 0.001,
+	theta2: 0.001,
+	dtheta2: 0.001,
+	x: -1,
 	dx: 0,
 	F: 0,
 	T: 0
@@ -55,13 +55,13 @@ Models.DoublePendulum.ode = function (_this, x)
 	var dthetasq1 = x[3] * x[3];
 	var dthetasq2 = x[5] * x[5];
 	
-	var M =[[_this.m0,          0,          0,          0,          0,          0,          0,         s1,          0],
-			[       0,          0,          0,   _this.m1,          0,          0,          0,        -s1,         s2],
-			[       0,          0,          0,          0,   _this.m2,          0,          0,          0,        -s2],
+	var M =[[_this.m0,          0,          0,          0,          0,          0,          0,        -s1,          0],
+			[       0,          0,          0,   _this.m1,          0,          0,          0,         s1,        -s2],
+			[       0,          0,          0,          0,   _this.m2,          0,          0,          0,         s2],
 			[       0,          0,          0,          0,          0,   _this.m1,          0,         c1,        -c2],
 			[       0,          0,          0,          0,          0,          0,   _this.m2,          0,         c2],
-			[      -1,_this.L1*c1,          0,          1,          0,          0,          0,          0,          0],
-			[       0,          0,_this.L2*c2,         -1,          1,          0,          0,          0,          0],
+			[      -1,-_this.L1*c1,          0,          1,          0,          0,          0,          0,          0],
+			[       0,          0,-_this.L2*c2,         -1,          1,          0,          0,          0,          0],
 			[       0,_this.L1*s1,          0,          0,          0,          1,          0,          0,          0],
 			[       0,          0,_this.L2*s2,          0,          0,         -1,          1,          0,          0],];
 
@@ -71,14 +71,12 @@ Models.DoublePendulum.ode = function (_this, x)
 		0,
 		-_this.m1*_this.g,
 		-_this.m2*_this.g,
-		_this.L1*s1*dthetasq1,
-		_this.L2*s2*dthetasq2,
+		-_this.L1*s1*dthetasq1,
+		-_this.L2*s2*dthetasq2,
 		-_this.L1*c1*dthetasq1,
 		-_this.L2*c2*dthetasq2
 	];
 	var ddx = numeric.solve(M,b);
-
-	console.log(numeric.det(M));
 
 	return [x[1],ddx[0],x[3],ddx[1],x[5],ddx[2]];
 }
@@ -96,13 +94,13 @@ Models.DoublePendulum.prototype.draw = function (ctx)
 	ctx.scale(canvas.width/8.0,-canvas.width/8.0);
 	ctx.translate(0,-L);
 	
-	var cartWidth = 0.4*L;
+	var cartWidth = 0.2*L;
 	var cartHeight = 0.7*cartWidth;
 	
-	var tipX = this.x+this.L1*Math.sin(-this.theta1);
-	var tipY = this.L1*Math.cos(-this.theta1)+cartHeight;
-	var tip2X = this.L2*Math.sin(-this.theta2) + tipX;
-	var tip2Y = this.L2*Math.cos(-this.theta2) + tipY;
+	var tipX = this.x+this.L1*Math.sin(this.theta1);
+	var tipY = this.L1*Math.cos(this.theta1)+cartHeight;
+	var tip2X = this.L2*Math.sin(this.theta2) + tipX;
+	var tip2Y = this.L2*Math.cos(this.theta2) + tipY;
 	
 	// ground
 	ctx.strokeStyle="#333366";
