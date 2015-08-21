@@ -92,7 +92,7 @@ function toggleVariableInfo()
 
 function animate() {
 	
-
+	clearMonitor();
 	var dt = (new Date().getTime()-T)/1000.0;
 	T = new Date().getTime();
 	
@@ -113,7 +113,7 @@ function animate() {
 	
 	activeLevel.model.draw(context);
 	
-	$('#variableInfo').text(activeLevel.model.infoText());	
+	$('#variableInfo').text($('#variableInfo').text()+activeLevel.model.infoText());	
 	
 	if(runSimulation)
 		requestAnimationFrame(animate);
@@ -123,13 +123,13 @@ function animate() {
 
 function clearMonitor()
 {
-	$('#userMonitor').text('');
+	$('#variableInfo').text('');
 }
 
 function monitor(name,val)
 {
 	if(typeof val == 'number') val = ""+round(val,4);4
-	$('#userMonitor').text($('#userMonitor').text()+name+" = "+val+"\n");
+	$('#variableInfo').text($('#variableInfo').text()+name+" = "+val+"\n");
 }
 
 function showPopup(p)

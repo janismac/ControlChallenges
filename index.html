@@ -31,7 +31,6 @@
 				<button type="button" class="btn btn-primary" onclick="showSampleSolution();" data-toggle="tooltip" data-placement="bottom" title="Sample solution"><span class="glyphicon glyphicon-book"> </span></button>
 				<button type="button" class="btn btn-primary" onclick="showPopup('#levelMenuPopup');" data-toggle="tooltip" data-placement="bottom" title="Level menu"><span class="glyphicon glyphicon-th"> </span></button>
 				<pre id="variableInfo"></pre>
-				<pre id="userMonitor"></pre>
 			</div>
 			<canvas id="cas"></canvas>
 		</div>
@@ -73,8 +72,7 @@ simulate() returns a modified copy of the model state.
 The control function will be evaluated only once at the start of a simulate() call 
 and held constant during the simulation, so choose a small dt.
 
-You can view your own variables by calling `monitor(name,value)`. 
-Call `clearMonitor()` at the beginning of your controlFunction!
+You can view your own variables by calling `monitor(name,value)`.
 
 If you need to, you can use global variables. 
 Be careful not to create a name collision. Use a prefix, e.g. `cc_`.</pre>
