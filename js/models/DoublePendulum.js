@@ -15,10 +15,10 @@ Models.DoublePendulum.prototype.vars =
 {
 	m0: 10,
 	m1: 2,
-	m2: 2,
+	m2: 4,
 	L1: 0.618,
 	L2: 1,
-	g: 5,
+	g: 2,
 	theta1: 0.001,
 	dtheta1: 0.001,
 	theta2: 0.001,
@@ -55,13 +55,15 @@ Models.DoublePendulum.ode = function (_this, x)
 	var dthetasq1 = x[3] * x[3];
 	var dthetasq2 = x[5] * x[5];
 	
+
+	// colns:    ddx0    ddtheta1    ddtheta2        ddx1        ddx2        ddy1        ddy2          T1          T2
 	var M =[[_this.m0,          0,          0,          0,          0,          0,          0,        -s1,          0],
 			[       0,          0,          0,   _this.m1,          0,          0,          0,         s1,        -s2],
 			[       0,          0,          0,          0,   _this.m2,          0,          0,          0,         s2],
 			[       0,          0,          0,          0,          0,   _this.m1,          0,         c1,        -c2],
 			[       0,          0,          0,          0,          0,          0,   _this.m2,          0,         c2],
-			[      -1,-_this.L1*c1,          0,          1,          0,          0,          0,          0,          0],
-			[       0,          0,-_this.L2*c2,         -1,          1,          0,          0,          0,          0],
+			[      -1,-_this.L1*c1,         0,          1,          0,          0,          0,          0,          0],
+			[       0,          0,-_this.L2*c2,        -1,          1,          0,          0,          0,          0],
 			[       0,_this.L1*s1,          0,          0,          0,          1,          0,          0,          0],
 			[       0,          0,_this.L2*s2,          0,          0,         -1,          1,          0,          0],];
 
