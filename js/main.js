@@ -48,11 +48,26 @@ function loadLevel(i)
 	}
 }
 
-function showSampleSolution()
+function editorSetCode_preserveOld(code)
 {
 	var lines = editor.getValue().split(/\r?\n/);
+	for (var i = 0; i < lines.length; i++) if(!lines[i].startsWith('//') && lines[i].length > 0) lines[i] = '//'+lines[i];
+	var oldCode = lines.join("\n");
+	editor.setValue(code + "\n\n"+oldCode+"\n");
+}
+
+function showSampleSolution()
+{
+	/*var lines = editor.getValue().split(/\r?\n/);
 	editor.setValue(activeLevel.sampleSolution + "\n\n//"+lines.join("\n//")+"\n");
-	loadCodeAndReset();
+	loadCodeAndReset();*/
+}
+
+function resetBoilerplateCode()
+{
+	/*var lines = editor.getValue().split(/\r?\n/);
+	editor.setValue(activeLevel.boilerPlateCode + "\n\n//"+lines.join("\n//")+"\n");
+	loadCodeAndReset();*/
 }
 
 function pauseSimulation()

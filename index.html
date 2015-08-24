@@ -28,7 +28,8 @@
 				<button id="pauseButton" type="button" class="btn btn-primary" onclick="pauseSimulation();" data-toggle="tooltip" data-placement="bottom" title="Pause [Alt+P]"><span class="glyphicon glyphicon-pause"> </span></button>
 				<button id="playButton" type="button" class="btn btn-primary" onclick="playSimulation();" data-toggle="tooltip" data-placement="bottom" title="Play [Alt+P]"><span class="glyphicon glyphicon-play"> </span></button>
 				<button type="button" class="btn btn-primary" onclick="showPopup('#tipsPopup');" data-toggle="tooltip" data-placement="bottom" title="Tips"><span class="glyphicon glyphicon-question-sign"> </span></button>
-				<button type="button" class="btn btn-primary" onclick="showSampleSolution();" data-toggle="tooltip" data-placement="bottom" title="Sample solution"><span class="glyphicon glyphicon-book"> </span></button>
+				<button type="button" class="btn btn-primary" onclick="editorSetCode_preserveOld(activeLevel.boilerPlateCode);" data-toggle="tooltip" data-placement="bottom" title="Reset to boilerplate code"><span class="glyphicon glyphicon-remove"> </span></button>
+				<button type="button" class="btn btn-primary" onclick="editorSetCode_preserveOld(activeLevel.sampleSolution);" data-toggle="tooltip" data-placement="bottom" title="Sample solution"><span class="glyphicon glyphicon-book"> </span></button>
 				<button type="button" class="btn btn-primary" onclick="showPopup('#levelMenuPopup');" data-toggle="tooltip" data-placement="bottom" title="Level menu"><span class="glyphicon glyphicon-th"> </span></button>
 				<pre id="variableInfo"></pre>
 			</div>

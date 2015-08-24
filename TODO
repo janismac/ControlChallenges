@@ -6,3 +6,4 @@
 * errors section, no alert()
 * check controlFunction return value type
 * popup close button
+* protect against long runtime of user code
