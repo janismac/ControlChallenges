@@ -151,7 +151,8 @@ function showPopup(p)
 {
 	$('.popup').hide();
 	$(p).show();
-	pauseSimulation();
+	if(p!=null)
+		pauseSimulation();
 }
 
 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
@@ -167,6 +168,10 @@ var editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor")
 editor.on("change", function () {localStorage.setItem(activeLevel.name+"Code", editor.getValue());});
 shortcut.add("Alt+Enter",function() {loadCodeAndReset();playSimulation();},{'type':'keydown','propagate':true,'target':document});
 shortcut.add("Alt+P",function() {if(runSimulation)pauseSimulation();else playSimulation();},{'type':'keydown','propagate':true,'target':document});
+shortcut.add("Esc",function() {showPopup(null);},{'type':'keydown','propagate':true,'target':document});
+
+$('.popup').prepend($('<button type="button" class="btn btn-danger closeButton" onclick="showPopup(null);" data-toggle="tooltip" data-placement="bottom" title="Close [ESC]"><span class="glyphicon glyphicon-remove"> </span></button>'));
+
 $( window ).resize(resizeCanvas);
 $('#buttons').cleanWhitespace();
 $('.popup').cleanWhitespace();

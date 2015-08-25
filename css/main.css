@@ -90,6 +90,7 @@ body{background-color:#eef;}
 .popup .centered {text-align: center;margin:auto;}
 .popup p{font-size:1.4em;}
 
+.popup .closeButton {float:right;}
 
 
 /* ==========================================================================
