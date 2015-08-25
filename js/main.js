@@ -108,12 +108,10 @@ function toggleVariableInfo()
 function animate() {
 	
 	clearMonitor();
-	var dt = (new Date().getTime()-T)/1000.0;
-	T = new Date().getTime();
-	
+
 	if(runSimulation)
 	{
-		try { if(!isNaN(dt)) activeLevel.simulate(Math.min(0.04,dt),controlFunction); }
+		try { activeLevel.simulate(0.02,controlFunction); }
 		catch(e){
 			pauseSimulation();
 			alert(e);
@@ -188,5 +186,4 @@ try{ loadLevel(localStorage.getItem("lastLevel")||0); }
 catch (e){ alert(e); }
 loadCodeAndReset();
 pauseSimulation();
-var T = new Date().getTime();
 animate();
