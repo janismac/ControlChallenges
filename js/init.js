@@ -6,11 +6,13 @@ var context = canvas.getContext('2d');
 var level_constructors = [
 	Levels.TutorialBlockWithFriction,
 	Levels.TutorialBlockWithoutFriction,
+	Levels.TutorialBlockOnSlope,
 	Levels.StabilizeSinglePendulum,
 	Levels.SwingUpSinglePendulum,
 	Levels.RocketLandingNormal,
 	Levels.StabilizeDoublePendulum
 ];
+var level_menu_linebreaks = [false,false,true,false,false,false,false];
 var activeLevel = null;
 var activeLevelConstructor = null;
 var runSimulation = false;
@@ -33,6 +35,8 @@ for(var i=0; i<level_constructors.length;++i) {
 	var level = new level_constructors[i]();
 	var e = $('<button type="button" class="btn btn-primary" onclick="loadLevel('+i+');">'+level.title+'</button>');	
 	$('#levelList').append(e);
+	if(level_menu_linebreaks[i])
+		$('#levelList').append($('<br />'));
 }
 setErrorBoxSize(false);
 resizeCanvas();
