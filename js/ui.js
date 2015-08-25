@@ -28,7 +28,6 @@ function loadLevel(i) {
 		activeLevel = new activeLevelConstructor();
 		$('#levelDescription').text(activeLevel.description);
 		$('#levelTitle').text(activeLevel.title);
-		//$('#tipsText').text(activeLevel.tips);
 		document.title = activeLevel.title +': Control Challenges';
 		var savedCode = localStorage.getItem(activeLevel.name+"Code");
 		if(typeof savedCode == 'string' && savedCode.length > 10)

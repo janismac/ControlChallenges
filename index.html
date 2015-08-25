@@ -21,7 +21,7 @@
 			<div id="errorsBox" class="bigErrorBox">
 				<p>
 					<button id="errorsBoxUp" type="button" class="btn btn-primary btn-xs" onclick="setErrorBoxSize(true);" data-toggle="tooltip" data-placement="bottom" title="Larger"><span class="glyphicon glyphicon-chevron-up"> </span></button>
-					<button id="errorsBoxDown" type="button" class="btn btn-primary btn-xs" onclick="setErrorBoxSize(false);" data-toggle="tooltip" data-placement="bottom" title="Larger"><span class="glyphicon glyphicon-chevron-down"> </span></button>
+					<button id="errorsBoxDown" type="button" class="btn btn-primary btn-xs" onclick="setErrorBoxSize(false);" data-toggle="tooltip" data-placement="bottom" title="Smaller"><span class="glyphicon glyphicon-chevron-down"> </span></button>
 					Errors &amp; Warnings
 				</p>
 				<pre></pre>
@@ -70,24 +70,23 @@
 		</div>
 
 		<div id="tipsPopup" class="popup">
-			<pre id="tipsText">
-You can predict the future of the system by calling simulate(dt, controlFunc) on the model state. Example:
+			
+				<p>You can predict the future of the system by calling simulate(dt, controlFunc) on the model state. Example:</p>
+				
+					<pre>
+// Simulates for 0.5 seconds. The input for the model is set to be the negative of its `x`.
+newState = state.simulate(0.5, function(s){ return -s.x ;})</pre>
+				
 
-    // Example:
-    // Simulates for 0.5 seconds. The input for the model is set to be the negative of its `x`.
-    newState = state.simulate(0.5, function(s){ return -s.x ;})
-
-simulate() returns a modified copy of the model state. 
-The control function will be evaluated only once at the start of a simulate() call 
-and held constant during the simulation, so choose a small dt.
-
-You can view your own variables by calling `monitor(name,value)`.
-
-If you need to, you can use global variables. 
-Be careful not to create a name collision. Use a prefix, e.g. `cc_`.</pre>
-			<div class="centered">
-				<button type="button" class="btn btn-primary" onclick="showPopup(null);">Close</button>
-			</div>
+				<p>simulate() returns a modified copy of the model state. <br/>
+				The control function will be evaluated only once at the start of a simulate() call <br/>
+				and held constant during the simulation, so choose a small dt.<br/>
+<br/>
+				You can view your own variables by calling `monitor(name,value)`.<br/>
+<br/>
+				If you need to, you can use global variables. <br/>
+				Be careful not to create a name collision. Use a prefix, e.g. `cc_`.<br/>
+				</p>
 		</div>
 		
 		<script src="js/jquery-1.11.2.js"></script>
@@ -102,13 +101,16 @@ Be careful not to create a name collision. Use a prefix, e.g. `cc_`.</pre>
 		<script src="js/models/RocketLanding.js"></script>
 		<script src="js/models/SinglePendulum.js"></script>
 		<script src="js/models/DoublePendulum.js"></script>
+		<script src="js/models/BlockOnSlope.js"></script>
 		<script src="js/levels/RocketLandingNormal.js"></script>
 		<script src="js/levels/StabilizeSinglePendulum.js"></script>
 		<script src="js/levels/SwingUpSinglePendulum.js"></script>
 		<script src="js/levels/StabilizeDoublePendulum.js"></script>
+		<script src="js/levels/TutorialBlockWithFriction.js"></script>
+
 		<script src="js/utils.js"></script>
 		<script src="js/ui.js"></script>
 		<script src="js/init.js"></script>
-		<script src="js/gameloop.js"></script>		
+		<script src="js/gameloop.js"></script>
 	</body>
 </html>
