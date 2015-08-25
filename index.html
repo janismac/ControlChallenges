@@ -13,10 +13,18 @@
 			<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 		<![endif]-->
 		<div id="left-coln">
-			<div id="editor">
+			<div id="editor" class="bigErrorBox">
 				<form style="position: relative;">
 					<textarea id="CodeMirrorEditor" style="display: none;">/* your code here */</textarea>
 				</form>
+			</div>
+			<div id="errorsBox" class="bigErrorBox">
+				<p>
+					<button id="errorsBoxUp" type="button" class="btn btn-primary btn-xs" onclick="setErrorBoxSize(true);" data-toggle="tooltip" data-placement="bottom" title="Larger"><span class="glyphicon glyphicon-chevron-up"> </span></button>
+					<button id="errorsBoxDown" type="button" class="btn btn-primary btn-xs" onclick="setErrorBoxSize(false);" data-toggle="tooltip" data-placement="bottom" title="Larger"><span class="glyphicon glyphicon-chevron-down"> </span></button>
+					Errors &amp; Warnings
+				</p>
+				<pre></pre>
 			</div>
 		</div>
 		
@@ -24,7 +32,7 @@
 			<div id="buttons">
 				<button id="toggleVariableInfoShowButton" type="button" class="btn btn-primary" onclick="toggleVariableInfo();" data-toggle="tooltip" data-placement="bottom" title="Show Variables"><span class="glyphicon glyphicon-info-sign"> </span></button>
 				<button id="toggleVariableInfoHideButton" type="button" class="btn btn-primary" onclick="toggleVariableInfo();" data-toggle="tooltip" data-placement="bottom" title="Hide Variables"><span class="glyphicon glyphicon-info-sign"> </span></button>
-				<button type="button" class="btn btn-primary" onclick="loadCodeAndReset();playSimulation();" data-toggle="tooltip" data-placement="bottom" title="Restart with code changes [Alt+Enter]"><span class="glyphicon glyphicon-repeat"> </span></button>
+				<button type="button" class="btn btn-primary" onclick="if(loadCodeAndReset()) playSimulation();" data-toggle="tooltip" data-placement="bottom" title="Restart with code changes [Alt+Enter]"><span class="glyphicon glyphicon-repeat"> </span></button>
 				<button id="pauseButton" type="button" class="btn btn-primary" onclick="pauseSimulation();" data-toggle="tooltip" data-placement="bottom" title="Pause [Alt+P]"><span class="glyphicon glyphicon-pause"> </span></button>
 				<button id="playButton" type="button" class="btn btn-primary" onclick="playSimulation();" data-toggle="tooltip" data-placement="bottom" title="Play [Alt+P]"><span class="glyphicon glyphicon-play"> </span></button>
 				<button type="button" class="btn btn-primary" onclick="showPopup('#tipsPopup');" data-toggle="tooltip" data-placement="bottom" title="Tips"><span class="glyphicon glyphicon-question-sign"> </span></button>

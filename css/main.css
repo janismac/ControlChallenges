@@ -73,7 +73,23 @@ body{background-color:#eef;}
 .CodeMirror { border: 1px solid #ddd; }
 .CodeMirror pre { padding-left: 7px; line-height: 1.25; }
 
-#editor, #editor .CodeMirror-scroll, #editor .CodeMirror, #editor form { height: 100%; }
+#editor .CodeMirror, #editor form { height: 100%; }
+
+#editor.smallErrorBox{height: 80%;}
+#errorsBox.smallErrorBox{height: 19%;}
+#editor.bigErrorBox{height: 32%;}
+#errorsBox.bigErrorBox{height: 67%;}
+
+#errorsBox {
+    background-color: #ddf; 
+    padding:1em;
+    margin-top:1em;
+}
+
+#errorsBox pre{
+    height: calc(100%  - 2.3em);
+}
+
 .popup{
 	position:absolute; 
 	/*border: 2px solid #ddd; */

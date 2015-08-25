@@ -1,10 +1,10 @@
 'use strict';
 
 jQuery.fn.cleanWhitespace = function() {
-    var textNodes = this.contents().filter(
-        function() { return (this.nodeType == 3 && !/\S/.test(this.nodeValue)); })
-        .remove();
-    return this;
+	var textNodes = this.contents().filter(
+	function() { return (this.nodeType == 3 && !/\S/.test(this.nodeValue)); })
+	.remove();
+	return this;
 }
 
 function resizeCanvas() {
@@ -12,25 +12,24 @@ function resizeCanvas() {
 	canvas.height = $('#cas').height();
 }
 
-function loadCodeAndReset()
-{
+function loadCodeAndReset() {
 	activeLevel = new activeLevelConstructor();
 	$('#userscript').remove();
 	try {
 		var e = $('<script id="userscript">'+editor.getValue() +'</script>');	
 		$('body').append(e);
 	}
-	catch(e){
+	catch(e) {
 		pauseSimulation();
-		alert(e);
+		logError(e);
+		return false;
 	}
+	return true;
 }
 
 
-function loadLevel(i)
-{
-	if(0 <= i && i < level_constructors.length)
-	{
+function loadLevel(i) {
+	if(0 <= i && i < level_constructors.length) {
 		localStorage.setItem("lastLevel",i);
 		activeLevelConstructor = level_constructors[i];
 		activeLevel = new activeLevelConstructor();
@@ -48,43 +47,25 @@ function loadLevel(i)
 	}
 }
 
-function editorSetCode_preserveOld(code)
-{
+function editorSetCode_preserveOld(code) {
 	var lines = editor.getValue().split(/\r?\n/);
 	for (var i = 0; i < lines.length; i++) if(!lines[i].startsWith('//') && lines[i].length > 0) lines[i] = '//'+lines[i];
 	var oldCode = lines.join("\n");
 	editor.setValue(code + "\n\n"+oldCode+"\n");
 }
 
-function showSampleSolution()
-{
-	/*var lines = editor.getValue().split(/\r?\n/);
-	editor.setValue(activeLevel.sampleSolution + "\n\n//"+lines.join("\n//")+"\n");
-	loadCodeAndReset();*/
-}
-
-function resetBoilerplateCode()
-{
-	/*var lines = editor.getValue().split(/\r?\n/);
-	editor.setValue(activeLevel.boilerPlateCode + "\n\n//"+lines.join("\n//")+"\n");
-	loadCodeAndReset();*/
-}
-
-function pauseSimulation()
-{
+function pauseSimulation() {
 	$('#pauseButton').hide();
 	$('#playButton').show();
 	runSimulation = false;
 }
-function playSimulation()
-{
+function playSimulation() {
 	$('#pauseButton').show();
 	$('#playButton').hide();
 	runSimulation = true;
 }
 
-function drawLine(ctx,x1,y1,x2,y2,width)
-{
+function drawLine(ctx,x1,y1,x2,y2,width) {
 	ctx.beginPath();
 	ctx.moveTo(x1,y1);
 	ctx.lineTo(x2,y2);
@@ -92,33 +73,41 @@ function drawLine(ctx,x1,y1,x2,y2,width)
 	ctx.stroke();
 }
 
-function round(x,d)
-{
+function round(x,d) {
 	var shift = Math.pow(10, d);
 	return Math.round(x*shift)/shift;
 }
 
-function toggleVariableInfo()
-{
+function toggleVariableInfo() {
 	$('#variableInfo').toggle();
 	$('#toggleVariableInfoShowButton').toggle();
 	$('#toggleVariableInfoHideButton').toggle();
+}
+
+function setErrorBoxSize(big) {
+	if(big) {
+		$('#errorsBoxUp').hide();
+		$('#errorsBoxDown').show();
+		$('.smallErrorBox').removeClass('smallErrorBox').addClass('bigErrorBox');
+	} else {
+		$('#errorsBoxUp').show();
+		$('#errorsBoxDown').hide();
+		$('.bigErrorBox').removeClass('bigErrorBox').addClass('smallErrorBox');		
+	}
 }
 
 function animate() {
 	
 	clearMonitor();
 
-	if(runSimulation)
-	{
+	if(runSimulation) {
 		try { activeLevel.simulate(0.02,controlFunction); }
-		catch(e){
+		catch(e) {
 			pauseSimulation();
-			alert(e);
+			logError(e);
 		}
 		
-		if(activeLevel.levelComplete()) 
-		{
+		if(activeLevel.levelComplete()) {
 			$('#levelSolvedTime').text(round(activeLevel.getSimulationTime(),2));
 			showPopup('#levelCompletePopup');
 		}
@@ -131,26 +120,29 @@ function animate() {
 	if(runSimulation)
 		requestAnimationFrame(animate);
 	else
-		setTimeout( function(){requestAnimationFrame(animate);}, 200);
+		setTimeout( function() {requestAnimationFrame(animate);}, 200);
 }
 
-function clearMonitor()
-{
-	$('#variableInfo').text('');
+
+
+function clearErrors(){$('#errorsBox pre').text('');}
+function logError(s) {
+	var timeStamp = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+	var logText = $('#errorsBox pre');
+	logText.text(logText.text().trim()+"\n["+timeStamp+"] "+s);
+	logText.scrollTop(logText.prop("scrollHeight") - logText.height());
 }
 
-function monitor(name,val)
-{
+function clearMonitor() {$('#variableInfo').text('');}
+function monitor(name,val) {
 	if(typeof val == 'number') val = ""+round(val,4);4
 	$('#variableInfo').text($('#variableInfo').text()+name+" = "+val+"\n");
 }
 
-function showPopup(p)
-{
+function showPopup(p) {
 	$('.popup').hide();
 	$(p).show();
-	if(p!=null)
-		pauseSimulation();
+	if(p!=null)pauseSimulation();
 }
 
 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
@@ -160,13 +152,13 @@ var level_constructors = [Levels.StabilizeSinglePendulum,Levels.SwingUpSinglePen
 var activeLevel = null;
 var activeLevelConstructor = null;
 var runSimulation = false;
-$(document).ready(function(){$('[data-toggle="tooltip"]').tooltip();});
+$(document).ready(function() {$('[data-toggle="tooltip"]').tooltip();});
 $('#toggleVariableInfoShowButton').hide();
 var editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), {lineNumbers: true, mode: "javascript", matchBrackets: true, lineWrapping:true});
 editor.on("change", function () {localStorage.setItem(activeLevel.name+"Code", editor.getValue());});
-shortcut.add("Alt+Enter",function() {loadCodeAndReset();playSimulation();},{'type':'keydown','propagate':true,'target':document});
-shortcut.add("Alt+P",function() {if(runSimulation)pauseSimulation();else playSimulation();},{'type':'keydown','propagate':true,'target':document});
-shortcut.add("Esc",function() {showPopup(null);},{'type':'keydown','propagate':true,'target':document});
+shortcut.add("Alt+Enter",function() {if(loadCodeAndReset())playSimulation();}, {'type':'keydown','propagate':true,'target':document});
+shortcut.add("Alt+P",function() {if(runSimulation)pauseSimulation();else playSimulation();}, {'type':'keydown','propagate':true,'target':document});
+shortcut.add("Esc",function() {showPopup(null);}, {'type':'keydown','propagate':true,'target':document});
 
 $('.popup').prepend($('<button type="button" class="btn btn-danger closeButton" onclick="showPopup(null);" data-toggle="tooltip" data-placement="bottom" title="Close [ESC]"><span class="glyphicon glyphicon-remove"> </span></button>'));
 
@@ -175,15 +167,15 @@ $('#buttons').cleanWhitespace();
 $('.popup').cleanWhitespace();
 
 // load level names into level menu.
-for(var i=0; i<level_constructors.length;++i)
-{
+for(var i=0; i<level_constructors.length;++i) {
 	var level = new level_constructors[i]();
 	var e = $('<button type="button" class="btn btn-primary" onclick="loadLevel('+i+');">'+level.title+'</button>');	
 	$('#levelList').append(e);
 }
+setErrorBoxSize(false);
 resizeCanvas();
-try{ loadLevel(localStorage.getItem("lastLevel")||0); } 
-catch (e){ alert(e); }
+try { loadLevel(localStorage.getItem("lastLevel")||0); } 
+catch (e) { logError(e); }
 loadCodeAndReset();
 pauseSimulation();
 animate();
