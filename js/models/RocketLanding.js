@@ -63,6 +63,8 @@ Models.RocketLanding.prototype.simulate = function (dt, controlFunc)
 	if(!this.detectCollision())
 	{
 		var input = controlFunc(new Models.RocketLanding(this)); // call user controller
+		if(typeof input != 'object' || typeof input.throttle != 'number' || typeof input.gimbalAngle != 'number') 
+			throw "Error: The controlFunction must return an object: {throttle:number, gimbalAngle:number}";
 		copy.throttle = Math.max(0,Math.min(1,input.throttle)); // input limits
 		copy.gimbalAngle = Math.max(-.2,Math.min(.2,input.gimbalAngle));
 		var state = [this.x, this.dx, this.y, this.dy, this.theta, this.dtheta]; // state vector

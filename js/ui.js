@@ -90,7 +90,7 @@ function clearErrors(){$('#errorsBox pre').text('');}
 function logError(s) {
 	var timeStamp = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
 	var logText = $('#errorsBox pre');
-	logText.text(logText.text().trim()+"\n["+timeStamp+"] "+s);
+	logText.text((logText.text()+"\n["+timeStamp+"] "+s).trim());
 	logText.scrollTop(logText.prop("scrollHeight") - logText.height());
 }
 

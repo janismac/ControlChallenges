@@ -4,6 +4,6 @@
 * cruise control level
 * race track levels
 * [done] errors section, no alert()
-* check controlFunction return value type
+* [done] check controlFunction return value type
 * [done] popup close button
 * protect against long runtime of user code
