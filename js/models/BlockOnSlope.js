@@ -54,7 +54,7 @@ Models.BlockOnSlope.prototype.draw = function (ctx)
 
 
 	ctx.strokeStyle="#333366";
-	drawLine(ctx,-100,-.025,100,-.025,0.05);
+	drawLine(ctx,-10,-.025,10,-.025,0.05);
 
 	var cartWidth = 0.4;
 	var cartHeight = 0.7*cartWidth;

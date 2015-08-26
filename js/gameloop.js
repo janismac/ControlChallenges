@@ -1,7 +1,7 @@
 'use strict';
 
 function gameLoop() {
-	if(runSimulation) {
+	if(simulation.running()) {
 		clearMonitor();
 		try { activeLevel.simulate(0.02,controlFunction); }
 		catch(e) {
@@ -13,10 +13,11 @@ function gameLoop() {
 			$('#levelSolvedTime').text(round(activeLevel.getSimulationTime(),2));
 			showPopup('#levelCompletePopup');
 		}
-		activeLevel.model.draw(context);		
-		$('#variableInfo').text($('#variableInfo').text()+activeLevel.model.infoText());
-		requestAnimationFrame(gameLoop);
+		$('#variableInfo').text($('#variableInfo').text()+activeLevel.model.infoText());		
 	}
+	activeLevel.model.draw(context);
+	
+	if(simulation.running()) requestAnimationFrame(gameLoop);
 	else setTimeout( function() {requestAnimationFrame(gameLoop);}, 200);
 }
 

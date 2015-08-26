@@ -9,11 +9,11 @@ function loadCodeAndReset() {
 	activeLevel = new activeLevelConstructor();
 	$('#userscript').remove();
 	try {
-		var e = $('<script id="userscript">'+editor.getValue() +'</script>');	
+		var e = $("<script id='userscript'>\ncontrolFunction = (function(){\n	'use strict';\n	"+editor.getValue()+"\n	return controlFunction;\n})();\n</script>");	
 		$('body').append(e);
 	}
 	catch(e) {
-		pauseSimulation();
+		simulation.pause();
 		logError(e);
 		return false;
 	}
@@ -46,16 +46,23 @@ function editorSetCode_preserveOld(code) {
 	editor.setValue(code + "\n\n"+oldCode+"\n");
 }
 
-function pauseSimulation() {
-	$('#pauseButton').hide();
-	$('#playButton').show();
-	runSimulation = false;
-}
-function playSimulation() {
-	$('#pauseButton').show();
-	$('#playButton').hide();
-	runSimulation = true;
-}
+const simulation = (function(){
+	var runSimulation = false;
+	const pauseButton = $('#pauseButton');
+	const playButton = $('#playButton');
+	function pause() {
+		pauseButton.hide();
+		playButton.show();
+		runSimulation = false;
+	}
+	function play() {
+		pauseButton.show();
+		playButton.hide();
+		runSimulation = true;
+	}
+	function running(){return runSimulation;}
+	return {pause:pause,play:play,running:running};
+})();
 
 function drawLine(ctx,x1,y1,x2,y2,width) {
 	ctx.beginPath();
@@ -102,5 +109,5 @@ function monitor(name,val) {
 function showPopup(p) {
 	$('.popup').hide();
 	$(p).show();
-	if(p!=null)pauseSimulation();
+	if(p!=null)simulation.pause();
 }
