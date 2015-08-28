@@ -20,8 +20,8 @@
 			</div>
 			<div id="errorsBox" class="bigErrorBox">
 				<p>
-					<button id="errorsBoxUp" type="button" class="btn btn-primary btn-xs" onclick="setErrorBoxSize(true);" data-toggle="tooltip" data-placement="bottom" title="Larger"><span class="glyphicon glyphicon-chevron-up"> </span></button>
-					<button id="errorsBoxDown" type="button" class="btn btn-primary btn-xs" onclick="setErrorBoxSize(false);" data-toggle="tooltip" data-placement="bottom" title="Smaller"><span class="glyphicon glyphicon-chevron-down"> </span></button>
+					<button id="errorsBoxUpButton" type="button" class="btn btn-primary btn-xs" title="Larger"><span class="glyphicon glyphicon-chevron-up"> </span></button>
+					<button id="errorsBoxDownButton" type="button" class="btn btn-primary btn-xs" title="Smaller"><span class="glyphicon glyphicon-chevron-down"> </span></button>
 					Errors &amp; Warnings
 				</p>
 				<pre></pre>
@@ -30,15 +30,15 @@
 		
 		<div id="right-coln">
 			<div id="buttons">
-				<button id="toggleVariableInfoShowButton" type="button" class="btn btn-primary" onclick="toggleVariableInfo();" data-toggle="tooltip" data-placement="bottom" title="Show Variables"><span class="glyphicon glyphicon-info-sign"> </span></button>
-				<button id="toggleVariableInfoHideButton" type="button" class="btn btn-primary" onclick="toggleVariableInfo();" data-toggle="tooltip" data-placement="bottom" title="Hide Variables"><span class="glyphicon glyphicon-info-sign"> </span></button>
-				<button type="button" class="btn btn-primary" onclick="if(loadCodeAndReset()) CC.play();" data-toggle="tooltip" data-placement="bottom" title="Restart with code changes [Alt+Enter]"><span class="glyphicon glyphicon-repeat"> </span></button>
-				<button id="pauseButton" type="button" class="btn btn-primary" onclick="CC.pause();" data-toggle="tooltip" data-placement="bottom" title="Pause [Alt+P]"><span class="glyphicon glyphicon-pause"> </span></button>
-				<button id="playButton" type="button" class="btn btn-primary" onclick="CC.play();" data-toggle="tooltip" data-placement="bottom" title="Play [Alt+P]"><span class="glyphicon glyphicon-play"> </span></button>
-				<button type="button" class="btn btn-primary" onclick="showPopup('#tipsPopup');" data-toggle="tooltip" data-placement="bottom" title="Tips"><span class="glyphicon glyphicon-question-sign"> </span></button>
-				<button type="button" class="btn btn-primary" onclick="CC.loadBoilerplate();" data-toggle="tooltip" data-placement="bottom" title="Reset to boilerplate code"><span class="glyphicon glyphicon-remove"> </span></button>
-				<button type="button" class="btn btn-primary" onclick="CC.loadSampleSolution();" data-toggle="tooltip" data-placement="bottom" title="Sample solution"><span class="glyphicon glyphicon-book"> </span></button>
-				<button type="button" class="btn btn-primary" onclick="showPopup('#levelMenuPopup');" data-toggle="tooltip" data-placement="bottom" title="Level menu"><span class="glyphicon glyphicon-th"> </span></button>
+				<button id="varInfoShowButton" type="button" title="Show Variables"><span class="glyphicon glyphicon-info-sign"> </span></button>
+				<button id="varInfoHideButton" type="button" title="Hide Variables"><span class="glyphicon glyphicon-info-sign"> </span></button>
+				<button id="restartButton"     type="button" title="Restart with code changes [Alt+Enter]"><span class="glyphicon glyphicon-repeat"> </span></button>
+				<button id="pauseButton"       type="button" title="Pause [Alt+P]"><span class="glyphicon glyphicon-pause"> </span></button>
+				<button id="playButton"        type="button" title="Play [Alt+P]"><span class="glyphicon glyphicon-play"> </span></button>
+				<button id="tipsButton"        type="button" title="Tips"><span class="glyphicon glyphicon-question-sign"> </span></button>
+				<button id="boilerplateButton" type="button" title="Reset to boilerplate code"><span class="glyphicon glyphicon-remove"> </span></button>
+				<button id="solutionButton"    type="button" title="Sample solution"><span class="glyphicon glyphicon-book"> </span></button>
+				<button id="levelmenuButton"   type="button" title="Level menu"><span class="glyphicon glyphicon-th"> </span></button>
 				<pre id="variableInfo"></pre>
 			</div>
 			<canvas id="cas"></canvas>
@@ -50,8 +50,8 @@
 			<p>Note: Your code for each level is saved in your browser.</p>
 			
 			<div class="centered">
-				<button type="button" class="btn btn-primary" onclick="$('.popup').hide();CC.play();"><span class="glyphicon glyphicon-play"> </span>&nbsp;&nbsp;Start</button>
-				<button type="button" class="btn btn-primary" onclick="showPopup('#levelMenuPopup');"><span class="glyphicon glyphicon-th"> </span>&nbsp;&nbsp;Level menu</button>
+				<button type="button" onclick="showPopup();CC.play();"><span class="glyphicon glyphicon-play"> </span>&nbsp;&nbsp;Start</button>
+				<button type="button" onclick="showPopup('#levelMenuPopup');"><span class="glyphicon glyphicon-th"> </span>&nbsp;&nbsp;Level menu</button>
 			</div>
 		</div>
 		
@@ -59,8 +59,8 @@
 			<h1>Level Complete!</h1>
 			<p>You solved the level in <span id="levelSolvedTime"></span> seconds.</p>
 			<div class="centered">
-				<button type="button" class="btn btn-primary" onclick="showPopup(null);">OK</button>
-				<button type="button" class="btn btn-primary" onclick="showPopup('#levelMenuPopup');"><span class="glyphicon glyphicon-th"> </span>&nbsp;&nbsp;Level menu</button>
+				<button type="button" onclick="showPopup();">OK</button>
+				<button type="button" onclick="showPopup('#levelMenuPopup');"><span class="glyphicon glyphicon-th"> </span>&nbsp;&nbsp;Level menu</button>
 			</div>
 		</div>
 		
@@ -85,7 +85,7 @@ newState = state.simulate(0.5, function(s){ return -s.x ;})</pre>
 				You can view your own variables by calling `monitor(name,value)`.<br/>
 <br/>
 				If you need to, you can use global variables. <br/>
-				Be careful not to create a name collision. Use a prefix, e.g. `cc_`.<br/>
+				You will have to declare them outside your function with the 'var' keyword.<br/>
 				</p>
 		</div>
 		
@@ -112,7 +112,5 @@ newState = state.simulate(0.5, function(s){ return -s.x ;})</pre>
 
 		<script src="js/utils.js"></script>
 		<script src="js/ui.js"></script>
-		<script src="js/init.js"></script>
-		<script src="js/gameloop.js"></script>
 	</body>
 </html>
