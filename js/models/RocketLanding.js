@@ -95,7 +95,7 @@ Models.RocketLanding.ode = function (_this, x)
 }
 
 
-Models.RocketLanding.prototype.draw = function (ctx)
+Models.RocketLanding.prototype.draw = function (ctx, canvas)
 {
 	// clear canvas
 	ctx.setTransform(1,0,0,1,0,0);

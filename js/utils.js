@@ -11,3 +11,11 @@ function round(x,d) {
 	var shift = Math.pow(10, d);
 	return Math.round(x*shift)/shift;
 }
+
+function drawLine(ctx,x1,y1,x2,y2,width) {
+	ctx.beginPath();
+	ctx.moveTo(x1,y1);
+	ctx.lineTo(x2,y2);
+	ctx.lineWidth = width;
+	ctx.stroke();
+}

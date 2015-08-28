@@ -1,19 +1,29 @@
 'use strict';
 
-function resizeCanvas() {
-	canvas.width = $('#cas').width();
-	canvas.height = $('#cas').height();
-}
+var CC = {};
+
+CC.canvas = document.getElementById('cas');
+CC.context = CC.canvas.getContext('2d');
+
+(function(){
+	var $canvas = $('#cas');
+	function resizeCanvas() {
+		CC.canvas.width = $canvas.width();
+		CC.canvas.height = $canvas.height();
+	}
+	$( window ).resize(resizeCanvas);
+	resizeCanvas();
+})();
 
 function loadCodeAndReset() {
-	activeLevel = new activeLevelConstructor();
+	CC.activeLevel = new CC.levelConstructors[CC.activeLevelIndex]();
 	$('#userscript').remove();
 	try {
-		var e = $("<script id='userscript'>\ncontrolFunction = (function(){\n	'use strict';\n	"+editor.getValue()+"\n	return controlFunction;\n})();\n</script>");	
+		var e = $("<script id='userscript'>\ncontrolFunction=undefined;controlFunction = (function(){\n	'use strict';\n	"+CC.editor.getValue()+"\n	return controlFunction;\n})();\n</script>");	
 		$('body').append(e);
 	}
 	catch(e) {
-		simulation.pause();
+		CC.pause();
 		logError(e);
 		return false;
 	}
@@ -21,56 +31,51 @@ function loadCodeAndReset() {
 }
 
 
-function loadLevel(i) {
-	if(0 <= i && i < level_constructors.length) {
+CC.loadLevel = function(i) {
+	if(0 <= i && i < this.levelConstructors.length) {
 		localStorage.setItem("lastLevel",i);
-		activeLevelConstructor = level_constructors[i];
-		activeLevel = new activeLevelConstructor();
-		$('#levelDescription').text(activeLevel.description);
-		$('#levelTitle').text(activeLevel.title);
-		document.title = activeLevel.title +': Control Challenges';
-		var savedCode = localStorage.getItem(activeLevel.name+"Code");
+		this.activeLevelIndex = i;
+		this.activeLevel = new this.levelConstructors[i]();
+		$('#levelDescription').text(this.activeLevel.description);
+		$('#levelTitle').text(this.activeLevel.title);
+		document.title = this.activeLevel.title +': Control Challenges';
+		var savedCode = localStorage.getItem(this.activeLevel.name+"Code");
 		if(typeof savedCode == 'string' && savedCode.length > 10)
-			editor.setValue(savedCode);
+			this.editor.setValue(savedCode);
 		else 
-			editor.setValue(activeLevel.boilerPlateCode);
+			this.editor.setValue(this.activeLevel.boilerPlateCode);
 		loadCodeAndReset();
 		showPopup('#levelStartPopup');
 	}
-}
+};
 
-function editorSetCode_preserveOld(code) {
-	var lines = editor.getValue().split(/\r?\n/);
-	for (var i = 0; i < lines.length; i++) if(!lines[i].startsWith('//') && lines[i].length > 0) lines[i] = '//'+lines[i];
-	var oldCode = lines.join("\n");
-	editor.setValue(code + "\n\n"+oldCode+"\n");
-}
-
-const simulation = (function(){
+(function(){
 	var runSimulation = false;
 	const pauseButton = $('#pauseButton');
 	const playButton = $('#playButton');
-	function pause() {
+	CC.pause = function () {
 		pauseButton.hide();
 		playButton.show();
 		runSimulation = false;
-	}
-	function play() {
+	};
+	CC.play = function () {
 		pauseButton.show();
 		playButton.hide();
 		runSimulation = true;
-	}
-	function running(){return runSimulation;}
-	return {pause:pause,play:play,running:running};
+	};
+	CC.running = function(){return runSimulation;};
+
 })();
 
-function drawLine(ctx,x1,y1,x2,y2,width) {
-	ctx.beginPath();
-	ctx.moveTo(x1,y1);
-	ctx.lineTo(x2,y2);
-	ctx.lineWidth = width;
-	ctx.stroke();
+CC.editorSetCode_preserveOld = function(code) {
+	var lines = CC.editor.getValue().split(/\r?\n/);
+	for (var i = 0; i < lines.length; i++) if(!lines[i].startsWith('//') && lines[i].length > 0) lines[i] = '//'+lines[i];
+	var oldCode = lines.join("\n");
+	CC.editor.setValue(code + "\n\n"+oldCode+"\n");
 }
+
+CC.loadBoilerplate = function(){ this.editorSetCode_preserveOld(this.activeLevel.boilerPlateCode); };
+CC.loadSampleSolution = function(){ this.editorSetCode_preserveOld(this.activeLevel.sampleSolution); };
 
 
 function toggleVariableInfo() {
@@ -102,12 +107,54 @@ function logError(s) {
 
 function clearMonitor() {$('#variableInfo').text('');}
 function monitor(name,val) {
-	if(typeof val == 'number') val = ""+round(val,4);4
+	if(typeof val == 'number') val = ""+round(val,4);
 	$('#variableInfo').text($('#variableInfo').text()+name+" = "+val+"\n");
 }
 
 function showPopup(p) {
 	$('.popup').hide();
 	$(p).show();
-	if(p!=null)simulation.pause();
+	if(p!=null)CC.pause();
 }
+
+
+
+
+CC.levelConstructors = [
+	Levels.TutorialBlockWithFriction,
+	Levels.TutorialBlockWithoutFriction,
+	Levels.TutorialBlockOnSlope,
+	Levels.StabilizeSinglePendulum,
+	Levels.SwingUpSinglePendulum,
+	Levels.RocketLandingNormal,
+	Levels.StabilizeDoublePendulum
+];
+CC.levelMenuLinebreaks = [false,false,true,false,false,false,false];
+
+$(document).ready(function() {$('[data-toggle="tooltip"]').tooltip();});
+$('#toggleVariableInfoShowButton').hide();
+CC.editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), {lineNumbers: true, mode: "javascript", matchBrackets: true, lineWrapping:true});
+CC.editor.on("change", function () {localStorage.setItem(CC.activeLevel.name+"Code", CC.editor.getValue());});
+shortcut.add("Alt+Enter",function() {if(loadCodeAndReset())CC.play();}, {'type':'keydown','propagate':true,'target':document});
+shortcut.add("Alt+P",function() {if(runSimulation)CC.pause();else CC.play();}, {'type':'keydown','propagate':true,'target':document});
+shortcut.add("Esc",function() {showPopup(null);}, {'type':'keydown','propagate':true,'target':document});
+
+$('.popup').prepend($('<button type="button" class="btn btn-danger closeButton" onclick="showPopup(null);" data-toggle="tooltip" data-placement="bottom" title="Close [ESC]"><span class="glyphicon glyphicon-remove"> </span></button>'));
+
+
+$('#buttons').cleanWhitespace();
+$('.popup').cleanWhitespace();
+
+// load level names into level menu.
+for(var i=0; i<CC.levelConstructors.length;++i) {
+	var level = new CC.levelConstructors[i]();
+	var e = $('<button type="button" class="btn btn-primary" onclick="CC.loadLevel('+i+');">'+level.title+'</button>');	
+	$('#levelList').append(e);
+	if(CC.levelMenuLinebreaks[i])
+		$('#levelList').append($('<br />'));
+}
+setErrorBoxSize(false);
+try { CC.loadLevel(localStorage.getItem("lastLevel")||0); } 
+catch (e) { logError(e); }
+loadCodeAndReset();
+CC.pause();

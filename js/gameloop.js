@@ -1,23 +1,24 @@
 'use strict';
 
+var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 function gameLoop() {
-	if(simulation.running()) {
+	if(CC.running()) {
 		clearMonitor();
-		try { activeLevel.simulate(0.02,controlFunction); }
+		try { CC.activeLevel.simulate(0.02,controlFunction); }
 		catch(e) {
-			pauseSimulation();
+			CC.pause();
 			logError(e);
 		}
 		
-		if(activeLevel.levelComplete()) {
-			$('#levelSolvedTime').text(round(activeLevel.getSimulationTime(),2));
+		if(CC.activeLevel.levelComplete()) {
+			$('#levelSolvedTime').text(round(CC.activeLevel.getSimulationTime(),2));
 			showPopup('#levelCompletePopup');
 		}
-		$('#variableInfo').text($('#variableInfo').text()+activeLevel.model.infoText());		
+		$('#variableInfo').text($('#variableInfo').text()+CC.activeLevel.model.infoText());		
 	}
-	activeLevel.model.draw(context);
+	CC.activeLevel.model.draw(CC.context,CC.canvas);
 	
-	if(simulation.running()) requestAnimationFrame(gameLoop);
+	if(CC.running()) requestAnimationFrame(gameLoop);
 	else setTimeout( function() {requestAnimationFrame(gameLoop);}, 200);
 }
 

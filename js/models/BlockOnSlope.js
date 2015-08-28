@@ -42,7 +42,7 @@ Models.BlockOnSlope.ode = function (_this, x)
 }
 
 
-Models.BlockOnSlope.prototype.draw = function (ctx)
+Models.BlockOnSlope.prototype.draw = function (ctx, canvas)
 {
 	// clear canvas
 	ctx.setTransform(1,0,0,1,0,0);

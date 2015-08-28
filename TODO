@@ -7,3 +7,4 @@
 * [done] check controlFunction return value type
 * [done] popup close button
 * protect against long runtime of user code
+* move event hooks to js

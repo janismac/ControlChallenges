@@ -85,12 +85,12 @@ Models.DoublePendulum.ode = function (_this, x)
 }
 
 
-Models.DoublePendulum.prototype.draw = function (ctx)
+Models.DoublePendulum.prototype.draw = function (ctx, canvas)
 {
 	var L = this.L1 + this.L2;
 	// clear canvas
-	context.setTransform(1,0,0,1,0,0);
-	context.clearRect(0,0,canvas.width,canvas.height);
+	ctx.setTransform(1,0,0,1,0,0);
+	ctx.clearRect(0,0,canvas.width,canvas.height);
 	
 	ctx.setTransform(1,0,0,1,0,0);
 	ctx.translate(canvas.width/2,canvas.height/2);
