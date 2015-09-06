@@ -83,7 +83,7 @@ joystick.on('end', function () {
 	CC.inputUp=0;
 });
 joystick.on('start', function () {
-	if(this.rocket.detectCollision()) {CC.resetRocket();CC.play();}
+	if(CC.rocket.detectCollision()) {CC.resetRocket();CC.play();}
 });
 
 CC.inputLeft=0;
