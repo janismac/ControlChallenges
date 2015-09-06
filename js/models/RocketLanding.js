@@ -26,6 +26,7 @@ Models.RocketLanding.prototype.vars =
 	y: 0,
 	dy: 0,
 	T: 0,
+	landingConstraints: {dx:5,dy:5,dtheta:0.1,sinTheta:0.05},
 };
 
 Models.RocketLanding.prototype.detectCollision = function ()
@@ -49,10 +50,10 @@ Models.RocketLanding.prototype.landed = function ()
 {
 	return this.detectCollision()
 		&& Math.abs(this.x) < 30
-		&& Math.abs(this.dx) < 5
-		&& Math.abs(this.dy) < 10
-		&& Math.abs(this.dtheta) < 0.1
-		&& Math.abs(Math.sin(this.theta)) < 0.08
+		&& Math.abs(this.dx) < this.landingConstraints.dx
+		&& Math.abs(this.dy) < this.landingConstraints.dy
+		&& Math.abs(this.dtheta) < this.landingConstraints.dtheta
+		&& Math.abs(Math.sin(this.theta)) < this.landingConstraints.sinTheta
 		&& Math.cos(this.theta) > 0;
 }
 
