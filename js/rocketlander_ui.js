@@ -37,6 +37,8 @@ CC.gameLoop = (function() {
 		}
 	}
 	this.rocket.draw(this.context,this.canvas);
+
+	if(this.rocket.detectCollision()) CC.pause();
 	
 	if(this.running()) requestAnimationFrame(this.gameLoop);
 	else setTimeout( function() {requestAnimationFrame(CC.gameLoop);}, 200);
@@ -50,7 +52,7 @@ var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAni
 
 
 shortcut.add("P",function() {if(CC.running())CC.pause();else CC.play();}, {'type':'keydown','propagate':true,'target':document});
-shortcut.add("enter",function() {CC.resetRocket();}, {'type':'keydown','propagate':true,'target':document});
+shortcut.add("enter",function() {CC.resetRocket();CC.play();}, {'type':'keydown','propagate':true,'target':document});
 shortcut.add("left",function() {CC.inputLeft=1;}, {'type':'keydown','propagate':true,'target':document});
 shortcut.add("left",function() {CC.inputLeft=0;}, {'type':'keyup','propagate':true,'target':document});
 shortcut.add("right",function() {CC.inputLeft=-1;}, {'type':'keydown','propagate':true,'target':document});
@@ -60,8 +62,10 @@ shortcut.add("up",function() {CC.inputUp=0;}, {'type':'keyup','propagate':true,'
 
 
 CC.resetRocket = function(){	
-	this.rocket = new Models.RocketLanding({TWR: 2,theta: -0.3,dtheta: 0,Length: 40,Width: 5,x: -100,dx: 0,y: 200,dy: -20,T: 0});
+	this.rocket = new Models.RocketLanding({TWR: 2,theta: rand0(),dtheta: rand0(),Length: 40,Width: 5,x: 200*rand0(),dx: 0,y: 300+100*rand0(),dy: 40*rand0()});
 };
+
+function rand0(){return Math.random()*2-1;}
 
 CC.inputLeft=0;
 CC.inputUp=0;
