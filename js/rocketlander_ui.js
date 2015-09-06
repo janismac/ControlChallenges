@@ -75,7 +75,7 @@ function rand0(){return Math.random()*2-1;}
 var joystick = nipplejs.create({ color: 'black'});
 
 joystick.on('move', function (evt, data) {	
-	CC.inputLeft= data.distance * Math.cos(data.angle.radian) / 50;
+	CC.inputLeft= data.distance * Math.cos(data.angle.radian) / 50 / 5;
 	CC.inputUp= data.distance / 50;// * Math.sin(data.angle.radian);
 });
 joystick.on('end', function () {
