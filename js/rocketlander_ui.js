@@ -78,9 +78,12 @@ joystick.on('move', function (evt, data) {
 	CC.inputLeft= data.distance * Math.cos(data.angle.radian) / 50;
 	CC.inputUp= data.distance / 50;// * Math.sin(data.angle.radian);
 });
-joystick.on('end', function (evt, data) {
+joystick.on('end', function () {
 	CC.inputLeft=0;
 	CC.inputUp=0;
+});
+joystick.on('start', function () {
+	if(this.rocket.detectCollision()) {CC.resetRocket();CC.play();}
 });
 
 CC.inputLeft=0;
