@@ -219,6 +219,7 @@ CC.loadCodeAndReset();
 CC.pause();
 
 
+//ImageDataCache.load('track.png');
 
 
 CC.gameLoop();
