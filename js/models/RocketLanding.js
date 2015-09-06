@@ -162,14 +162,22 @@ Models.RocketLanding.prototype.draw = function (ctx, canvas)
 		drawLine(ctx,x,-1,x,-5,1);
 	}
 	
-	if(this.detectCollision() && !this.landed())
+	if(this.detectCollision())
 	{
 		ctx.save();
 		ctx.scale(1,-1);
-		ctx.fillStyle="#ff0000";
 		ctx.font="10px Verdana";
 		ctx.textAlign="center"; 
-		ctx.fillText("CRASHED!",0,-80);
+		if(this.landed())
+		{
+			ctx.fillStyle="#009900";
+			ctx.fillText("Landed!",0,-80);
+		}
+		else
+		{
+			ctx.fillStyle="#990000";
+			ctx.fillText("CRASHED!",0,-80);
+		}
 		ctx.restore();
 	}
 }
