@@ -1,5 +1,5 @@
 'use strict';
-if (typeof Levels == 'undefined') var Levels = {};
+if (typeof Levels === 'undefined') var Levels = {};
 
 Levels.TutorialBlockWithFriction = function()
 {

@@ -113,7 +113,7 @@ CC.gameLoop = (function() {
 			this.levelSolvedTime.text(round(this.activeLevel.getSimulationTime(),2));
 			showPopup('#levelCompletePopup');
 		}
-		this.variableInfo.text(this.variableInfo.text()+this.activeLevel.model.infoText());		
+		this.variableInfo.text(this.variableInfo.text()+this.activeLevel.model.infoText());	
 	}
 	this.activeLevel.model.draw(this.context,this.canvas);
 	
@@ -127,11 +127,12 @@ CC.levelConstructors = [
 	Levels.TutorialBlockWithoutFriction,
 	Levels.TutorialBlockOnSlope,
 	Levels.StabilizeSinglePendulum,
-	Levels.SwingUpSinglePendulum,
+	Levels.SwingUpSinglePendulum,	
+	Levels.StabilizeDoublePendulum,
 	Levels.RocketLandingNormal,
-	Levels.StabilizeDoublePendulum
+	Levels.VehicleSteeringSimple
 ];
-CC.levelMenuLinebreaks = [false,false,true,false,false,false,false];
+CC.levelMenuLinebreaks = [false,false,true,false,false,true,false,false];
 
 
 ///////////////////// initialize ////////////////////////
@@ -219,7 +220,7 @@ CC.loadCodeAndReset();
 CC.pause();
 
 
-//ImageDataCache.load('track.png');
+
 
 
 CC.gameLoop();

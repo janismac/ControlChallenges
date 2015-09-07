@@ -1,5 +1,5 @@
 'use strict';
-if (typeof Models == 'undefined') var Models = {};
+if (typeof Models === 'undefined') var Models = {};
 
 Models.SinglePendulum = function(params)
 {

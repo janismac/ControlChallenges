@@ -1,5 +1,5 @@
 'use strict';
-if (typeof Levels == 'undefined') var Levels = {};
+if (typeof Levels === 'undefined') var Levels = {};
 
 Levels.VehicleSteeringSimple = function()
 {
@@ -7,9 +7,10 @@ Levels.VehicleSteeringSimple = function()
 	this.title = "TODO";
 
 	this.sampleSolution = "TODO";
-	this.boilerPlateCode = "TODO";
+	this.boilerPlateCode = "function controlFunction(x){};";
 	this.description = "TODO";
-	this.model = new Models.({});
+	ImageDataCache.load('track.png');
+	this.model = new Models.Vehicle({trackImgURL: 'track.png'});
 }
 
 
