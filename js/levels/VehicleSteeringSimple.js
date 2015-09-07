@@ -4,7 +4,7 @@ if (typeof Levels === 'undefined') var Levels = {};
 Levels.VehicleSteeringSimple = function()
 {
 	this.name = "VehicleSteeringSimple";
-	this.title = "TODO";
+	this.title = "Vehicle Steering";
 
 	this.sampleSolution = "TODO";
 	this.boilerPlateCode = "function controlFunction(x){};";

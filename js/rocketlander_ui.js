@@ -64,10 +64,10 @@ shortcut.add("up",function() {CC.inputUp=0;}, {'type':'keyup','propagate':true,'
 CC.resetRocket = function(){	
 	this.rocket = new Models.RocketLanding(
 		{
-			TWR: 2,theta: rand0(),dtheta: rand0(),Length: 40,Width: 5,x: 200*rand0(),dx: 0,y: 300+100*rand0(),dy: 40*rand0(),
-			landingConstraints: {dx:15,dy:15,dtheta:0.5,sinTheta:0.3}
+			TWR: 2,theta: rand0(),dtheta: rand0(),Length: 40,Width: 5,x: 200*rand0(),dx: 30*rand0(),y: 400+50*rand0(),dy: 30*rand0(),
+			landingConstraints: {dx:8,dy:10,dtheta:0.3,sinTheta:0.3}
 		}
-		);
+	);
 };
 
 function rand0(){return Math.random()*2-1;}

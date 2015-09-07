@@ -28,7 +28,7 @@ ImageDataCache.at = function(url, x, y){
 	{
 		var img = ImageDataCache.images[url];
 		var i = (y*img.width+x)*4;
-		return [img.data[i],img.data[i+1],img.data[i+2]];
+		return [img.data[i],img.data[i+1],img.data[i+2],img.data[i+3]];
 	}
 };
 

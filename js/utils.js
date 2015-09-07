@@ -19,3 +19,7 @@ function drawLine(ctx,x1,y1,x2,y2,width) {
 	ctx.lineWidth = width;
 	ctx.stroke();
 }
+
+function padSpaces(str,count) {
+   return String('                                 ' + str).slice(-count);
+};
