@@ -109,6 +109,8 @@ CC.gameLoop = (function() {
 			this.logError(e);
 		}
 		
+		if(this.activeLevel.levelFailed()) this.pause();
+
 		if(this.activeLevel.levelComplete()) {
 			this.levelSolvedTime.text(round(this.activeLevel.getSimulationTime(),2));
 			showPopup('#levelCompletePopup');

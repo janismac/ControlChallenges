@@ -16,6 +16,8 @@ Levels.RocketLandingNormal = function()
 Levels.RocketLandingNormal.prototype.levelComplete = function(){return this.model.landed();}
 
 
+Levels.RocketLandingNormal.prototype.levelFailed = function(){return this.model.crashed();}
+
 Levels.RocketLandingNormal.prototype.simulate = function (dt, controlFunc)
 {
 	this.model = this.model.simulate (dt, controlFunc);

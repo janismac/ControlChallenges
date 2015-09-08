@@ -22,6 +22,11 @@ Levels.SwingUpSinglePendulum.prototype.levelComplete = function()
 	&& Math.cos(this.model.theta) > 0.999;
 }
 
+Levels.SwingUpSinglePendulum.prototype.levelFailed = function()
+{
+	return false;
+}
+
 
 Levels.SwingUpSinglePendulum.prototype.simulate = function (dt, controlFunc)
 {

@@ -6,8 +6,8 @@ Levels.VehicleSteeringSimple = function()
 	this.name = "VehicleSteeringSimple";
 	this.title = "Vehicle Steering";
 
-	this.sampleSolution = "TODO";
-	this.boilerPlateCode = "function controlFunction(x){};";
+	this.sampleSolution = "function controlFunction(vehicle){\n	return 0.1*(vehicle.lidarPoints[0].distance - vehicle.lidarPoints[4].distance);\n};";
+	this.boilerPlateCode = "function controlFunction(vehicle){\n	return -0.03;\n};";
 	this.description = "TODO";
 	ImageDataCache.load('track.png');
 	this.model = new Models.Vehicle({trackImgURL: 'track.png'});
@@ -17,6 +17,11 @@ Levels.VehicleSteeringSimple = function()
 Levels.VehicleSteeringSimple.prototype.levelComplete = function()
 {
 	return false;
+}
+
+Levels.VehicleSteeringSimple.prototype.levelFailed = function()
+{
+	return this.model.detectCollision();
 }
 
 

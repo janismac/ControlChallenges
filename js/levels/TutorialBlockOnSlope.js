@@ -19,6 +19,11 @@ Levels.TutorialBlockOnSlope.prototype.levelComplete = function()
 		&& Math.abs(this.model.dx) < 0.01;
 }
 
+Levels.TutorialBlockOnSlope.prototype.levelFailed = function()
+{
+	return false;
+}
+
 
 Levels.TutorialBlockOnSlope.prototype.simulate = function (dt, controlFunc)
 {

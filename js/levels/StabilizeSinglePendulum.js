@@ -21,6 +21,11 @@ Levels.StabilizeSinglePendulum.prototype.levelComplete = function()
 	&& Math.cos(this.model.theta) > 0.999;
 }
 
+Levels.StabilizeSinglePendulum.prototype.levelFailed = function()
+{
+	return false;
+}
+
 
 Levels.StabilizeSinglePendulum.prototype.simulate = function (dt, controlFunc)
 {

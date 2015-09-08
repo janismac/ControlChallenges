@@ -19,6 +19,11 @@ Levels.TutorialBlockWithFriction.prototype.levelComplete = function()
 		&& Math.abs(this.model.dx) < 0.01;
 }
 
+Levels.TutorialBlockWithFriction.prototype.levelFailed = function()
+{
+	return false;
+}
+
 
 Levels.TutorialBlockWithFriction.prototype.simulate = function (dt, controlFunc)
 {

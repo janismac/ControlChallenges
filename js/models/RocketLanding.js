@@ -57,6 +57,11 @@ Models.RocketLanding.prototype.landed = function ()
 		&& Math.cos(this.theta) > 0;
 }
 
+Models.RocketLanding.prototype.crashed = function ()
+{
+	return this.detectCollision() && !this.landed();
+}
+
 Models.RocketLanding.prototype.simulate = function (dt, controlFunc)
 {
 	var copy = new Models.RocketLanding(this);

@@ -41,50 +41,77 @@ Models.Vehicle.prototype.vars =
 	T: 0,
 };
 
-Models.Vehicle.prototype.simulate = function (dt, controlFunc)
-{
+Models.Vehicle.prototype.simulate = function (dt, controlFunc) {	
 	var copy = new Models.Vehicle(this);
-	var state = [this.x, this.y, this.heading, this.speed];
-	var input = controlFunc(new Models.Vehicle(this));
 
-	if(this.constantSpeed)
+	var imgData = ImageDataCache.get(this.trackImgURL);
+
+	if(imgData && !this.detectCollision())
 	{
-		copy.acceleration = 0;
-		if(typeof input !== 'number') throw "Error: The controlFunction must return a number.";
-		copy.steering = Math.max(-this.steeringLimit,Math.min(this.steeringLimit,input));
-	}
-	else
-	{
-		if(typeof input !== 'object' || typeof input.steering !== 'number' || typeof input.acceleration !== 'number') 
-			throw "Error: The controlFunction must return an object: {steering: number, acceleration: number}";
-		copy.steering = Math.max(-this.steeringLimit,Math.min(this.steeringLimit,input.steering));
-		copy.acceleration = Math.max(-this.accelerationLimit,Math.min(this.accelerationLimit,input.acceleration));
+
+		var state = [this.x, this.y, this.heading, this.speed];
+		var input = controlFunc(new Models.Vehicle(this));
+
+		if(this.constantSpeed)
+		{
+			copy.acceleration = 0;
+			if(typeof input !== 'number') throw "Error: The controlFunction must return a number.";
+			copy.steering = Math.max(-this.steeringLimit,Math.min(this.steeringLimit,input));
+		}
+		else
+		{
+			if(typeof input !== 'object' || typeof input.steering !== 'number' || typeof input.acceleration !== 'number') 
+				throw "Error: The controlFunction must return an object: {steering: number, acceleration: number}";
+			copy.steering = Math.max(-this.steeringLimit,Math.min(this.steeringLimit,input.steering));
+			copy.acceleration = Math.max(-this.accelerationLimit,Math.min(this.accelerationLimit,input.acceleration));
+		}
+
+		var soln = numeric.dopri(0,dt,state,function(t,x){ return Models.Vehicle.ode(copy,x); },1e-4).at(dt);	
+		
+		copy.x = soln[0];
+		copy.y = soln[1];
+		copy.heading = soln[2];
+		copy.speed = soln[3];
+		copy.T = this.T + dt;
 	}
 
-	var soln = numeric.dopri(0,dt,state,function(t,x){ return Models.Vehicle.ode(copy,x); },1e-4).at(dt);	
-	
-	copy.x = soln[0];
-	copy.y = soln[1];
-	copy.heading = soln[2];
-	copy.speed = soln[3];
-	copy.T = this.T + dt;
 	return copy;	
 }
 
-Models.Vehicle.ode = function (_this, x)
-{
+Models.Vehicle.ode = function (_this, x) {
 	var s = Math.sin(x[2]);
 	var c = Math.cos(x[2]);
 	var v = x[3];
 	var Lr = _this.Lr;
 	var Lwb = _this.Lf+_this.Lr;
-	var tanSteering = Math.tan(_this.steering);
-	return [v*(-Lr/Lwb*s*tanSteering+c),v*(Lr/Lwb*c*tanSteering+s),tanSteering*v/Lwb,_this.acceleration];
+	var R = Lr/Lwb*Math.tan(_this.steering);
+	var norm = Math.sqrt((-R*s+c)*(-R*s+c)+(R*c+s)*(R*c+s));
+	return [v*(-R*s+c)/norm,v*(R*c+s)/norm,Math.tan(_this.steering)*v/Lwb,_this.acceleration];
 }
 
+Models.Vehicle.prototype.detectCollision = function (imgData) {
+	var imgData = ImageDataCache.get(this.trackImgURL);
 
-Models.Vehicle.prototype.draw = function (ctx, canvas)
-{
+	if(imgData)
+	{
+		var L = this.length;
+		var W = this.width;
+		var s = Math.sin(this.heading);
+		var c = Math.cos(this.heading);
+		// points relative to the center that form a convex hull.
+		var outerPoints = [{x:L/2,y:W/2},{x:-L/2,y:W/2},{x:L/2,y:-W/2},{x:-L/2,y:-W/2}];
+		for (var i = 0; i < outerPoints.length; i++)
+		{
+			var p = outerPoints[i];
+			var hull_x = p.x*c-p.y*s+this.x;
+			var hull_y = p.x*s+p.y*c+this.y;
+			if(this.coordIsObstacle(hull_x/this.pixelSize,hull_y/this.pixelSize,imgData)) return true;
+		}
+		return false;
+	} else return false;
+}
+
+Models.Vehicle.prototype.draw = function (ctx, canvas) {
 	var imgData = ImageDataCache.get(this.trackImgURL);
 
 	if(imgData)
@@ -111,12 +138,18 @@ Models.Vehicle.prototype.draw = function (ctx, canvas)
 
 		ctx.fillStyle="#5555aa";
 		ctx.fillRect(-this.length/2,-this.width/2,this.length,this.width);
-
 	}
-
 }
 
-Models.Vehicle.prototype.lineSearch = function(x,y,direction){
+
+Models.Vehicle.prototype.coordIsObstacle = function(x,y,imgData) {
+	x = x|0; // convert to int
+	y = y|0;
+	if(x<0 || y<0 || imgData.width<=x || imgData.height<= y) return true;
+	return this.isObstacle(ImageDataCache.at(this.trackImgURL, x, y));
+};
+
+Models.Vehicle.prototype.lineSearch = function(x,y,direction) {
 	var imgData = ImageDataCache.get(this.trackImgURL);
 
 	if(imgData)
@@ -127,21 +160,15 @@ Models.Vehicle.prototype.lineSearch = function(x,y,direction){
 		var s = Math.sin(direction);
 		var step = 5;
 		var distance = 0;
-		var coordIsObstacle = (function(x,y){
-			x = x|0; // convert to int
-			y = y|0;
-			if(x<0 || y<0 || imgData.width<=x || imgData.height<= y) return true;
-			return this.isObstacle(ImageDataCache.at(this.trackImgURL, x, y));
-		}).bind(this);
 
-		var currentPointIsObstacle = coordIsObstacle(x,y);
+		var currentPointIsObstacle = this.coordIsObstacle(x,y,imgData);
 		if(currentPointIsObstacle) return {x:x*this.pixelSize,y:y*this.pixelSize,distance:distance*this.pixelSize};
 
 		for (var i = 0; i < 10000; i++) { // This loop should always terminate early with return. Iteration limit for safety.
 			var x2 = x + c*distance;
 			var y2 = y + s*distance;
 
-			var nextPointIsObstacle = coordIsObstacle(x2,y2);
+			var nextPointIsObstacle = this.coordIsObstacle(x2,y2,imgData);
 
 			if(currentPointIsObstacle != nextPointIsObstacle) step *= -.5;
 
