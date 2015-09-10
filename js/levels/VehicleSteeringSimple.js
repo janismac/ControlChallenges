@@ -16,7 +16,8 @@ Levels.VehicleSteeringSimple = function()
 
 Levels.VehicleSteeringSimple.prototype.levelComplete = function()
 {
-	return false;
+	return Math.abs(this.model.x - 82) < 4 
+		&& Math.abs(this.model.y - 46) < 4;
 }
 
 Levels.VehicleSteeringSimple.prototype.levelFailed = function()

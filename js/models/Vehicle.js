@@ -22,7 +22,7 @@ Models.Vehicle = function(params)
 Models.Vehicle.prototype.vars = 
 {
 	x: 16,
-	y: 15,
+	y: 9,
 	speed: 20,
 	heading: 0,
 	acceleration: 0,
@@ -37,7 +37,7 @@ Models.Vehicle.prototype.vars =
 	steeringLimit: 0.5,
 	accelerationLimit: 5,
 	constantSpeed: true,
-	isObstacle: function(x){return x[0]<100;},
+	isObstacle: function(x){return x[3]<100;},
 	T: 0,
 };
 
@@ -128,7 +128,7 @@ Models.Vehicle.prototype.draw = function (ctx, canvas) {
 		ctx.scale(1/this.pixelSize,1/this.pixelSize);
 
 		for (var i = 0; i < this.lidarPoints.length; i++) {
-			ctx.strokeStyle = '#ff0000';
+			ctx.strokeStyle = '#77ff00';
 			drawLine(ctx,this.x,this.y,this.lidarPoints[i].x,this.lidarPoints[i].y,0.1*this.width);			
 		};
 
@@ -136,7 +136,7 @@ Models.Vehicle.prototype.draw = function (ctx, canvas) {
 		ctx.translate(this.x,this.y);
 		ctx.rotate(this.heading);
 
-		ctx.fillStyle="#5555aa";
+		ctx.fillStyle="#ffaa00";
 		ctx.fillRect(-this.length/2,-this.width/2,this.length,this.width);
 	}
 }
@@ -193,8 +193,8 @@ Models.Vehicle.prototype.infoText = function ()
 
 	for (var i = 0; i < this.lidarPoints.length; i++) {
 		str += "\nvehicle.lidarPoints["+i+"] = {";
-		str += "x: " + padSpaces(round(this.lidarPoints[i].x,2),8) + ", ";
-		str += "y: " + padSpaces(round(this.lidarPoints[i].y,2),8) + ", ";
+		//str += "x: " + padSpaces(round(this.lidarPoints[i].x,2),8) + ", ";
+		//str += "y: " + padSpaces(round(this.lidarPoints[i].y,2),8) + ", ";
 		str += "distance: " + padSpaces(round(this.lidarPoints[i].distance,2),8) + ", ";
 		str += "direction: " + padSpaces(round(this.lidarPoints[i].direction,2),8);
 		str += "}";
