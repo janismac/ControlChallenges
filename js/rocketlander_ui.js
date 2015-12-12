@@ -40,7 +40,7 @@ CC.gameLoop = (function() {
 
 	if(this.rocket.detectCollision()) CC.pause();
 	
-	if(this.running()) requestAnimationFrame(this.gameLoop);
+	if(this.running()) setTimeout( function() {requestAnimationFrame(CC.gameLoop);}, 10);
 	else setTimeout( function() {requestAnimationFrame(CC.gameLoop);}, 200);
 }).bind(CC);
 
