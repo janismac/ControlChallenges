@@ -73,11 +73,6 @@ CC.editorSetCode_preserveOld = function(code) {
 CC.loadBoilerplate = function(){ this.editorSetCode_preserveOld(this.activeLevel.boilerPlateCode); };
 CC.loadSampleSolution = function(){ this.editorSetCode_preserveOld(this.activeLevel.sampleSolution); };
 
-
-
-
-
-
 CC.clearErrors = function (){ this.logText.text(''); };
 CC.logError = function(s) {
 	var timeStamp = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");	
@@ -96,9 +91,6 @@ function showPopup(p) {
 	$(p).show();
 	if(p)CC.pause();
 }
-
-
-
 
 CC.gameLoop = (function() {
 	if(this.running()) {
@@ -132,9 +124,10 @@ CC.levelConstructors = [
 	Levels.SwingUpSinglePendulum,	
 	Levels.StabilizeDoublePendulum,
 	Levels.RocketLandingNormal,
+	Levels.RocketLandingUpsideDown,
 	Levels.VehicleSteeringSimple
 ];
-CC.levelMenuLinebreaks = [false,false,true,false,false,true,false,false];
+CC.levelMenuLinebreaks = [false,false,true,false,false,true,false,true,false];
 
 
 ///////////////////// initialize ////////////////////////
