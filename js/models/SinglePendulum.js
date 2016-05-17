@@ -61,7 +61,6 @@ Models.SinglePendulum.ode = function (_this, x)
 Models.SinglePendulum.prototype.draw = function (ctx, canvas)
 {
 	resetCanvas(ctx,canvas);
-	ctx.scale(canvas.width/8.0,-canvas.width/8.0);
 	ctx.translate(0,-this.L);
 	
 	var cartWidth = 0.4*this.L;

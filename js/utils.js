@@ -28,4 +28,5 @@ function resetCanvas(ctx,canvas){
 	ctx.setTransform(1,0,0,1,0,0);
 	ctx.clearRect(0,0,canvas.width,canvas.height);	
 	ctx.translate(canvas.width/2,canvas.height/2);
+	ctx.scale(canvas.width/8.0,-canvas.width/8.0);
 }

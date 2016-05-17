@@ -31,7 +31,7 @@ Levels.MultirotorIntro.prototype.getSimulationTime = function()	{return this.mod
 
 Levels.MultirotorIntro.prototype.draw = function(ctx, canvas){
 	resetCanvas(ctx,canvas);
-	ctx.scale(400,-400);
+	ctx.scale(3,3);
 	ctx.fillStyle="#88ff88";
 	var s = this.model.Length;
 	ctx.fillRect(-2*s,-.8*s,4*s,1.6*s);

@@ -42,7 +42,7 @@ CC.loadLevel = function(name) {
 		localStorage.setItem("lastLevel",name);
 		this.activeLevelName = name;
 		this.activeLevel = new this.levels[name].constructor();
-		$('#levelDescription').text(this.activeLevel.description);
+		$('#levelDescription').html(this.activeLevel.description);
 		$('#levelTitle').text(this.activeLevel.title);
 		document.title = this.activeLevel.title +': Control Challenges';
 		var savedCode = localStorage.getItem(this.activeLevel.name+"Code");
@@ -113,7 +113,8 @@ CC.gameLoop = (function() {
 			this.logError(e);
 		}
 		
-		if(this.activeLevel.levelFailed()) this.pause();
+		if(this.activeLevel.levelFailed()) 
+			this.pause();
 
 		if(this.activeLevel.levelComplete()) {
 			this.levelSolvedTime.text(round(this.activeLevel.getSimulationTime(),2));
@@ -140,6 +141,7 @@ CC.levels = {
 	VehicleSteeringSimple:        {constructor: Levels.VehicleSteeringSimple,        lineBreakAfter: false},
 	VehicleRacing:                {constructor: Levels.VehicleRacing,                lineBreakAfter: true },
 	MultirotorIntro:              {constructor: Levels.MultirotorIntro,              lineBreakAfter: false},
+	MultirotorObstacles:          {constructor: Levels.MultirotorObstacles,          lineBreakAfter: false},
 };
 
 
