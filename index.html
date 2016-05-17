@@ -39,6 +39,7 @@
 				<button id="boilerplateButton" type="button" title="Reset to boilerplate code"><span class="glyphicon glyphicon-remove"> </span></button>
 				<button id="solutionButton"    type="button" title="Sample solution"><span class="glyphicon glyphicon-book"> </span></button>
 				<button id="levelmenuButton"   type="button" title="Level menu"><span class="glyphicon glyphicon-th"> </span></button>
+				<button id="shareButton"       type="button" title="Share"><span class="glyphicon glyphicon-share"> </span></button>
 				<pre id="variableInfo"></pre>
 			</div>
 			<canvas id="cas"></canvas>
@@ -62,6 +63,11 @@
 				<button type="button" onclick="showPopup();">OK</button>
 				<button type="button" onclick="showPopup('#levelMenuPopup');"><span class="glyphicon glyphicon-th"> </span>&nbsp;&nbsp;Level menu</button>
 			</div>
+		</div>
+
+		<div id="sharePopup" class="popup">
+			<p> Copy URL: </p>
+			<input type="text" id="shareLink" style="width:99%"/>
 		</div>
 		
 		<div id="levelMenuPopup" class="popup">

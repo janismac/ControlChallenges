@@ -2,6 +2,13 @@
 
 var CC = {};
 
+
+// interpret url param as shared code.
+CC.sharedCode = false;
+if(document.location.search.length > 1){
+	CC.sharedCode = document.location.search.substring(1);
+}
+
 CC.canvas = document.getElementById('cas');
 CC.context = CC.canvas.getContext('2d');
 
@@ -47,6 +54,11 @@ CC.loadLevel = function(i) {
 		showPopup('#levelStartPopup');
 	}
 };
+
+CC.share_BLOB = function(){
+	return (""+window.location).split('?')[0] + "?" + btoa(JSON.stringify({code:CC.editor.getValue(), lvl_id:CC.activeLevelIndex}));
+};
+
 
 (function(){
 	var runSimulation = false;
@@ -152,6 +164,8 @@ CC.levelmenuButton = $('#levelmenuButton');
 CC.restartButton = $('#restartButton');
 CC.errorsBoxUpButton = $('#errorsBoxUpButton');
 CC.errorsBoxDownButton = $('#errorsBoxDownButton');
+CC.shareButton = $('#shareButton');
+CC.shareLink = $('#shareLink');
 
 // button events
 (function(){
@@ -179,13 +193,17 @@ CC.boilerplateButton.on('click', CC.loadBoilerplate.bind(CC));
 CC.solutionButton.on('click', CC.loadSampleSolution.bind(CC));
 CC.levelmenuButton.on('click', function() {showPopup('#levelMenuPopup');});
 CC.restartButton.on('click', function() {if(CC.loadCodeAndReset()) CC.play();});
-
+CC.shareButton.on('click', function() {showPopup('#sharePopup');CC.shareLink.val(CC.share_BLOB()).focus().select();});
 
 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
 $('#varInfoShowButton').hide();
-CC.editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), {lineNumbers: true, mode: "javascript", matchBrackets: true, lineWrapping:true});
-CC.editor.on("change", function () {localStorage.setItem(CC.activeLevel.name+"Code", CC.editor.getValue());});
+if(CC.sharedCode === false){
+	CC.editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), {lineNumbers: true, mode: "javascript", matchBrackets: true, lineWrapping:true});
+	CC.editor.on("change", function () {localStorage.setItem(CC.activeLevel.name+"Code", CC.editor.getValue());});
+} else {
+	CC.editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), {lineNumbers: true, mode: "javascript", matchBrackets: true, lineWrapping:true, readOnly: true});
+}
 shortcut.add("Alt+Enter",function() {if(CC.loadCodeAndReset())CC.play();}, {'type':'keydown','propagate':true,'target':document});
 shortcut.add("Alt+P",function() {if(CC.running())CC.pause();else CC.play();}, {'type':'keydown','propagate':true,'target':document});
 shortcut.add("Esc",function() {showPopup(null);}, {'type':'keydown','propagate':true,'target':document});
@@ -212,8 +230,32 @@ $('button').attr('data-toggle',"tooltip");
 $('button').each(function(index, element){if(element.className==='') element.className='btn btn-primary';});
 
 
-try { CC.loadLevel(localStorage.getItem("lastLevel")||0); }
-catch (e) { CC.logError(e); }
-CC.loadCodeAndReset();
 CC.pause();
+
+
+// normal mode
+if(CC.sharedCode === false) {
+	try { CC.loadLevel(localStorage.getItem("lastLevel")||0); }
+	catch (e) { CC.logError(e); }
+	CC.loadCodeAndReset();
+// show shared code
+} else {
+	CC.boilerplateButton.remove();
+	CC.solutionButton.remove();
+	CC.levelmenuButton.remove();
+	CC.shareButton.remove();
+	$('.CodeMirror').css('background-color','#ddd');
+	try {
+		var share_params = JSON.parse(atob(CC.sharedCode));
+		CC.loadLevel(share_params.lvl_id);
+		CC.editor.setValue(share_params.code);
+		CC.loadCodeAndReset();
+		CC.play();
+	} catch (e) {
+		CC.logError("Error loading shared code.");
+		CC.logError(e);
+	}	
+	showPopup(null);
+}
+
 CC.gameLoop();
