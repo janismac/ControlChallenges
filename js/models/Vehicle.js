@@ -34,8 +34,10 @@ Models.Vehicle.prototype.vars =
 	lidarDirections: [1,.5,0,-.5,-1],
 	trackImgURL: '',
 	pixelSize: 0.1,
-	steeringLimit: 0.5,
-	accelerationLimit: 5,
+	lateralAccelerationLimit: 10,
+	accelerationLimit: 7,
+	drag: 1e-3,
+	steeringLimit: NaN,
 	constantSpeed: true,
 	isObstacle: function(x){return x[3]<100;},
 	T: 0,
@@ -51,18 +53,19 @@ Models.Vehicle.prototype.simulate = function (dt, controlFunc) {
 
 		var state = [this.x, this.y, this.heading, this.speed];
 		var input = controlFunc(new Models.Vehicle(this));
+		copy.steeringLimit = Math.atan(copy.lateralAccelerationLimit*(copy.Lf+copy.Lr)/(1e-6+copy.speed*copy.speed));
 
 		if(this.constantSpeed)
 		{
 			copy.acceleration = 0;
 			if(typeof input !== 'number') throw "Error: The controlFunction must return a number.";
-			copy.steering = Math.max(-this.steeringLimit,Math.min(this.steeringLimit,input));
+			copy.steering = Math.max(-copy.steeringLimit,Math.min(copy.steeringLimit,input));
 		}
 		else
 		{
 			if(typeof input !== 'object' || typeof input.steering !== 'number' || typeof input.acceleration !== 'number') 
-				throw "Error: The controlFunction must return an object: {steering: number, acceleration: number}";
-			copy.steering = Math.max(-this.steeringLimit,Math.min(this.steeringLimit,input.steering));
+				throw "Error: The controlFunction must return an object: {steering: number, acceleration: number}";			
+			copy.steering = Math.max(-copy.steeringLimit,Math.min(copy.steeringLimit,input.steering));
 			copy.acceleration = Math.max(-this.accelerationLimit,Math.min(this.accelerationLimit,input.acceleration));
 		}
 
@@ -86,7 +89,10 @@ Models.Vehicle.ode = function (_this, x) {
 	var Lwb = _this.Lf+_this.Lr;
 	var R = Lr/Lwb*Math.tan(_this.steering);
 	var norm = Math.sqrt((-R*s+c)*(-R*s+c)+(R*c+s)*(R*c+s));
-	return [v*(-R*s+c)/norm,v*(R*c+s)/norm,Math.tan(_this.steering)*v/Lwb,_this.acceleration];
+	if(_this.constantSpeed)
+		return [v*(-R*s+c)/norm,v*(R*c+s)/norm,Math.tan(_this.steering)*v/Lwb,0];
+	else
+		return [v*(-R*s+c)/norm,v*(R*c+s)/norm,Math.tan(_this.steering)*v/Lwb,_this.acceleration-_this.drag*v*Math.abs(v)];
 }
 
 Models.Vehicle.prototype.detectCollision = function (imgData) {
@@ -185,10 +191,13 @@ Models.Vehicle.prototype.lineSearch = function(x,y,direction) {
 
 Models.Vehicle.prototype.infoText = function ()
 {
-	var str =   "/* Position      */ vehicle.x       = " + round(this.x,2)
-			+ "\n                    vehicle.y       = " + round(this.y,2)
-			+ "\n/* Speed         */ vehicle.speed   = " + round(this.speed,2)
-			+ "\n/* Heading       */ vehicle.heading = " + round(this.heading,2)
+	var str =   "/* Position       */ vehicle.x             = " + round(this.x,2)
+			+ "\n                     vehicle.y             = " + round(this.y,2)
+			+ "\n/* Speed          */ vehicle.speed         = " + round(this.speed,2)
+			+ "\n/* Acceleration   */ vehicle.acceleration  = " + round(this.acceleration,2)
+			+ "\n/* Heading        */ vehicle.heading       = " + round(this.heading,2)
+			+ "\n/* Steering       */ vehicle.steering      = " + round(this.steering,2)
+			+ "\n/* Steering Limit */ vehicle.steeringLimit = " + round(this.steeringLimit,2)
 			+ "\n/* LIDAR sensors */";
 
 	for (var i = 0; i < this.lidarPoints.length; i++) {

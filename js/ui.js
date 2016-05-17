@@ -129,6 +129,7 @@ CC.levels = [
 	{constructor: Levels.RocketLandingMulti,           lineBreakAfter: true }, 
 
 	{constructor: Levels.VehicleSteeringSimple,        lineBreakAfter: false}, 
+	{constructor: Levels.VehicleRacing,                lineBreakAfter: false}, 	
 ];
 
 
