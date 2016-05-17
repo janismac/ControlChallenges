@@ -38,21 +38,20 @@ CC.loadCodeAndReset = function () {
 }
 
 CC.loadLevel = function(name) {
-	if(name in CC.levels) {
-		localStorage.setItem("lastLevel",name);
-		this.activeLevelName = name;
-		this.activeLevel = new this.levels[name].constructor();
-		$('#levelDescription').html(this.activeLevel.description);
-		$('#levelTitle').text(this.activeLevel.title);
-		document.title = this.activeLevel.title +': Control Challenges';
-		var savedCode = localStorage.getItem(this.activeLevel.name+"Code");
-		if(typeof savedCode == 'string' && savedCode.length > 10)
-			this.editor.setValue(savedCode);
-		else 
-			this.editor.setValue(this.activeLevel.boilerPlateCode);
-		CC.loadCodeAndReset();
-		showPopup('#levelStartPopup');
-	}
+	if(!(name in CC.levels)) name = 'TutorialBlockWithFriction';
+	localStorage.setItem("lastLevel",name);
+	this.activeLevelName = name;
+	this.activeLevel = new this.levels[name].constructor();
+	$('#levelDescription').html(this.activeLevel.description);
+	$('#levelTitle').text(this.activeLevel.title);
+	document.title = this.activeLevel.title +': Control Challenges';
+	var savedCode = localStorage.getItem(this.activeLevel.name+"Code");
+	if(typeof savedCode == 'string' && savedCode.length > 10)
+		this.editor.setValue(savedCode);
+	else 
+		this.editor.setValue(this.activeLevel.boilerPlateCode);
+	CC.loadCodeAndReset();
+	showPopup('#levelStartPopup');
 };
 
 CC.share_BLOB = function(){
@@ -235,7 +234,7 @@ CC.pause();
 
 // normal mode
 if(CC.sharedCode === false) {
-	try { CC.loadLevel(localStorage.getItem("lastLevel")||"TutorialBlockWithFriction"); }
+	try { CC.loadLevel(localStorage.getItem("lastLevel")); }
 	catch (e) { CC.logError(e); }
 	CC.loadCodeAndReset();
 // show shared code
