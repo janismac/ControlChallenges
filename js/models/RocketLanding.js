@@ -109,12 +109,43 @@ Models.RocketLanding.prototype.draw = function (ctx, canvas)
 	
 	ctx.translate(canvas.width/2,0.95*canvas.height);
 	ctx.scale(2,-2);
+		
+	this.drawRocket(ctx, canvas, -1);
+	this.drawGround(ctx, canvas);
 	
+	if(this.detectCollision())
+	{
+		ctx.save();
+		ctx.scale(1,-1);
+		ctx.font="10px Verdana";
+		ctx.textAlign="center"; 
+		if(this.landed())
+		{
+			ctx.fillStyle="#009900";
+			ctx.fillText("Landed!",0,-80);
+		}
+		else
+		{
+			ctx.fillStyle="#990000";
+			ctx.fillText("CRASHED!",0,-80);
+		}
+		ctx.restore();
+	}
+}
+
+Models.RocketLanding.prototype.drawGround = function (ctx, canvas){
+	ctx.strokeStyle="#000055";
+	drawLine(ctx,-10000,-1,10000,-1,2);
+	for(var x = -30; x <= 30; x+=5)
+	{
+		drawLine(ctx,x,-1,x,-5,1);
+	}
+}
+
+Models.RocketLanding.prototype.drawRocket = function (ctx, canvas, i){
+
 	var L = this.Length;
 	var W = this.Width;
-	
-
-	// draw rocket
 	ctx.save();
 	ctx.translate(this.x,this.y);
 	ctx.rotate(-this.theta);
@@ -156,36 +187,19 @@ Models.RocketLanding.prototype.draw = function (ctx, canvas)
 	ctx.lineTo(W/2,-L/2+W);
 	ctx.stroke();	
 	
-	ctx.restore();
-	// end draw rocket
-	
-	// ground
-	
-	ctx.strokeStyle="#000055";
-	drawLine(ctx,-10000,-1,10000,-1,2);
-	for(var x = -30; x <= 30; x+=5)
-	{
-		drawLine(ctx,x,-1,x,-5,1);
-	}
-	
-	if(this.detectCollision())
-	{
+	if(i>=0){
 		ctx.save();
+		ctx.rotate(this.theta);
 		ctx.scale(1,-1);
 		ctx.font="10px Verdana";
 		ctx.textAlign="center"; 
-		if(this.landed())
-		{
-			ctx.fillStyle="#009900";
-			ctx.fillText("Landed!",0,-80);
-		}
-		else
-		{
-			ctx.fillStyle="#990000";
-			ctx.fillText("CRASHED!",0,-80);
-		}
+		ctx.fillStyle="#000000";
+		ctx.fillText(""+i,0,-40);
 		ctx.restore();
 	}
+
+
+	ctx.restore();
 }
 
 Models.RocketLanding.prototype.infoText = function ()

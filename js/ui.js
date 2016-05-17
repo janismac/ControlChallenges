@@ -125,7 +125,8 @@ CC.levels = [
 	{constructor: Levels.StabilizeDoublePendulum,      lineBreakAfter: true }, 
 
 	{constructor: Levels.RocketLandingNormal,          lineBreakAfter: false}, 
-	{constructor: Levels.RocketLandingUpsideDown,      lineBreakAfter: true }, 
+	{constructor: Levels.RocketLandingUpsideDown,      lineBreakAfter: false}, 
+	{constructor: Levels.RocketLandingMulti,           lineBreakAfter: true }, 
 
 	{constructor: Levels.VehicleSteeringSimple,        lineBreakAfter: false}, 
 ];
