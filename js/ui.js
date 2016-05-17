@@ -138,7 +138,8 @@ CC.levels = {
 	RocketLandingUpsideDown:      {constructor: Levels.RocketLandingUpsideDown,      lineBreakAfter: false},
 	RocketLandingMulti:           {constructor: Levels.RocketLandingMulti,           lineBreakAfter: true },
 	VehicleSteeringSimple:        {constructor: Levels.VehicleSteeringSimple,        lineBreakAfter: false},
-	VehicleRacing:                {constructor: Levels.VehicleRacing,                lineBreakAfter: false},
+	VehicleRacing:                {constructor: Levels.VehicleRacing,                lineBreakAfter: true },
+	MultirotorIntro:              {constructor: Levels.MultirotorIntro,              lineBreakAfter: false},
 };
 
 
@@ -211,7 +212,6 @@ $('.popup').prepend($('<button type="button" class="btn btn-danger closeButton" 
 
 // level load buttons
 for(var name in CC.levels) {
-//for(var i=0; i<CC.levels.length;++i) {
 	var level = new CC.levels[name].constructor();
 	var e = $('<button type="button" class="btn btn-primary" onclick="CC.loadLevel(\''+name+'\');">'+level.title+'</button>');	
 	$('#levelList').append(e);
