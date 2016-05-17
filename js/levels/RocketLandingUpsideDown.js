@@ -29,3 +29,7 @@ Levels.RocketLandingUpsideDown.prototype.resetModel = function()
 {
 	this.model = new Models.RocketLanding({TWR: 2,theta: 3.14,dtheta: 0,Length: 40,Width: 5,x: 50,dx: 20,y: 200,dy: 60,T: 0});
 }
+
+Levels.RocketLandingUpsideDown.prototype.draw = function(ctx, canvas){this.model.draw(ctx, canvas);}
+
+Levels.RocketLandingUpsideDown.prototype.infoText = function(ctx, canvas){return this.model.infoText();}

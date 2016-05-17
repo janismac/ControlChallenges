@@ -107,9 +107,9 @@ CC.gameLoop = (function() {
 			this.levelSolvedTime.text(round(this.activeLevel.getSimulationTime(),2));
 			showPopup('#levelCompletePopup');
 		}
-		this.variableInfo.text(this.variableInfo.text()+this.activeLevel.model.infoText());	
+		this.variableInfo.text(this.variableInfo.text()+this.activeLevel.infoText());	
 	}
-	this.activeLevel.model.draw(this.context,this.canvas);
+	this.activeLevel.draw(this.context,this.canvas);
 	
 	if(this.running()) requestAnimationFrame(this.gameLoop);
 	else setTimeout( function() {requestAnimationFrame(CC.gameLoop);}, 200);

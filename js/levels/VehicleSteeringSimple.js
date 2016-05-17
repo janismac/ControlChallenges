@@ -32,3 +32,7 @@ Levels.VehicleSteeringSimple.prototype.simulate = function (dt, controlFunc)
 }
 
 Levels.VehicleSteeringSimple.prototype.getSimulationTime = function() {return this.model.T;}
+
+Levels.VehicleSteeringSimple.prototype.draw = function(ctx, canvas){this.model.draw(ctx, canvas);}
+
+Levels.VehicleSteeringSimple.prototype.infoText = function(ctx, canvas){return this.model.infoText();}

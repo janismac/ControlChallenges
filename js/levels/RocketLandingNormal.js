@@ -29,3 +29,7 @@ Levels.RocketLandingNormal.prototype.resetModel = function()
 {
 	this.model = new Models.RocketLanding({TWR: 2,theta: -0.3,dtheta: 0,Length: 40,Width: 5,x: -100,dx: 0,y: 200,dy: -20,T: 0});
 }
+
+Levels.RocketLandingNormal.prototype.draw = function(ctx, canvas){this.model.draw(ctx, canvas);}
+
+Levels.RocketLandingNormal.prototype.infoText = function(ctx, canvas){return this.model.infoText();}

@@ -31,3 +31,7 @@ Levels.TutorialBlockOnSlope.prototype.simulate = function (dt, controlFunc)
 }
 
 Levels.TutorialBlockOnSlope.prototype.getSimulationTime = function() {return this.model.T;}
+
+Levels.TutorialBlockOnSlope.prototype.draw = function(ctx, canvas){this.model.draw(ctx, canvas);}
+
+Levels.TutorialBlockOnSlope.prototype.infoText = function(ctx, canvas){return this.model.infoText();}

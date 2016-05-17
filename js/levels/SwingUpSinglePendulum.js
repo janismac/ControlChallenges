@@ -34,3 +34,8 @@ Levels.SwingUpSinglePendulum.prototype.simulate = function (dt, controlFunc)
 }
 
 Levels.SwingUpSinglePendulum.prototype.getSimulationTime = function()	{return this.model.T;}
+
+
+Levels.SwingUpSinglePendulum.prototype.draw = function(ctx, canvas){this.model.draw(ctx, canvas);}
+
+Levels.SwingUpSinglePendulum.prototype.infoText = function(ctx, canvas){return this.model.infoText();}

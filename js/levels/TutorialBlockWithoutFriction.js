@@ -31,3 +31,7 @@ Levels.TutorialBlockWithoutFriction.prototype.simulate = function (dt, controlFu
 }
 
 Levels.TutorialBlockWithoutFriction.prototype.getSimulationTime = function() {return this.model.T;}
+
+Levels.TutorialBlockWithoutFriction.prototype.draw = function(ctx, canvas){this.model.draw(ctx, canvas);}
+
+Levels.TutorialBlockWithoutFriction.prototype.infoText = function(ctx, canvas){return this.model.infoText();}

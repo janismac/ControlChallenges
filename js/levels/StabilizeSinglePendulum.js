@@ -33,3 +33,8 @@ Levels.StabilizeSinglePendulum.prototype.simulate = function (dt, controlFunc)
 }
 
 Levels.StabilizeSinglePendulum.prototype.getSimulationTime = function()	{return this.model.T;}
+
+
+Levels.StabilizeSinglePendulum.prototype.draw = function(ctx, canvas){this.model.draw(ctx, canvas);}
+
+Levels.StabilizeSinglePendulum.prototype.infoText = function(ctx, canvas){return this.model.infoText();}
