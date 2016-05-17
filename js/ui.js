@@ -16,7 +16,7 @@ CC.context = CC.canvas.getContext('2d');
 })();
 
 CC.loadCodeAndReset = function () {
-	this.activeLevel = new this.levelConstructors[this.activeLevelIndex]();
+	this.activeLevel = new this.levels[this.activeLevelIndex].constructor();
 	$('#userscript').remove();
 	try {
 		var e = $("<script id='userscript'>\ncontrolFunction=undefined;controlFunction = (function(){\n	'use strict';\n	"+this.editor.getValue()+"\n	return controlFunction;\n})();\n</script>");	
@@ -31,10 +31,10 @@ CC.loadCodeAndReset = function () {
 }
 
 CC.loadLevel = function(i) {
-	if(0 <= i && i < this.levelConstructors.length) {
+	if(0 <= i && i < this.levels.length) {
 		localStorage.setItem("lastLevel",i);
 		this.activeLevelIndex = i;
-		this.activeLevel = new this.levelConstructors[i]();
+		this.activeLevel = new this.levels[i].constructor();
 		$('#levelDescription').text(this.activeLevel.description);
 		$('#levelTitle').text(this.activeLevel.title);
 		document.title = this.activeLevel.title +': Control Challenges';
@@ -115,19 +115,20 @@ CC.gameLoop = (function() {
 	else setTimeout( function() {requestAnimationFrame(CC.gameLoop);}, 200);
 }).bind(CC);
 
+CC.levels = [
+	{constructor: Levels.TutorialBlockWithFriction,    lineBreakAfter: false}, 
+	{constructor: Levels.TutorialBlockWithoutFriction, lineBreakAfter: false}, 
+	{constructor: Levels.TutorialBlockOnSlope,         lineBreakAfter: true }, 
 
-CC.levelConstructors = [
-	Levels.TutorialBlockWithFriction,
-	Levels.TutorialBlockWithoutFriction,
-	Levels.TutorialBlockOnSlope,
-	Levels.StabilizeSinglePendulum,
-	Levels.SwingUpSinglePendulum,	
-	Levels.StabilizeDoublePendulum,
-	Levels.RocketLandingNormal,
-	Levels.RocketLandingUpsideDown,
-	Levels.VehicleSteeringSimple
+	{constructor: Levels.StabilizeSinglePendulum,      lineBreakAfter: false}, 
+	{constructor: Levels.SwingUpSinglePendulum,	       lineBreakAfter: false}, 
+	{constructor: Levels.StabilizeDoublePendulum,      lineBreakAfter: true }, 
+
+	{constructor: Levels.RocketLandingNormal,          lineBreakAfter: false}, 
+	{constructor: Levels.RocketLandingUpsideDown,      lineBreakAfter: true }, 
+
+	{constructor: Levels.VehicleSteeringSimple,        lineBreakAfter: false}, 
 ];
-CC.levelMenuLinebreaks = [false,false,true,false,false,true,false,true,false];
 
 
 ///////////////////// initialize ////////////////////////
@@ -192,11 +193,11 @@ shortcut.add("Esc",function() {showPopup(null);}, {'type':'keydown','propagate':
 $('.popup').prepend($('<button type="button" class="btn btn-danger closeButton" onclick="showPopup(null);" data-toggle="tooltip" data-placement="bottom" title="Close [ESC]"><span class="glyphicon glyphicon-remove"> </span></button>'));
 
 // level load buttons
-for(var i=0; i<CC.levelConstructors.length;++i) {
-	var level = new CC.levelConstructors[i]();
+for(var i=0; i<CC.levels.length;++i) {
+	var level = new CC.levels[i].constructor();
 	var e = $('<button type="button" class="btn btn-primary" onclick="CC.loadLevel('+i+');">'+level.title+'</button>');	
 	$('#levelList').append(e);
-	if(CC.levelMenuLinebreaks[i])
+	if(CC.levels[i].lineBreakAfter)
 		$('#levelList').append($('<br />'));
 }
 
@@ -213,9 +214,4 @@ try { CC.loadLevel(localStorage.getItem("lastLevel")||0); }
 catch (e) { CC.logError(e); }
 CC.loadCodeAndReset();
 CC.pause();
-
-
-
-
-
 CC.gameLoop();
