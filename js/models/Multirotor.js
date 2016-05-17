@@ -70,16 +70,6 @@ Models.Multirotor.ode = function (_this, x) {
 }
 
 
-Models.Multirotor.prototype.draw = function (ctx, canvas) {
-
-	ctx.setTransform(1,0,0,1,0,0);
-	ctx.clearRect(0,0,canvas.width,canvas.height);
-	
-	ctx.translate(canvas.width/2,canvas.height/2);
-	ctx.scale(400,-400);
-
-	this.drawVehicle(ctx, canvas);
-}
 
 
 Models.Multirotor.prototype.drawVehicle = function (ctx, canvas) {
@@ -102,19 +92,23 @@ Models.Multirotor.prototype.drawVehicle = function (ctx, canvas) {
 		drawLine(ctx,0,-1,0,1,.02);
 	}
 
-
+	// draw force vectors
 	ctx.lineJoin = 'round';
 	ctx.lineCap = 'round';
 	ctx.strokeStyle="#FF0000";
 	var forceScale = 0.4;
 	var arrowScale = 0.2;
-	drawLine(ctx,-1,0.7,-1,0.7+forceScale*this.thrustLeft,.1);
-	drawLine(ctx,-1,0.7+forceScale*this.thrustLeft,-1+arrowScale,-arrowScale+0.7+forceScale*this.thrustLeft,.1);
-	drawLine(ctx,-1,0.7+forceScale*this.thrustLeft,-1-arrowScale,-arrowScale+0.7+forceScale*this.thrustLeft,.1);
+	if(this.thrustLeft>0){
+		drawLine(ctx,-1,0.7,-1,0.7+forceScale*this.thrustLeft,.1);
+		drawLine(ctx,-1,0.7+forceScale*this.thrustLeft,-1+arrowScale,-arrowScale+0.7+forceScale*this.thrustLeft,.1);
+		drawLine(ctx,-1,0.7+forceScale*this.thrustLeft,-1-arrowScale,-arrowScale+0.7+forceScale*this.thrustLeft,.1);
+	}
 
-	drawLine(ctx,1,0.7,1,0.7+forceScale*this.thrustRight,.1);
-	drawLine(ctx,1,0.7+forceScale*this.thrustRight,1+arrowScale,-arrowScale+0.7+forceScale*this.thrustRight,.1);
-	drawLine(ctx,1,0.7+forceScale*this.thrustRight,1-arrowScale,-arrowScale+0.7+forceScale*this.thrustRight,.1);
+	if(this.thrustRight>0){
+		drawLine(ctx,1,0.7,1,0.7+forceScale*this.thrustRight,.1);
+		drawLine(ctx,1,0.7+forceScale*this.thrustRight,1+arrowScale,-arrowScale+0.7+forceScale*this.thrustRight,.1);
+		drawLine(ctx,1,0.7+forceScale*this.thrustRight,1-arrowScale,-arrowScale+0.7+forceScale*this.thrustRight,.1);
+	}
 
 
 	ctx.restore();

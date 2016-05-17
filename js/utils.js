@@ -23,3 +23,9 @@ function drawLine(ctx,x1,y1,x2,y2,width) {
 function padSpaces(str,count) {
    return String('                                 ' + str).slice(-count);
 };
+
+function resetCanvas(ctx,canvas){
+	ctx.setTransform(1,0,0,1,0,0);
+	ctx.clearRect(0,0,canvas.width,canvas.height);	
+	ctx.translate(canvas.width/2,canvas.height/2);
+}
