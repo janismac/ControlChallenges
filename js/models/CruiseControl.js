@@ -13,7 +13,7 @@ Models.CruiseControl = function(params)
 
 Models.CruiseControl.prototype.vars = 
 {
-	maxAcceleration: 12,
+	maxAcceleration: 6,
 	throttle: 0,
 	targetSpeed: 70,
 	speed: 30,

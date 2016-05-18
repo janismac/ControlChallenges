@@ -7,7 +7,7 @@ Levels.CruiseControlIntro = function()
 	this.title = "Cruise Control Intro";
 	this.boilerPlateCode = "function controlFunction(vehicle){ \n  return Math.sin(2*vehicle.T);\n};";
 	this.sampleSolution = "function controlFunction(vehicle){\n  return 4 * (vehicle.targetSpeed - vehicle.speed);\n};";
-	this.description = "Attain and hold the target speed (magenta indicator) for 5 seconds.";
+	this.description = "Attain and hold the target speed (magenta indicator) for 5 seconds. Keep the speed deviation below 0.5 units.";
 	ImageDataCache.load('img/speedometer.png');
 	ImageDataCache.load('img/car.png');
 	this.model = new Models.CruiseControl({carImg:'img/car.png',speedometerImg:'img/speedometer.png'});
