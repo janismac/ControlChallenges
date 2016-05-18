@@ -141,6 +141,7 @@ CC.levels = {
 	VehicleRacing:                {constructor: Levels.VehicleRacing,                lineBreakAfter: true },
 	MultirotorIntro:              {constructor: Levels.MultirotorIntro,              lineBreakAfter: false},
 	MultirotorObstacles:          {constructor: Levels.MultirotorObstacles,          lineBreakAfter: false},
+	MultirotorFlip:               {constructor: Levels.MultirotorFlip,               lineBreakAfter: false},
 };
 
 

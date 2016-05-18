@@ -32,29 +32,25 @@ Models.Multirotor.prototype.vars =
 
 Models.Multirotor.prototype.simulate = function (dt, controlFunc)
 {
-	var copy = new Models.Multirotor(this);
+	var copy = new Models.Multirotor(this);	
+	var input = controlFunc(new Models.Multirotor(this)); // call user controller
+	if(typeof input != 'object' || typeof input.thrustLeft != 'number' || typeof input.thrustRight != 'number') 
+		throw "Error: The controlFunction must return an object: {thrustLeft:number, thrustRight:number}";
+
+	// input limits
+	copy.thrustLeft = Math.max(0,Math.min(copy.maxThrust,input.thrustLeft));
+	copy.thrustRight = Math.max(0,Math.min(copy.maxThrust,input.thrustRight));
+
+	var state = [this.x, this.dx, this.y, this.dy, this.theta, this.dtheta]; // state vector
+	var soln = numeric.dopri(0,dt,state,function(t,x){ return Models.Multirotor.ode(copy,x); },1e-4).at(dt); // numerical integration
 	
-	if(true)//!this.detectCollision())
-	{
-		var input = controlFunc(new Models.Multirotor(this)); // call user controller
-		if(typeof input != 'object' || typeof input.thrustLeft != 'number' || typeof input.thrustRight != 'number') 
-			throw "Error: The controlFunction must return an object: {thrustLeft:number, thrustRight:number}";
-
-		// input limits
-		copy.thrustLeft = Math.max(0,Math.min(copy.maxThrust,input.thrustLeft));
-		copy.thrustRight = Math.max(0,Math.min(copy.maxThrust,input.thrustRight));
-
-		var state = [this.x, this.dx, this.y, this.dy, this.theta, this.dtheta]; // state vector
-		var soln = numeric.dopri(0,dt,state,function(t,x){ return Models.Multirotor.ode(copy,x); },1e-4).at(dt); // numerical integration
-		
-		copy.x = soln[0]; // extract new state
-		copy.dx = soln[1];
-		copy.y = soln[2];
-		copy.dy = soln[3];
-		copy.theta = soln[4];
-		copy.dtheta = soln[5];
-		copy.T = this.T + dt; // count time
-	}
+	copy.x = soln[0]; // extract new state
+	copy.dx = soln[1];
+	copy.y = soln[2];
+	copy.dy = soln[3];
+	copy.theta = soln[4];
+	copy.dtheta = soln[5];
+	copy.T = this.T + dt; // count time
 	return copy;	
 }
 
