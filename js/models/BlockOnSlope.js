@@ -27,6 +27,7 @@ Models.BlockOnSlope.prototype.simulate = function (dt, controlFunc)
 	var copy = new Models.BlockOnSlope(this);
 	var state = [this.x, this.dx];
 	copy.F = controlFunc(new Models.BlockOnSlope(this));
+	copy.F = Math.max(-50,Math.min(50,copy.F));
 	if(typeof copy.F != 'number' || isNaN(copy.F)) throw "Error: The controlFunction must return a number.";
 	var soln = numeric.dopri(0,dt,state,function(t,x){ return Models.BlockOnSlope.ode(copy,x); },1e-4).at(dt);	
 	

@@ -30,6 +30,7 @@ Models.SinglePendulum.prototype.simulate = function (dt, controlFunc)
 	var copy = new Models.SinglePendulum(this);
 	var state = [this.x, this.dx, this.theta, this.dtheta];
 	copy.F = controlFunc(new Models.SinglePendulum(this));
+	copy.F = Math.max(-50,Math.min(50,copy.F));
 	if(typeof copy.F != 'number' || isNaN(copy.F)) throw "Error: The controlFunction must return a number.";
 	var soln = numeric.dopri(0,dt,state,function(t,x){ return Models.SinglePendulum.ode(copy,x); },1e-4).at(dt);	
 	
