@@ -112,11 +112,11 @@ Models.Multirotor.prototype.drawVehicle = function (ctx, canvas) {
 
 Models.Multirotor.prototype.infoText = function ()
 {
-	return  "/* Horizontal position */ rocket.x      = " + round(this.x,2)
-		+ "\n/* Horizontal velocity */ rocket.dx     = " + round(this.dx,2)
-		+ "\n/* Vertical position   */ rocket.y      = " + round(this.y,2)
-		+ "\n/* Vertical velocity   */ rocket.dy     = " + round(this.dy,2)
-		+ "\n/* Angle from vertical */ rocket.theta  = " + round(this.theta,2)
-		+ "\n/* Angular velocity    */ rocket.dtheta = " + round(this.dtheta,2)
-		+ "\n/* Simulation time     */ rocket.T      = " + round(this.T,2);	
+	return  "/* Horizontal position */ vehicle.x      = " + round(this.x,2)
+		+ "\n/* Horizontal velocity */ vehicle.dx     = " + round(this.dx,2)
+		+ "\n/* Vertical position   */ vehicle.y      = " + round(this.y,2)
+		+ "\n/* Vertical velocity   */ vehicle.dy     = " + round(this.dy,2)
+		+ "\n/* Angle from vertical */ vehicle.theta  = " + round(this.theta,2)
+		+ "\n/* Angular velocity    */ vehicle.dtheta = " + round(this.dtheta,2)
+		+ "\n/* Simulation time     */ vehicle.T      = " + round(this.T,2);	
 }

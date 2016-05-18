@@ -131,6 +131,7 @@ CC.levels = {
 	TutorialBlockWithFriction:    {constructor: Levels.TutorialBlockWithFriction,    lineBreakAfter: false},
 	TutorialBlockWithoutFriction: {constructor: Levels.TutorialBlockWithoutFriction, lineBreakAfter: false},
 	TutorialBlockOnSlope:         {constructor: Levels.TutorialBlockOnSlope,         lineBreakAfter: true },
+	CruiseControlIntro:           {constructor: Levels.CruiseControlIntro,           lineBreakAfter: true },
 	StabilizeSinglePendulum:      {constructor: Levels.StabilizeSinglePendulum,      lineBreakAfter: false},
 	SwingUpSinglePendulum:        {constructor: Levels.SwingUpSinglePendulum,        lineBreakAfter: false},
 	StabilizeDoublePendulum:      {constructor: Levels.StabilizeDoublePendulum,      lineBreakAfter: true },
