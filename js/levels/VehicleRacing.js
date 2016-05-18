@@ -9,8 +9,8 @@ Levels.VehicleRacing = function()
 	this.sampleSolution = "function controlFunction(vehicle){  \n  var v_ref = Math.max(.4*vehicle.lidarPoints[2].distance,10);\n  var v = vehicle.speed;\n  return {steering: 0.1*(vehicle.lidarPoints[0].distance - vehicle.lidarPoints[4].distance), acceleration: 10*(v_ref-v)};\n};";
 	this.boilerPlateCode = "function controlFunction(vehicle){  \n  return {steering: 0, acceleration: 0};\n};";
 	this.description = "Calculate the appropriate steering angle [radians] and acceleration [m/s²] for the vehicle. The lateral acceleration is limited. If you go too fast into a turn you won't be able to steer through it.";
-	ImageDataCache.load('track.png');
-	this.model = new Models.Vehicle({trackImgURL: 'track.png', constantSpeed:false});
+	ImageDataCache.load('img/track.png');
+	this.model = new Models.Vehicle({trackImgURL: 'img/track.png', constantSpeed:false});
 }
 
 
