@@ -6,7 +6,7 @@ Levels.SwingUpSinglePendulum = function()
 	this.name = "SwingUpSinglePendulum";
 	this.title = "Inverted Pendulum: Swing up";
 
-	this.sampleSolution = "// Unsolved, sorry.\nfunction controlFunction(pendulum)\n{\n  return 10*Math.sin(8*pendulum.T);\n}";
+	this.sampleSolution = "function controlFunction(pendulum)\n{\n  if (pendulum.T < 0.5) return  50;\n  if (pendulum.T < 1.5) return -50;\n  if (pendulum.T < 2.5) return  50;\n  if (pendulum.T < 2.7) return -50;\n  else return 600*Math.sin(pendulum.theta) + 300*pendulum.dtheta + 15*pendulum.x + 40*pendulum.dx;\n}";
 	this.boilerPlateCode = "function controlFunction(pendulum)\n{\n  return 10*Math.sin(8*pendulum.T);\n}";
 	this.description = "Bring the pendulum into an upright position and keep it upright in the center (x=0).";
 	this.model = new Models.SinglePendulum({m0: 10,m1: .5,L: 1,g: 9.81,theta: 3.1415,dtheta: 0,x: 0,dx: 0,F: 0,T: 0});
