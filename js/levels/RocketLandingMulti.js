@@ -25,7 +25,7 @@ Levels.RocketLandingMulti.prototype.simulate = function (dt, controlFunc)
 		this.models[i] = this.models[i].simulate (dt, controlFunc);
 }
 
-Levels.RocketLandingMulti.prototype.getSimulationTime = function()	{return this.model[0].T;}
+Levels.RocketLandingMulti.prototype.getSimulationTime = function()	{return this.models[0].T;}
 
 Levels.RocketLandingMulti.prototype.draw = function (ctx, canvas)
 {
