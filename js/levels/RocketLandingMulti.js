@@ -6,7 +6,7 @@ Levels.RocketLandingMulti = function()
 	this.name = "RocketLandingMulti";
 	this.title = "Multiple Rocket Landing";
 	this.boilerPlateCode = "function controlFunction(rocket)\n{\n  return {throttle:1,gimbalAngle:-0.2};\n}";
-	this.sampleSolution = "// Unsolved, sorry.\nfunction controlFunction(rocket)\n{\n  return {throttle:1,gimbalAngle:-0.2};\n}";
+	this.sampleSolution = "function limit_to(lower,upper,x){ return Math.max(lower, Math.min(upper, x)); }\n\nfunction controlFunction(rocket)\n{\n  rocket = rocket.simulate(1,function(){return {throttle:.5,gimbalAngle:0};});\n  var a=0;\n  var t=.5;\n  var x = Math.max(0,Math.abs(rocket.x)-20) * Math.sign(rocket.x);\n  var targetAngle = -0.02*(x + 0.5*(Math.abs(rocket.dx)+1)*rocket.dx);\n  a += 30*rocket.dtheta;\n  a += 15*(rocket.theta-limit_to(-1,1,targetAngle));\n  t -= limit_to(0.06,0.1,Math.abs(x))*rocket.dy;\n  var y_ref = 50 - 29 * limit_to(0,1,1 - 0.5*Math.abs(rocket.dx) - 10*Math.abs(rocket.theta));\n  t += limit_to(-.5,.5,1e-1*(y_ref-rocket.y));\n  return {throttle:t,gimbalAngle:a};\n}";
 	this.description = "Now there are multiple rockets. The point of this level is to see if the same controller can land the rocket from different initial conditions. Collision avoidance between the different rockets is not necessary. They pass through each other.";
 	this.models = []; 
 	this.models.push(new Models.RocketLanding({TWR: 2,theta: 0,dtheta: -0.1,Length: 40,Width: 5,x: 100,dx: 20,y: 300,dy: -10,T: 0}));
