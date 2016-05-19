@@ -25,6 +25,7 @@ Models.RocketLanding.prototype.vars =
 	dx: 0,
 	y: 0,
 	dy: 0,
+	throttleLimit: 0,
 	T: 0,
 	landingConstraints: {dx:5,dy:5,dtheta:0.1,sinTheta:0.05},
 };
@@ -71,7 +72,7 @@ Models.RocketLanding.prototype.simulate = function (dt, controlFunc)
 		var input = controlFunc(new Models.RocketLanding(this)); // call user controller
 		if(typeof input != 'object' || typeof input.throttle != 'number' || typeof input.gimbalAngle != 'number') 
 			throw "Error: The controlFunction must return an object: {throttle:number, gimbalAngle:number}";
-		copy.throttle = Math.max(0,Math.min(1,input.throttle)); // input limits
+		copy.throttle = Math.max(copy.throttleLimit,Math.min(1,input.throttle)); // input limits
 		copy.gimbalAngle = Math.max(-.2,Math.min(.2,input.gimbalAngle));
 		var state = [this.x, this.dx, this.y, this.dy, this.theta, this.dtheta]; // state vector
 		var soln = numeric.dopri(0,dt,state,function(t,x){ return Models.RocketLanding.ode(copy,x); },1e-4).at(dt); // numerical integration
