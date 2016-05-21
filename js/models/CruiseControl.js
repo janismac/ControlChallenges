@@ -19,7 +19,6 @@ Models.CruiseControl.prototype.vars =
 	speed: 30,
 	speedErrorTolerance: .5,
 	speedHoldTimer: 0,
-	throttle: 0,
 	drag: 5e-4,
 	g: 9.81,
 	carImg:'',
