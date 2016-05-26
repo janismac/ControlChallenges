@@ -5,7 +5,7 @@ Levels.StabilizeDoublePendulum = function()
 {
 	this.name = "StabilizeDoublePendulum";
 	this.title = "Inverted Double Pendulum: Stabilize";
-	this.sampleSolution = "function controlFunction(p)\n{\n  // Controller coefficients optimized using this MATLAB script:\n  // https://github.com/janismac/ControlChallenges/blob/master/misc/doublependulum.m  \n  return 18.961273*p.dtheta1 - 352.00565*p.dtheta2 - 98.065915*p.dx + 492.5419*p.theta1 - 764.62411*p.theta2 - 31.622777*p.x;\n}";
+	this.sampleSolution = "function controlFunction(p)\n{\n  // Controller coefficients optimized using this MATLAB script:\n  // https://github.com/janismac/ControlChallenges/blob/gh-pages/misc/doublependulum.m  \n  return 18.961273*p.dtheta1 - 352.00565*p.dtheta2 - 98.065915*p.dx + 492.5419*p.theta1 - 764.62411*p.theta2 - 31.622777*p.x;\n}";
 	this.boilerPlateCode = "function controlFunction(pendulum)\n{\n  return 10*Math.sin(8*pendulum.T);\n}";
 	this.description = "Stabilize the double pendulum so that it stays upright, moves to the center (x=0) and stays there in perfect balance. Calculate the horizontal force on the cart necessary to achieve this.";
 	this.model = new Models.DoublePendulum({m0: 10,m1: 2,m2: 4,L1: 0.618,L2: 1,g: 2,theta1: -0.05,dtheta1: 0,theta2: 0,dtheta2: 0.05,x: -1,dx: 0,F: 0,T: 0});
