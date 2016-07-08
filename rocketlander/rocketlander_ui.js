@@ -30,7 +30,7 @@ CC.context = CC.canvas.getContext('2d');
 
 CC.gameLoop = (function() {
 	if(this.running()) {
-		try {  this.rocket = this.rocket.simulate (0.02, function(){return{throttle:CC.inputUp,gimbalAngle:CC.inputLeft};}); }
+		try {  this.rocket = this.rocket.simulate (0.03, function(){return{throttle:CC.inputUp,gimbalAngle:CC.inputLeft};}); }
 		catch(e) {
 			this.pause();
 			alert(e);
