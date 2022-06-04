@@ -1,16 +1,28 @@
 'use strict';
 
+function time () { return 0.001 * Date.now(); }
+
 var CC = {};
-
-
-// interpret url param as shared code.
-CC.sharedCode = false;
-if(document.location.search.length > 1){
-	CC.sharedCode = document.location.search.substring(1);
-}
 
 CC.canvas = document.getElementById('cas');
 CC.context = CC.canvas.getContext('2d');
+CC._runSimulation = false;
+CC.wallTimeOfLastSimulationFrame = 0.0;
+
+CC.pause = function () {
+	this.pauseButton.hide();
+	this.playButton.show();
+	this._runSimulation = false;
+};
+
+CC.play = function () {
+	this.pauseButton.show();
+	this.playButton.hide();
+	this._runSimulation = true;
+	this.wallTimeOfLastSimulationFrame = time();
+};
+
+CC.running = function() { return this._runSimulation; };
 
 (function(){
 	var $canvas = $('#cas');
@@ -54,26 +66,6 @@ CC.loadLevel = function(name) {
 	showPopup('#levelStartPopup');
 };
 
-CC.share_BLOB = function(){
-	return (""+window.location).split('?')[0] + "?" + btoa(JSON.stringify({code:CC.editor.getValue(), lvl_id:CC.activeLevelName}));
-};
-
-
-(function(){
-	var runSimulation = false;
-	CC.pause = function () {
-		this.pauseButton.hide();
-		this.playButton.show();
-		runSimulation = false;
-	};
-	CC.play = function () {
-		this.pauseButton.show();
-		this.playButton.hide();
-		runSimulation = true;
-	};
-	CC.running = function(){return runSimulation;};
-})();
-
 CC.editorSetCode_preserveOld = function(code) {
 	var lines = this.editor.getValue().split(/\r?\n/);
 	for (var i = 0; i < lines.length; i++) if(!lines[i].startsWith('//') && lines[i].length > 0) lines[i] = '//'+lines[i];
@@ -103,23 +95,31 @@ function showPopup(p) {
 	if(p)CC.pause();
 }
 
-CC.gameLoop = (function() {
-	if(this.running()) {
-		clearMonitor();
-		try { this.activeLevel.simulate(0.02,controlFunction); }
-		catch(e) {
-			this.pause();
-			this.logError(e);
-		}
-		
-		if(this.activeLevel.levelFailed()) 
-			this.pause();
+CC.runSimulationStep = (function(dt) {
+	clearMonitor();
+	try { this.activeLevel.simulate(dt, controlFunction); }
+	catch(e) {
+		this.pause();
+		this.logError(e);
+	}
+	
+	if(this.activeLevel.levelFailed()) 
+		this.pause();
 
-		if(this.activeLevel.levelComplete()) {
-			this.levelSolvedTime.text(round(this.activeLevel.getSimulationTime(),2));
-			showPopup('#levelCompletePopup');
-		}
-		this.variableInfo.text(this.variableInfo.text()+this.activeLevel.infoText());	
+	if(this.activeLevel.levelComplete()) {
+		this.levelSolvedTime.text(round(this.activeLevel.getSimulationTime(),2));
+		showPopup('#levelCompletePopup');
+	}
+	this.variableInfo.text(this.variableInfo.text()+this.activeLevel.infoText());	
+
+}).bind(CC);
+
+CC.gameLoop = (function() {
+	while(this.running() && (this.wallTimeOfLastSimulationFrame < time()))
+	{
+		var delta_t = 0.02;
+		this.runSimulationStep(delta_t);
+		this.wallTimeOfLastSimulationFrame += delta_t;
 	}
 	this.activeLevel.draw(this.context,this.canvas);
 	
@@ -133,9 +133,13 @@ CC.levels = {
 	TutorialBlockOnSlope:         {constructor: Levels.TutorialBlockOnSlope,         lineBreakAfter: true },
 	CruiseControlIntro:           {constructor: Levels.CruiseControlIntro,           lineBreakAfter: false},
 	CruiseControl2:               {constructor: Levels.CruiseControl2,               lineBreakAfter: true },
+	BallOnPlatformBalance:        {constructor: Levels.BallOnPlatformBalance,        lineBreakAfter: false},
+	BallOnPlatformBounce:         {constructor: Levels.BallOnPlatformBounce,         lineBreakAfter: false},
+	BallOnPlatformEdgeBalance:    {constructor: Levels.BallOnPlatformEdgeBalance,    lineBreakAfter: true },
 	StabilizeSinglePendulum:      {constructor: Levels.StabilizeSinglePendulum,      lineBreakAfter: false},
-	SwingUpSinglePendulum:        {constructor: Levels.SwingUpSinglePendulum,        lineBreakAfter: false},
-	StabilizeDoublePendulum:      {constructor: Levels.StabilizeDoublePendulum,      lineBreakAfter: true },
+	SwingUpSinglePendulum:        {constructor: Levels.SwingUpSinglePendulum,        lineBreakAfter: true },
+	StabilizeDoublePendulum:      {constructor: Levels.StabilizeDoublePendulum,      lineBreakAfter: false},
+	SwingUpDoublePendulum:        {constructor: Levels.SwingUpDoublePendulum,        lineBreakAfter: true },
 	RocketLandingNormal:          {constructor: Levels.RocketLandingNormal,          lineBreakAfter: false},
 	RocketLandingUpsideDown:      {constructor: Levels.RocketLandingUpsideDown,      lineBreakAfter: false},
 	RocketLandingMulti:           {constructor: Levels.RocketLandingMulti,           lineBreakAfter: false},
@@ -167,8 +171,6 @@ CC.levelmenuButton = $('#levelmenuButton');
 CC.restartButton = $('#restartButton');
 CC.errorsBoxUpButton = $('#errorsBoxUpButton');
 CC.errorsBoxDownButton = $('#errorsBoxDownButton');
-CC.shareButton = $('#shareButton');
-CC.shareLink = $('#shareLink');
 
 // button events
 (function(){
@@ -196,17 +198,12 @@ CC.boilerplateButton.on('click', CC.loadBoilerplate.bind(CC));
 CC.solutionButton.on('click', CC.loadSampleSolution.bind(CC));
 CC.levelmenuButton.on('click', function() {showPopup('#levelMenuPopup');});
 CC.restartButton.on('click', function() {if(CC.loadCodeAndReset()) CC.play();});
-CC.shareButton.on('click', function() {showPopup('#sharePopup');CC.shareLink.val(CC.share_BLOB()).focus().select();});
 
 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
 $('#varInfoShowButton').hide();
-if(CC.sharedCode === false){
-	CC.editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), {lineNumbers: true, mode: "javascript", matchBrackets: true, lineWrapping:true});
-	CC.editor.on("change", function () {localStorage.setItem(CC.activeLevel.name+"Code", CC.editor.getValue());});
-} else {
-	CC.editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), {lineNumbers: true, mode: "javascript", matchBrackets: true, lineWrapping:true, readOnly: true});
-}
+CC.editor = CodeMirror.fromTextArea(document.getElementById("CodeMirrorEditor"), {lineNumbers: true, mode: "javascript", matchBrackets: true, lineWrapping:true});
+CC.editor.on("change", function () {localStorage.setItem(CC.activeLevel.name+"Code", CC.editor.getValue());});
 shortcut.add("Alt+Enter",function() {if(CC.loadCodeAndReset())CC.play();}, {'type':'keydown','propagate':true,'target':document});
 shortcut.add("Alt+P",function() {if(CC.running())CC.pause();else CC.play();}, {'type':'keydown','propagate':true,'target':document});
 shortcut.add("Esc",function() {showPopup(null);}, {'type':'keydown','propagate':true,'target':document});
@@ -234,31 +231,7 @@ $('button').each(function(index, element){if(element.className==='') element.cla
 
 
 CC.pause();
-
-
-// normal mode
-if(CC.sharedCode === false) {
-	try { CC.loadLevel(localStorage.getItem("lastLevel")); }
-	catch (e) { CC.logError(e); }
-	CC.loadCodeAndReset();
-// show shared code
-} else {
-	CC.boilerplateButton.remove();
-	CC.solutionButton.remove();
-	CC.levelmenuButton.remove();
-	CC.shareButton.remove();
-	$('.CodeMirror').css('background-color','#ddd');
-	try {
-		var share_params = JSON.parse(atob(CC.sharedCode));
-		CC.loadLevel(share_params.lvl_id);
-		CC.editor.setValue(share_params.code);
-		CC.loadCodeAndReset();
-		CC.play();
-	} catch (e) {
-		CC.logError("Error loading shared code.");
-		CC.logError(e);
-	}	
-	showPopup(null);
-}
-
+try { CC.loadLevel(localStorage.getItem("lastLevel")); }
+catch (e) { CC.logError(e); }
+CC.loadCodeAndReset();
 CC.gameLoop();
